@@ -6,7 +6,8 @@
   <title>Karamello | Edição Profissional</title>
   <style>
     :root{
-      --bg:#0f172a;
+      --bg:#0b1021;
+      --bg2:#0f1a38;
       --panel:#0b1226;
       --panel2:#0a1022;
       --text:#e5e7eb;
@@ -14,24 +15,25 @@
       --accent1:#7c3aed;
       --accent2:#2563eb;
       --cyan:#38bdf8;
-      --card:#0b1226;
-      --border:rgba(255,255,255,.10);
+      --border:rgba(255,255,255,.12);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
       font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      background:
-        radial-gradient(1200px 700px at 20% 10%, rgba(124,58,237,.33), transparent 55%),
-        radial-gradient(900px 600px at 90% 20%, rgba(37,99,235,.30), transparent 55%),
-        var(--bg);
       color:var(--text);
       overflow-x:hidden;
-      color-scheme: dark; /* ajuda select/date ficarem dark */
+      color-scheme: dark;
+
+      /* ✅ Fundo fosco (sem faixas separadas) */
+      background:
+        radial-gradient(1400px 900px at 10% 10%, rgba(124,58,237,.28), transparent 60%),
+        radial-gradient(1200px 800px at 90% 15%, rgba(37,99,235,.26), transparent 62%),
+        radial-gradient(900px 700px at 55% 70%, rgba(56,189,248,.10), transparent 65%),
+        linear-gradient(180deg, rgba(10,16,34,.92), rgba(9,14,30,.95));
     }
 
-    /* Entrada profissional */
     .page{
       min-height:100vh;
       display:flex;
@@ -44,9 +46,15 @@
 
     header{
       padding:44px 18px 28px;
-      background: linear-gradient(90deg, rgba(124,58,237,.70), rgba(37,99,235,.70));
+      /* ✅ Header também em degradê fosco */
+      background:
+        radial-gradient(800px 380px at 20% 0%, rgba(124,58,237,.35), transparent 60%),
+        radial-gradient(800px 380px at 80% 0%, rgba(37,99,235,.30), transparent 60%),
+        linear-gradient(90deg, rgba(124,58,237,.55), rgba(37,99,235,.55));
       border-bottom:1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
     }
+
     .wrap{max-width:1100px;margin:0 auto}
     h1{
       margin:0;
@@ -63,11 +71,10 @@
       padding:26px 18px 60px;
       position:relative;
     }
-    /* leve “unificador” pra evitar aparecerem camadas/linhas do fundo */
     main::before{
       content:"";
       position:absolute; inset:0;
-      background: rgba(2,6,23,.22);
+      background: rgba(2,6,23,.18);
       pointer-events:none;
     }
     main > .wrap{position:relative; z-index:1;}
@@ -87,13 +94,12 @@
     }
     @media (max-width: 860px){ .hero{grid-template-columns:1fr} }
 
-    /* Cards mais sólidos (corrige “camadas” roxo/azul aparecendo por trás) */
     .card{
       background: linear-gradient(180deg, rgba(11,18,38,.92), rgba(10,16,34,.88));
       border:1px solid var(--border);
       border-radius:18px;
       padding:18px;
-      box-shadow: 0 18px 50px rgba(0,0,0,.40);
+      box-shadow: 0 18px 50px rgba(0,0,0,.42);
       backdrop-filter: blur(10px);
     }
     .card h3{
@@ -134,7 +140,6 @@
     @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, 1fr);} }
     @media (max-width: 620px){ .grid{grid-template-columns: 1fr;} }
 
-    /* Faz o personalizado ocupar a largura toda (corrige “vazio” na direita) */
     .grid .full{grid-column: 1 / -1;}
 
     .price{
@@ -148,10 +153,9 @@
 
     .card.highlight{
       border:1px solid rgba(56,189,248,.35);
-      box-shadow:0 12px 34px rgba(0,0,0,.40), 0 0 0 4px rgba(56,189,248,.06);
+      box-shadow:0 12px 34px rgba(0,0,0,.42), 0 0 0 4px rgba(56,189,248,.06);
     }
 
-    /* Modal */
     .overlay{
       position:fixed; inset:0;
       background: rgba(0,0,0,.62);
@@ -166,7 +170,6 @@
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
     @keyframes fadeOut{from{opacity:1}to{opacity:0}}
 
-    /* Modal mais sólido (corrige “transparente”) */
     .modal{
       width:min(520px, 100%);
       background: linear-gradient(180deg, rgba(11,18,38,.95), rgba(10,16,34,.92));
@@ -215,24 +218,11 @@
       outline:none;
       color-scheme: dark;
     }
-    textarea{
-      min-height:96px;
-      resize:vertical;
-    }
+    textarea{min-height:96px; resize:vertical;}
     input::placeholder, textarea::placeholder{color: rgba(229,231,235,.68)}
     input:focus, textarea:focus, select:focus{border-color: rgba(56,189,248,.55)}
+    select option{background: var(--panel); color: var(--text);}
 
-    /* ✅ Corrige dropdown branco (texto branco em fundo branco) */
-    select{appearance:auto;}
-    select option{
-      background: var(--panel);
-      color: var(--text);
-    }
-
-    /* ✅ Corrige input date ficar estranho/transparente */
-    input[type="date"]{
-      color: var(--text);
-    }
     input[type="date"]::-webkit-datetime-edit{ color: var(--text); }
     input[type="date"]::-webkit-calendar-picker-indicator{
       filter: invert(1);
@@ -242,7 +232,6 @@
 
     .hint{color:var(--muted); font-size:.9rem; margin-top:10px}
 
-    /* personalizado */
     .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .mini label{display:block;font-size:.88rem;color:#cbd5e1;margin:0 0 6px}
     .checks{display:grid;gap:8px}
@@ -338,16 +327,22 @@
               </div>
 
               <div class="checks" style="margin-top:10px">
+                <!-- VISUAL (vídeo) -->
                 <label class="chk"><input data-custom-opt id="optCorCine" type="checkbox" /> Cor cinematográfica (vídeos)</label>
                 <label class="chk"><input data-custom-opt id="optLegenda" type="checkbox" /> Legendas (vídeos)</label>
                 <label class="chk"><input data-custom-opt id="optTransicoes" type="checkbox" /> Transições premium (vídeos)</label>
-                <label class="chk"><input data-custom-opt id="optSFX" type="checkbox" /> Efeitos sonoros (SFX) (vídeos)</label>
-                <label class="chk"><input data-custom-opt id="optAudio" type="checkbox" /> Melhorar áudio + reduzir ruído (vídeos)</label>
+                <label class="chk"><input data-custom-opt id="optMotion" type="checkbox" /> Motion graphics (títulos) (vídeos)</label>
+                <label class="chk"><input data-custom-opt id="optIntroOutro" type="checkbox" /> Intro/Outro + CTA (vídeos)</label>
                 <label class="chk"><input data-custom-opt id="optEstabilizar" type="checkbox" /> Estabilização (vídeos)</label>
                 <label class="chk"><input data-custom-opt id="optSpeedRamp" type="checkbox" /> Speed ramp / slow motion (vídeos)</label>
-                <label class="chk"><input data-custom-opt id="optMotion" type="checkbox" /> Motion graphics simples (títulos) (vídeos)</label>
-                <label class="chk"><input data-custom-opt id="optIntroOutro" type="checkbox" /> Intro/Outro + CTA (vídeos)</label>
 
+                <!-- ÁUDIO (vídeo) -->
+                <label class="chk"><input data-custom-opt id="optSFX" type="checkbox" /> Efeitos sonoros (SFX) (vídeos)</label>
+                <label class="chk"><input data-custom-opt id="optAudio" type="checkbox" /> Melhorar áudio + reduzir ruído (vídeos)</label>
+                <label class="chk"><input data-custom-opt id="optMusicSync" type="checkbox" /> Sincronizar cortes com música (vídeos)</label>
+                <label class="chk"><input data-custom-opt id="optVoiceClean" type="checkbox" /> Limpeza de voz / clareza (vídeos)</label>
+
+                <!-- FOTO -->
                 <label class="chk"><input data-custom-opt id="optRetoquePro" type="checkbox" /> Retoque avançado (fotos)</label>
                 <label class="chk"><input data-custom-opt id="optPele" type="checkbox" /> Suavizar pele (fotos)</label>
                 <label class="chk"><input data-custom-opt id="optFundo" type="checkbox" /> Remover/alterar fundo (fotos)</label>
@@ -356,6 +351,7 @@
                 <label class="chk"><input data-custom-opt id="optObjeto" type="checkbox" /> Remover objetos (fotos)</label>
                 <label class="chk"><input data-custom-opt id="optTexto" type="checkbox" /> Texto/arte simples (fotos)</label>
 
+                <!-- POR PEDIDO -->
                 <label class="chk"><input data-custom-opt id="optThumbnail" type="checkbox" /> Thumbnail (capa) (1 unidade)</label>
                 <label class="chk"><input data-custom-opt id="optUrgente" type="checkbox" /> Prioridade (entrega mais rápida)</label>
               </div>
@@ -371,7 +367,7 @@
               </div>
 
               <button class="btn" type="button" onclick="confirmCustom()">Continuar com o personalizado</button>
-              <div class="hint">* Os preços por item são internos e não aparecem. Na etapa futura, isso vira checkout real.</div>
+              <div class="hint">* Os preços por item são internos e não aparecem.</div>
             </div>
           </div>
 
@@ -380,16 +376,13 @@
 
         <section id="screenEditor" class="screen">
           <div class="section-title">Bem-vindo, <span id="editorName">Editor</span> 👋</div>
-          <div class="pill">Em breve você vai escolher em quais pacotes quer trabalhar (e para mudar depois: taxa futura de R$ 20).</div>
-
+          <div class="pill">Em breve você vai escolher em quais pacotes quer trabalhar.</div>
           <div class="card" style="margin-top:14px">
             <h3>Próximos passos</h3>
-            <p>Na próxima etapa vamos criar: perfil do editor, escolha de pacotes e depois lista de editores para o cliente selecionar.</p>
+            <p>Na próxima etapa: perfil do editor + escolher pacotes + lista de editores para o cliente selecionar.</p>
           </div>
-
           <button class="btn secondary" style="margin-top:18px" type="button" onclick="goBackStart()">Voltar</button>
         </section>
-
       </div>
     </main>
 
@@ -403,30 +396,14 @@
         <button class="close" type="button" onclick="closeCadastro()">×</button>
       </div>
       <div class="modalBody">
-        <div class="field">
-          <label>Nome</label>
-          <input id="inNome" placeholder="Seu nome" />
-        </div>
-        <div class="field">
-          <label>Sobrenome</label>
-          <input id="inSobrenome" placeholder="Seu sobrenome" />
-        </div>
-        <div class="field">
-          <label>Data de nascimento</label>
-          <input id="inData" type="date" />
-        </div>
-        <div class="field">
-          <label>Email</label>
-          <input id="inEmail" type="email" placeholder="seuemail@gmail.com" />
-        </div>
-        <div class="field">
-          <label>Senha</label>
-          <input id="inSenha" type="password" placeholder="••••••••" />
-        </div>
+        <div class="field"><label>Nome</label><input id="inNome" placeholder="Seu nome" /></div>
+        <div class="field"><label>Sobrenome</label><input id="inSobrenome" placeholder="Seu sobrenome" /></div>
+        <div class="field"><label>Data de nascimento</label><input id="inData" type="date" /></div>
+        <div class="field"><label>Email</label><input id="inEmail" type="email" placeholder="seuemail@gmail.com" /></div>
+        <div class="field"><label>Senha</label><input id="inSenha" type="password" placeholder="••••••••" /></div>
 
         <button id="btnCadastrar" class="btn" type="button">Continuar</button>
         <button class="btn secondary" type="button" onclick="alert('Entrar com Google: em breve (precisa backend).')">Entrar com Google (em breve)</button>
-
         <div class="hint">* Login real com Google e segurança total entram na etapa futura (backend).</div>
       </div>
     </div>
@@ -444,7 +421,6 @@
 
     const inNome = document.getElementById('inNome');
     const inSobrenome = document.getElementById('inSobrenome');
-
     const clientName = document.getElementById('clientName');
     const editorName = document.getElementById('editorName');
 
@@ -453,41 +429,28 @@
     function openCadastro(tipo){
       role = tipo;
       titleCadastro.textContent = (tipo === 'cliente') ? 'Criar conta como Cliente' : 'Criar conta como Editor';
-
       overlay.classList.remove('closing');
       modal.classList.remove('closing');
-
       overlay.classList.add('show');
       overlay.setAttribute('aria-hidden','false');
-
-      modal.style.animation = 'none';
-      void modal.offsetHeight;
-      modal.style.animation = '';
+      modal.style.animation = 'none'; void modal.offsetHeight; modal.style.animation = '';
     }
 
     function closeCadastro(){
       overlay.classList.add('closing');
       modal.classList.add('closing');
-
       setTimeout(() => {
         overlay.classList.remove('show','closing');
         modal.classList.remove('closing');
         overlay.setAttribute('aria-hidden','true');
       }, 220);
     }
-
-    overlay.addEventListener('click', (e) => {
-      if(e.target === overlay) closeCadastro();
-    });
+    overlay.addEventListener('click', (e) => { if(e.target === overlay) closeCadastro(); });
 
     function showScreen(which){
       [screenStart, screenClient, screenEditor].forEach(s => s.classList.remove('show'));
-      setTimeout(() => {
-        which.classList.add('show');
-        window.scrollTo({top:0, behavior:'smooth'});
-      }, 50);
+      setTimeout(() => { which.classList.add('show'); window.scrollTo({top:0, behavior:'smooth'}); }, 50);
     }
-
     function goBackStart(){ showScreen(screenStart); }
 
     const packages = [
@@ -512,7 +475,6 @@
 
     function renderPackages(){
       const grid = document.getElementById('packagesGrid');
-      if(!grid) return;
       grid.innerHTML = '';
       packages.forEach(p => {
         const card = document.createElement('div');
@@ -530,8 +492,7 @@
 
     function choosePackage(id){
       const p = packages.find(x => x.id === id);
-      if(!p) return;
-      alert(`Pacote selecionado: ${p.id}. ${p.name}\nValor: ${brl(p.price)}\nEntrega: ${p.eta}\n\nPróxima etapa (futura): escolher editor + enviar arquivos.`);
+      alert(`Pacote selecionado: ${p.id}. ${p.name}\nValor: ${brl(p.price)}\nEntrega: ${p.eta}`);
     }
 
     const custFotos = document.getElementById('custFotos');
@@ -553,12 +514,15 @@
       { id:'optCorCine',    kind:'video', price:11.60 },
       { id:'optLegenda',    kind:'video', price:11.60 },
       { id:'optTransicoes', kind:'video', price:9.40  },
-      { id:'optSFX',        kind:'video', price:9.40  },
-      { id:'optAudio',      kind:'video', price:11.60 },
-      { id:'optEstabilizar',kind:'video', price:11.60 },
-      { id:'optSpeedRamp',  kind:'video', price:9.40  },
       { id:'optMotion',     kind:'video', price:11.60 },
       { id:'optIntroOutro', kind:'video', price:11.60 },
+      { id:'optEstabilizar',kind:'video', price:11.60 },
+      { id:'optSpeedRamp',  kind:'video', price:9.40  },
+
+      { id:'optSFX',        kind:'video', price:9.40  },
+      { id:'optAudio',      kind:'video', price:11.60 },
+      { id:'optMusicSync',  kind:'video', price:9.90  },
+      { id:'optVoiceClean', kind:'video', price:11.90 },
 
       { id:'optRetoquePro', kind:'photo', price:9.40  },
       { id:'optPele',       kind:'photo', price:9.40  },
@@ -590,75 +554,63 @@
     }
 
     function calcCustom(){
-      const fotos = Math.max(0, parseInt(custFotos?.value || '0', 10));
-      const vids  = Math.max(0, parseInt(custVideos?.value || '0', 10));
-      const plat  = custPlataforma?.value || 'reels';
-      const tipo  = custTipoVideo?.value || '15';
+      const fotos = Math.max(0, parseInt(custFotos.value||'0',10));
+      const vids  = Math.max(0, parseInt(custVideos.value||'0',10));
+      const plat  = custPlataforma.value||'reels';
+      const tipo  = custTipoVideo.value||'15';
 
       let unitVideo = PRICES.video15;
-      if(tipo === '45') unitVideo = PRICES.video45;
-      if(tipo === '60') unitVideo = PRICES.video60;
+      if(tipo==='45') unitVideo = PRICES.video45;
+      if(tipo==='60') unitVideo = PRICES.video60;
 
       const mult = PRICES.platformMult[plat] ?? 1.0;
 
-      let extraVideo = 0, extraPhoto = 0, extraOrder = 0;
-      EXTRA_OPTIONS.forEach(o => {
-        const el = document.getElementById(o.id);
-        if(!el || !el.checked) return;
-        if(o.kind === 'video') extraVideo += o.price;
-        else if(o.kind === 'photo') extraPhoto += o.price;
-        else extraOrder += o.price;
+      let extraVideo=0, extraPhoto=0, extraOrder=0;
+      EXTRA_OPTIONS.forEach(o=>{
+        const el=document.getElementById(o.id);
+        if(!el||!el.checked) return;
+        if(o.kind==='video') extraVideo+=o.price;
+        else if(o.kind==='photo') extraPhoto+=o.price;
+        else extraOrder+=o.price;
       });
 
-      const rawTotal = (fotos * (PRICES.foto + extraPhoto)) + (vids * (unitVideo * mult + extraVideo)) + extraOrder;
-
-      const jitter = (fotos + vids) > 0 ? (0.30 + ((fotos*7 + vids*11) % 7) * 0.10) : 0;
+      const rawTotal = (fotos*(PRICES.foto+extraPhoto)) + (vids*(unitVideo*mult+extraVideo)) + extraOrder;
+      const jitter = (fotos+vids)>0 ? (0.30 + ((fotos*7 + vids*11)%7)*0.10) : 0;
       const total = Math.max(0, rawTotal + jitter);
 
       custTotal.textContent = brl(total);
-
       const urgent = document.getElementById('optUrgente')?.checked || false;
       custEntrega.textContent = calcEntrega(total, urgent);
     }
 
     function confirmCustom(){
-      alert(`Personalizado criado!\nTotal: ${custTotal.textContent}\nEntrega estimada: ${custEntrega.textContent}\n\nPróxima etapa (futura): escolher editor + enviar arquivos.`);
+      alert(`Personalizado criado!\nTotal: ${custTotal.textContent}\nEntrega: ${custEntrega.textContent}`);
     }
 
-    [custFotos, custVideos, custPlataforma, custTipoVideo].forEach(el => {
-      if(!el) return;
+    [custFotos,custVideos,custPlataforma,custTipoVideo].forEach(el=>{
       el.addEventListener('input', calcCustom);
       el.addEventListener('change', calcCustom);
     });
-    Array.from(document.querySelectorAll('[data-custom-opt]')).forEach(el => {
+    Array.from(document.querySelectorAll('[data-custom-opt]')).forEach(el=>{
       el.addEventListener('change', calcCustom);
     });
 
-    btnCadastrar.addEventListener('click', () => {
-      const nome = (inNome.value || '').trim();
-      const sobrenome = (inSobrenome.value || '').trim();
-
-      if(!nome || !sobrenome){
-        alert('Preencha Nome e Sobrenome para continuar.');
-        return;
-      }
-
+    btnCadastrar.addEventListener('click', ()=>{
+      const nome=(inNome.value||'').trim();
+      const sobrenome=(inSobrenome.value||'').trim();
+      if(!nome||!sobrenome){ alert('Preencha Nome e Sobrenome.'); return; }
       closeCadastro();
-
-      if(role === 'cliente'){
+      if(role==='cliente'){
         clientName.textContent = nome;
         showScreen(screenClient);
-        setTimeout(() => { renderPackages(); calcCustom(); }, 80);
-      } else {
+        setTimeout(()=>{ renderPackages(); calcCustom(); },80);
+      }else{
         editorName.textContent = nome;
         showScreen(screenEditor);
       }
     });
 
-    window.addEventListener('DOMContentLoaded', () => {
-      calcCustom();
-    });
+    window.addEventListener('DOMContentLoaded', ()=>{ calcCustom(); });
   </script>
 </body>
 </html>
-
