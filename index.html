@@ -4,16 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Karamello | Edição Profissional</title>
+
   <style>
     :root{
       --bg:#070b18;
       --panel:#0b1226;
-      --panel2:#0a1022;
       --text:#e5e7eb;
       --muted:#9ca3af;
+
       --accent1:#7c3aed; /* roxo */
       --accent2:#2563eb; /* azul */
       --accent3:#38bdf8; /* ciano */
+
       --border:rgba(255,255,255,.12);
     }
 
@@ -29,79 +31,76 @@
       position:relative;
     }
 
-    /* ✅ Fundo em degradê único misturando 3 cores */
+    /* ✅ Fundo degradê 3 cores (fosco) */
     .bg{
-      position:fixed;
-      inset:0;
-      z-index:-3;
+      position:fixed; inset:0; z-index:-3;
       background:
-        radial-gradient(1200px 800px at 12% 10%, rgba(124,58,237,.40), transparent 62%),
-        radial-gradient(1200px 800px at 88% 12%, rgba(37,99,235,.36), transparent 62%),
-        radial-gradient(1100px 900px at 50% 85%, rgba(56,189,248,.18), transparent 62%),
-        linear-gradient(135deg, rgba(124,58,237,.22) 0%, rgba(37,99,235,.20) 48%, rgba(56,189,248,.12) 100%),
-        linear-gradient(180deg, rgba(7,11,24,.96), rgba(5,8,18,.98));
-      filter:saturate(1.15);
+        radial-gradient(1200px 800px at 12% 10%, rgba(124,58,237,.34), transparent 62%),
+        radial-gradient(1200px 800px at 88% 12%, rgba(37,99,235,.30), transparent 62%),
+        radial-gradient(1100px 900px at 50% 85%, rgba(56,189,248,.16), transparent 62%),
+        linear-gradient(135deg, rgba(124,58,237,.18) 0%, rgba(37,99,235,.16) 48%, rgba(56,189,248,.10) 100%),
+        linear-gradient(180deg, rgba(7,11,24,.98), rgba(5,8,18,.99));
+      filter:saturate(1.1);
     }
 
-    /* ✅ Decorações animadas (orbs) */
+    /* ✅ Orbs animadas leves (sem exagero) */
     .orb{
       position:fixed;
-      width:520px;
-      height:520px;
+      width:520px; height:520px;
       border-radius:50%;
       z-index:-2;
-      opacity:.45;
-      filter: blur(28px);
-      animation: float 10s ease-in-out infinite;
+      opacity:.34;
+      filter: blur(22px);
+      animation: float 14s ease-in-out infinite;
       pointer-events:none;
+      transform: translateZ(0);
+      will-change: transform;
       mix-blend-mode: screen;
     }
     .orb.one{
-      left:-160px; top:120px;
-      background: radial-gradient(circle at 35% 35%, rgba(124,58,237,.95), rgba(124,58,237,0) 60%);
-      animation-duration: 12s;
+      left:-180px; top:130px;
+      background: radial-gradient(circle at 35% 35%, rgba(124,58,237,.92), rgba(124,58,237,0) 60%);
+      animation-duration: 16s;
     }
     .orb.two{
-      right:-220px; top:40px;
-      background: radial-gradient(circle at 40% 35%, rgba(37,99,235,.95), rgba(37,99,235,0) 60%);
-      animation-duration: 14s;
-      animation-delay: -2s;
+      right:-240px; top:60px;
+      background: radial-gradient(circle at 40% 35%, rgba(37,99,235,.90), rgba(37,99,235,0) 60%);
+      animation-duration: 18s;
+      animation-delay: -3s;
     }
     .orb.three{
-      left:22%; bottom:-260px;
+      left:22%; bottom:-280px;
       width:680px; height:680px;
-      background: radial-gradient(circle at 50% 40%, rgba(56,189,248,.75), rgba(56,189,248,0) 62%);
-      animation-duration: 16s;
-      animation-delay: -4s;
+      background: radial-gradient(circle at 50% 40%, rgba(56,189,248,.70), rgba(56,189,248,0) 62%);
+      animation-duration: 20s;
+      animation-delay: -5s;
     }
-
     @keyframes float{
       0%{ transform: translate3d(0,0,0) scale(1); }
-      50%{ transform: translate3d(0,-22px,0) scale(1.03); }
+      50%{ transform: translate3d(0,-16px,0) scale(1.02); }
       100%{ transform: translate3d(0,0,0) scale(1); }
     }
 
-    /* ✅ Sparkles (pontinhos animados bem leves) */
+    /* ✅ Sparkles SUPER leves */
     .sparkles{
-      position:fixed;
-      inset:0;
-      z-index:-1;
+      position:fixed; inset:0; z-index:-1;
       pointer-events:none;
-      opacity:.35;
+      opacity:.18;
       background-image:
-        radial-gradient(circle, rgba(255,255,255,.35) 1px, transparent 1.6px),
-        radial-gradient(circle, rgba(56,189,248,.22) 1px, transparent 1.6px);
-      background-size: 54px 54px, 72px 72px;
-      background-position: 0 0, 20px 18px;
-      animation: drift 18s linear infinite;
-      mask-image: radial-gradient(closest-side, rgba(0,0,0,1), rgba(0,0,0,.25), transparent);
+        radial-gradient(circle, rgba(255,255,255,.24) 1px, transparent 1.8px),
+        radial-gradient(circle, rgba(56,189,248,.15) 1px, transparent 1.8px);
+      background-size: 76px 76px, 100px 100px;
+      background-position: 0 0, 28px 22px;
+      will-change: transform;
+      transform: translateZ(0);
+      animation: drift 28s linear infinite;
     }
     @keyframes drift{
       from{ transform: translate3d(0,0,0); }
-      to{ transform: translate3d(-90px, -70px, 0); }
+      to{ transform: translate3d(-80px, -60px, 0); }
     }
 
-    /* Entrada profissional */
+    /* ✅ Entrada */
     .page{
       min-height:100vh;
       display:flex;
@@ -114,10 +113,12 @@
 
     header{
       padding:44px 18px 28px;
-      background:
-        linear-gradient(90deg, rgba(124,58,237,.55), rgba(37,99,235,.52), rgba(56,189,248,.26));
+      background: linear-gradient(90deg,
+        rgba(124,58,237,.55),
+        rgba(37,99,235,.50),
+        rgba(56,189,248,.25)
+      );
       border-bottom:1px solid rgba(255,255,255,.12);
-      backdrop-filter: blur(10px);
     }
     .wrap{max-width:1100px;margin:0 auto}
     h1{
@@ -131,14 +132,11 @@
       font-size:1.05rem;
     }
 
-    main{
-      padding:26px 18px 60px;
-      position:relative;
-    }
+    main{padding:26px 18px 60px; position:relative;}
     main::before{
       content:"";
       position:absolute; inset:0;
-      background: rgba(2,6,23,.20);
+      background: rgba(2,6,23,.18);
       pointer-events:none;
     }
     main > .wrap{position:relative; z-index:1;}
@@ -155,14 +153,22 @@
     }
     @media (max-width: 860px){ .hero{grid-template-columns:1fr} }
 
+    /* ✅ CARD OTIMIZADO (para não travar nos pacotes) */
     .card{
       background: linear-gradient(180deg, rgba(11,18,38,.92), rgba(10,16,34,.88));
       border:1px solid var(--border);
       border-radius:18px;
       padding:18px;
-      box-shadow: 0 18px 50px rgba(0,0,0,.42);
-      backdrop-filter: blur(10px);
+
+      /* sombra mais leve */
+      box-shadow: 0 10px 26px rgba(0,0,0,.35);
+
+      /* performance */
+      content-visibility: auto;
+      contain-intrinsic-size: 320px 220px;
+      contain: layout paint style;
     }
+
     .card h3{margin:0 0 8px;font-size:1.15rem;color:#c7d2fe;}
     .card p{margin:0;color:var(--muted);line-height:1.35}
 
@@ -176,9 +182,9 @@
       color:white;
       font-weight:700;
       cursor:pointer;
-      transition: transform .15s ease, filter .15s ease;
+      transition: transform .12s ease, filter .12s ease;
     }
-    .btn:hover{transform: translateY(-1px); filter: brightness(1.05);}
+    .btn:hover{transform: translateY(-1px); filter: brightness(1.04);}
     .btn:active{transform: translateY(0px); filter: brightness(.98);}
     .btn.secondary{
       background: rgba(255,255,255,.06);
@@ -190,27 +196,21 @@
     .pill{display:inline-block;margin-top:6px;color:var(--muted);font-size:.95rem;}
 
     .grid{
-      .card{
-  background: linear-gradient(180deg, rgba(11,18,38,.92), rgba(10,16,34,.88));
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:18px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 620px){ .grid{grid-template-columns: 1fr;} }
+    .grid .full{grid-column: 1 / -1;}
 
-  /* ✅ sombra mais leve */
-  box-shadow: 0 10px 26px rgba(0,0,0,.35);
-
-  /* ❌ removi backdrop-filter (isso pesa muito) */
-  /* backdrop-filter: blur(10px); */
-
-  /* ✅ otimização: não renderiza card fora da tela */
-  content-visibility: auto;
-  contain-intrinsic-size: 320px 220px;
-  contain: layout paint style;
-}
+    .price{margin:10px 0 10px;font-weight:900;font-size:1.25rem;color: var(--accent3);}
+    ul{margin:10px 0 0; padding-left:18px; color:#cbd5e1}
+    li{margin:6px 0}
 
     .card.highlight{
       border:1px solid rgba(56,189,248,.35);
-      box-shadow:0 12px 34px rgba(0,0,0,.42), 0 0 0 4px rgba(56,189,248,.06);
+      box-shadow:0 12px 28px rgba(0,0,0,.38), 0 0 0 4px rgba(56,189,248,.05);
     }
 
     .overlay{
@@ -232,13 +232,11 @@
       background: linear-gradient(180deg, rgba(11,18,38,.95), rgba(10,16,34,.92));
       border:1px solid rgba(255,255,255,.16);
       border-radius:18px;
-      box-shadow: 0 30px 90px rgba(0,0,0,.60);
+      box-shadow: 0 30px 80px rgba(0,0,0,.60);
       overflow:hidden;
       transform: translateY(10px) scale(.98);
       opacity:0;
       animation: modalIn .25s ease forwards;
-      position:relative;
-      backdrop-filter: blur(12px);
     }
     .modal.closing{animation: modalOut .22s ease forwards;}
     @keyframes modalIn{to{opacity:1;transform:translateY(0) scale(1)}}
@@ -300,15 +298,20 @@
     .total-line strong{font-size:1.25rem;color:var(--accent3)}
     .total-sub{margin-top:6px;color:var(--muted);font-size:.95rem}
 
-    footer{
-      padding:18px;
-      color:rgba(229,231,235,.7);
-      text-align:center;
+    footer{padding:18px;color:rgba(229,231,235,.7);text-align:center;}
+
+    /* ✅ MODO LEVE AUTOMÁTICO */
+    @media (prefers-reduced-motion: reduce){
+      .orb, .sparkles{ animation: none !important; }
+    }
+    @media (max-width: 900px){
+      .sparkles{ display:none; }
+      .orb{ filter: blur(16px); opacity:.28; }
     }
   </style>
 </head>
+
 <body>
-  <!-- ✅ Background layers -->
   <div class="bg"></div>
   <div class="orb one"></div>
   <div class="orb two"></div>
@@ -325,6 +328,7 @@
 
     <main>
       <div class="wrap">
+
         <section id="screenStart" class="screen show">
           <div class="hero">
             <div class="card">
@@ -667,7 +671,6 @@
     });
 
     window.addEventListener('DOMContentLoaded', ()=>{ calcCustom(); });
-
   </script>
 </body>
 </html>
