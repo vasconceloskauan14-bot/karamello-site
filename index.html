@@ -117,86 +117,7 @@
     }
     .checks{display:grid;gap:8px}
     .chk{display:flex;gap:10px;align-items:center;color:#cbd5e1;font-size:.95rem}
-    .chk input{width:auto;margin:0}
-
-    .total-box{
-      margin-top:12px;
-      padding:12px;
-      border-radius:14px;
-      border:1px solid rgba(56,189,248,.22);
-      background: rgba(56,189,248,.06);
-    }
-    .total-line{display:flex;justify-content:space-between;align-items:center}
-    .total-line strong{font-size:1.25rem;color:var(--cyan)}
-    .total-sub{margin-top:6px;color:var(--muted);font-size:.95rem}
-
-    .card.highlight{
-      border:1px solid rgba(56,189,248,.35);
-      box-shadow:0 12px 34px rgba(0,0,0,.35), 0 0 0 4px rgba(56,189,248,.06);
-    }
-
-    /* ===== MODAL CENTRALIZADO ===== */
-    .overlay{
-      display:none;
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.6);
-      z-index:100;
-      padding:16px;
-      justify-content:center;
-      align-items:center;
-    }
-    .overlay.show{display:flex;animation:fadeIn .22s ease-out}
-    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
-    .modal{
-      width:100%;
-      max-width:420px;
-      border-radius:16px;
-      overflow:hidden;
-      background:#07122c;
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow: 0 22px 60px rgba(0,0,0,.6);
-      transform: translateY(42px) scale(.96);
-      opacity:0;
-      animation: slideUp .32s cubic-bezier(.2,.9,.2,1) forwards;
-    }
-    @keyframes slideUp{to{transform:translateY(0) scale(1);opacity:1}}
-
-    .overlay.closing{animation:fadeOut .18s ease-in forwards}
-    @keyframes fadeOut{to{opacity:0}}
-    .modal.closing{animation: slideDown .22s ease-in forwards}
-    @keyframes slideDown{to{transform: translateY(34px) scale(.97); opacity:0}}
-
-    .modal-head{
-      background:linear-gradient(135deg,#0a2cff,#1e90ff);
-      padding:16px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
-    .modal-head h3{margin:0;color:white}
-
-    .x{
-      background:rgba(255,255,255,.2);
-      border:none;
-      color:white;
-      width:32px;
-      height:32px;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:bold;
-      transition: transform .12s ease, opacity .12s ease;
-    }
-    .x:hover{opacity:.92}
-    .x:active{transform:scale(.97)}
-
-    .modal-body{padding:18px; background: rgba(2,6,23,.25)}
-
-    .field{margin-bottom:10px}
-    .field label{display:block;font-size:.88rem;color:#cbd5e1;margin:0 0 6px}
-
-    input{
+    .chk input{
       width:100%;
       padding:11px;
       border-radius:10px;
@@ -205,8 +126,19 @@
       color: var(--text);
       outline:none;
     }
-    input::placeholder{color: rgba(229,231,235,.65)}
-    input:focus{border-color: rgba(56,189,248,.55)}
+    textarea{
+      width:100%;
+      padding:11px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      outline:none;
+      min-height:96px;
+      resize:vertical;
+    }
+    input::placeholder, textarea::placeholder{color: rgba(229,231,235,.65)}
+    input:focus, textarea:focus{border-color: rgba(56,189,248,.55)}
 
     .google{
       width:100%;
@@ -301,8 +233,31 @@
         </div>
 
         <div class="checks" style="margin-top:10px">
-          <label class="chk"><input id="custCor" type="checkbox" /> Cor cinematográfica (vídeos)</label>
-          <label class="chk"><input id="custLegenda" type="checkbox" /> Legendas (vídeos)</label>
+          <label class="chk"><input data-custom-opt id="optCorCine" type="checkbox" /> Cor cinematográfica (vídeos)</label>
+          <label class="chk"><input data-custom-opt id="optLegenda" type="checkbox" /> Legendas (vídeos)</label>
+          <label class="chk"><input data-custom-opt id="optTransicoes" type="checkbox" /> Transições premium (vídeos)</label>
+          <label class="chk"><input data-custom-opt id="optSFX" type="checkbox" /> Efeitos sonoros (SFX) (vídeos)</label>
+          <label class="chk"><input data-custom-opt id="optAudio" type="checkbox" /> Melhorar áudio + reduzir ruído (vídeos)</label>
+          <label class="chk"><input data-custom-opt id="optEstabilizar" type="checkbox" /> Estabilização (vídeos)</label>
+          <label class="chk"><input data-custom-opt id="optSpeedRamp" type="checkbox" /> Speed ramp / slow motion (vídeos)</label>
+          <label class="chk"><input data-custom-opt id="optMotion" type="checkbox" /> Motion graphics simples (títulos) (vídeos)</label>
+          <label class="chk"><input data-custom-opt id="optIntroOutro" type="checkbox" /> Intro/Outro + CTA (vídeos)</label>
+
+          <label class="chk"><input data-custom-opt id="optRetoquePro" type="checkbox" /> Retoque avançado (fotos)</label>
+          <label class="chk"><input data-custom-opt id="optPele" type="checkbox" /> Suavizar pele (fotos)</label>
+          <label class="chk"><input data-custom-opt id="optFundo" type="checkbox" /> Remover/alterar fundo (fotos)</label>
+          <label class="chk"><input data-custom-opt id="optCoresFoto" type="checkbox" /> Cor cinematográfica (fotos)</label>
+          <label class="chk"><input data-custom-opt id="optHDR" type="checkbox" /> HDR / nitidez premium (fotos)</label>
+          <label class="chk"><input data-custom-opt id="optObjeto" type="checkbox" /> Remover objetos (fotos)</label>
+          <label class="chk"><input data-custom-opt id="optTexto" type="checkbox" /> Texto/arte simples (fotos)</label>
+          <label class="chk"><input data-custom-opt id="optThumbnail" type="checkbox" /> Thumbnail (capa) (1 unidade)</label>
+
+          <label class="chk"><input data-custom-opt id="optUrgente" type="checkbox" /> Prioridade (entrega mais rápida)</label>
+        </div>
+
+        <div class="field" style="margin-top:12px">
+          <label>Categoria detalhada</label>
+          <textarea id="custDetalhe" placeholder="Descreva exatamente como você quer: estilo, referência, cores, cortes, músicas, legendas, plataformas, etc..."></textarea>
         </div>
 
         <div class="total-box">
@@ -519,9 +474,7 @@ Próxima etapa (futura): escolher editor + enviar arquivos.`);
   const custVideos = document.getElementById('custVideos');
   const custPlataforma = document.getElementById('custPlataforma');
   const custTipoVideo = document.getElementById('custTipoVideo');
-  const custCor = document.getElementById('custCor');
-  const custLegenda = document.getElementById('custLegenda');
-  const custTotal = document.getElementById('custTotal');
+    const custTotal = document.getElementById('custTotal');
   const custEntrega = document.getElementById('custEntrega');
 
   const PRICES = {
@@ -529,18 +482,53 @@ Próxima etapa (futura): escolher editor + enviar arquivos.`);
     video15: 110,
     video45: 170,
     video60: 240,
-    extraCor: 15,
-    extraLegenda: 20,
     platformMult: { reels:1.00, tiktok:1.00, insta:1.05, shorts:1.05 }
   };
 
-  function calcEntrega(total){
+  // Opcoes do personalizado: cada uma tem um preco interno (NAO exibido)
+  const EXTRA_OPTIONS = [
+    // video (por video)
+    { id:'optCorCine',    kind:'video', price:15 },
+    { id:'optLegenda',    kind:'video', price:20 },
+    { id:'optTransicoes', kind:'video', price:12 },
+    { id:'optSFX',        kind:'video', price:10 },
+    { id:'optAudio',      kind:'video', price:14 },
+    { id:'optEstabilizar',kind:'video', price:16 },
+    { id:'optSpeedRamp',  kind:'video', price:12 },
+    { id:'optMotion',     kind:'video', price:18 },
+    { id:'optIntroOutro', kind:'video', price:15 },
+
+    // foto (por foto)
+    { id:'optRetoquePro', kind:'photo', price:12 },
+    { id:'optPele',       kind:'photo', price:10 },
+    { id:'optFundo',      kind:'photo', price:14 },
+    { id:'optCoresFoto',  kind:'photo', price:9  },
+    { id:'optHDR',        kind:'photo', price:8  },
+    { id:'optObjeto',     kind:'photo', price:16 },
+    { id:'optTexto',      kind:'photo', price:9  },
+
+    // por pedido (flat)
+    { id:'optThumbnail',  kind:'order', price:19 },
+    { id:'optUrgente',    kind:'order', price:29 },
+  ];
+
+  function calcEntrega(total, urgent){
     // mínimo 13h30, aumenta conforme total
-    if(total <= 120) return '13h30';
-    if(total <= 250) return '14h30';
-    if(total <= 400) return '18h00';
-    if(total <= 700) return '24h';
-    return '48h';
+    let eta = '13h30';
+    if(total <= 120) eta = '13h30';
+    else if(total <= 250) eta = '14h30';
+    else if(total <= 400) eta = '18h00';
+    else if(total <= 700) eta = '24h';
+    else eta = '48h';
+
+    // prioridade encurta um nivel (sem passar do minimo)
+    if(urgent){
+      if(eta === '48h') eta = '24h';
+      else if(eta === '24h') eta = '18h00';
+      else if(eta === '18h00') eta = '14h30';
+      else eta = '13h30';
+    }
+    return eta;
   }
 
   function calcCustom(){
@@ -557,12 +545,23 @@ Próxima etapa (futura): escolher editor + enviar arquivos.`);
 
     const mult = PRICES.platformMult[plat] ?? 1.0;
 
-    const extrasPerVideo = (custCor?.checked ? PRICES.extraCor : 0) + (custLegenda?.checked ? PRICES.extraLegenda : 0);
+    let extraVideo = 0;
+    let extraPhoto = 0;
+    let extraOrder = 0;
 
-    const total = (fotos * PRICES.foto) + (vids * (unitVideo * mult + extrasPerVideo));
+    EXTRA_OPTIONS.forEach(o => {
+      const el = document.getElementById(o.id);
+      if(!el || !el.checked) return;
+      if(o.kind === 'video') extraVideo += o.price;
+      else if(o.kind === 'photo') extraPhoto += o.price;
+      else extraOrder += o.price;
+    });
+
+    const total = (fotos * (PRICES.foto + extraPhoto)) + (vids * (unitVideo * mult + extraVideo)) + extraOrder;
 
     custTotal.textContent = brl(total);
-    if(custEntrega) custEntrega.textContent = calcEntrega(total);
+    if(custEntrega) const urgent = document.getElementById('optUrgente')?.checked || false;
+    custEntrega.textContent = calcEntrega(total, urgent);
   }
 
   function confirmCustom(){
@@ -575,9 +574,22 @@ Entrega estimada: ${entregaStr}
 Próxima etapa (futura): escolher editor + enviar arquivos.`);
   }
 
-  [custFotos, custVideos, custPlataforma, custTipoVideo, custCor, custLegenda].forEach(el => {
+  [custFotos, custVideos, custPlataforma, custTipoVideo].forEach(el => {
     if(!el) return;
     el.addEventListener('input', calcCustom);
+    el.addEventListener('change', calcCustom);
+  });
+
+  // opcoes extras (16+)
+  Array.from(document.querySelectorAll('[data-custom-opt]')).forEach(el => {
+    el.addEventListener('change', calcCustom);
+  });
+
+  // campo livre (nao muda preco, mas ajuda no futuro)
+  const custDetalhe = document.getElementById('custDetalhe');
+  if(custDetalhe){
+    custDetalhe.addEventListener('input', () => {});
+  }
     el.addEventListener('change', calcCustom);
   });
 
