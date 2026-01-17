@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Karamello | Edição Profissional</title>
+
+  <style>
+    :root{
+      --bg:#0f172a;
+      --panel:#020617;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --accent1:#7c3aed;
+      --accent2:#2563eb;
+      --cyan:#38bdf8;
+      --border:rgba(255,255,255,.08);
+    }
+    *{box-sizing:border-box}
+
+    /* Entrada profissional do site */
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x:hidden;
+    }
+    body.preload{opacity:0; transform: translateY(10px);}
+    body.loaded{opacity:1; transform:none; transition: opacity .55s ease, transform .55s ease;}
+
+    header{
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      padding: 46px 20px;
+      text-align:center;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    header h1{margin:0;font-size:2.6rem; letter-spacing:.2px}
+    header p{margin-top:10px;opacity:.9}
+
+    .container{max-width:1100px;margin:34px auto;padding:0 18px}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+
+    .card{
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:22px;
+      box-shadow:0 12px 34px rgba(0,0,0,.35);
+      transform: translateY(12px);
+      opacity:0;
+    }
+
+    /* animação suave dos cards ao carregar */
+    body.loaded .card{animation: cardIn .6s ease forwards;}
+    body.loaded .card:nth-child(1){animation-delay:.08s}
+    body.loaded .card:nth-child(2){animation-delay:.16s}
+
+    @keyframes cardIn{
+      to{transform: translateY(0); opacity:1;}
+    }
+
+    .card h3{margin-top:0;color:#a5b4fc}
+    .card p{color:var(--muted); line-height:1.5}
+
+    .btn{
+      width:100%;
+      margin-top:16px;
+      padding:12px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      border:none;
+      border-radius:12px;
+      color:white;
+      font-weight:700;
+      cursor:pointer;
+      transition: transform .12s ease, opacity .12s ease;
+    }
+    .btn:hover{opacity:.94}
+    .btn:active{transform: scale(.985)}
+
+    footer{
+      text-align:center;
+      padding:30px 18px;
+      color:var(--muted);
+      border-top:1px solid rgba(255,255,255,.06);
+      margin-top:40px;
+      opacity:0;
+      transform: translateY(10px);
+    }
+    body.loaded footer{animation: footIn .55s ease forwards; animation-delay:.22s}
+    @keyframes footIn{to{opacity:1; transform:none}}
+
+    /* MODAL */
+    .overlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.6);
+      align-items:center;
+      justify-content:center;
+      z-index:100;
+      padding:16px;
+    }
+    .overlay.show{display:flex;animation:fadeIn .22s ease-out}
+    .overlay.show{display:flex;animation:fadeIn .22s ease-out}
+
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+    .modal{
+      background:#07122c;
+      border-radius:16px;
+      width:100%;
+      max-width:420px;
+      overflow:hidden;
+      transform: translateY(42px) scale(.96);
+      opacity:0;
+      animation: slideUp .32s cubic-bezier(.2,.9,.2,1) forwards;
+      box-shadow: 0 22px 60px rgba(0,0,0,.6);
+      border:1px solid rgba(255,255,255,.12);
+    }
+    @keyframes slideUp{to{transform:translateY(0) scale(1);opacity:1}}
+
+    /* Fechar com suavidade */
+    .overlay.closing{animation:fadeOut .18s ease-in forwards}
+    @keyframes fadeOut{to{opacity:0}}
+    .modal.closing{animation: slideDown .22s ease-in forwards}
+    @keyframes slideDown{to{transform: translateY(34px) scale(.97); opacity:0}}
+
+    .modal-head{
+      background:linear-gradient(135deg,#0a2cff,#1e90ff);
+      padding:16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .modal-head h3{margin:0;color:white}
+
+    .x{
+      background:rgba(255,255,255,.2);
+      border:none;
+      color:white;
+      width:32px;
+      height:32px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:bold;
+      transition: transform .12s ease, opacity .12s ease;
+    }
+    .x:hover{opacity:.92}
+    .x:active{transform:scale(.97)}
+
+    .modal-body{padding:18px; background: rgba(2,6,23,.25)}
+
+    input{
+      width:100%;
+      padding:11px;
+      margin-bottom:10px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      outline:none;
+    }
+    input::placeholder{color: rgba(229,231,235,.65)}
+    input:focus{border-color: rgba(56,189,248,.55)}
+
+    .google{
+      width:100%;
+      padding:12px;
+      background:white;
+      color:#0a2cff;
+      border:none;
+      border-radius:12px;
+      font-weight:800;
+      cursor:pointer;
+      transition: transform .12s ease, opacity .12s ease;
+      margin-top:10px;
+    }
+    .google:hover{opacity:.94}
+    .google:active{transform:scale(.985)}
+
+    /* Resp */
+    @media (max-width:520px){
+      header h1{font-size:2.15rem}
+    }
+  </style>
+</head>
+<body class="preload">
+
+<header>
+  <h1>Karamello</h1>
+  <p>Escolha como deseja usar a plataforma</p>
+</header>
+
+<div class="container">
+  <div class="grid">
+    <div class="card">
+      <h3>Sou Cliente</h3>
+      <p>Contrate edição profissional de fotos e vídeos.</p>
+      <button id="btnCliente" class="btn" type="button">Criar conta (Cliente)</button>
+    </div>
+
+    <div class="card">
+      <h3>Quero Trabalhar</h3>
+      <p>Cadastre-se como editor e receba pedidos.</p>
+      <button id="btnEditor" class="btn" type="button">Criar conta (Editor)</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CADASTRO -->
+<div id="overlay" class="overlay" aria-hidden="true">
+  <div id="modal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h3 id="titleCadastro">Criar conta</h3>
+      <button id="btnClose" class="x" type="button">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="text" placeholder="Nome" />
+      <input type="text" placeholder="Sobrenome" />
+      <input type="date" />
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Senha" />
+      <button class="btn" type="button">Cadastrar</button>
+      <button class="google" type="button" onclick="alert('Login com Google entra na ETAPA 2 (Firebase).')">Entrar com Google (em breve)</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2026 • Karamello • Edição profissional
+</footer>
+
+<script>
+  // Entrada profissional do site
+  window.addEventListener('DOMContentLoaded', () => {
+    requestAnimationFrame(() => {
+      document.body.classList.remove('preload');
+      document.body.classList.add('loaded');
+    });
+  });
+
+  // Abertura/fechamento do cadastro com animação fluida (mantendo estilo)
+  const overlay = document.getElementById('overlay');
+  const modal = document.getElementById('modal');
+  const titleCadastro = document.getElementById('titleCadastro');
+
+  function openCadastro(tipo){
+    if(tipo === 'cliente'){
+      titleCadastro.textContent = 'Criar conta como Cliente';
+    } else {
+      titleCadastro.textContent = 'Criar conta como Editor';
+    }
+    overlay.classList.remove('closing');
+    modal.classList.remove('closing');
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden','false');
+    modal.style.animation = 'none';
+    void modal.offsetHeight;
+    modal.style.animation = '';
+  }
+
+  function closeCadastro(){
+    // anima pra fechar
+    overlay.classList.add('closing');
+    modal.classList.add('closing');
+
+    setTimeout(() => {
+      overlay.classList.remove('show','closing');
+      modal.classList.remove('closing');
+      overlay.setAttribute('aria-hidden','true');
+    }, 220);
+  }
+
+  document.getElementById('btnCliente').addEventListener('click', () => openCadastro('cliente'));
+  document.getElementById('btnEditor').addEventListener('click', () => openCadastro('editor'));
+  document.getElementById('btnClose').addEventListener('click', closeCadastro);
+
+  // clicar fora fecha
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay) closeCadastro();
+  });
+</script>
+
+</body>
+</html>
