@@ -190,17 +190,23 @@
     .pill{display:inline-block;margin-top:6px;color:var(--muted);font-size:.95rem;}
 
     .grid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:14px;
-    }
-    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, 1fr);} }
-    @media (max-width: 620px){ .grid{grid-template-columns: 1fr;} }
-    .grid .full{grid-column: 1 / -1;}
+      .card{
+  background: linear-gradient(180deg, rgba(11,18,38,.92), rgba(10,16,34,.88));
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
 
-    .price{margin:10px 0 10px;font-weight:900;font-size:1.25rem;color: var(--accent3);}
-    ul{margin:10px 0 0; padding-left:18px; color:#cbd5e1}
-    li{margin:6px 0}
+  /* ✅ sombra mais leve */
+  box-shadow: 0 10px 26px rgba(0,0,0,.35);
+
+  /* ❌ removi backdrop-filter (isso pesa muito) */
+  /* backdrop-filter: blur(10px); */
+
+  /* ✅ otimização: não renderiza card fora da tela */
+  content-visibility: auto;
+  contain-intrinsic-size: 320px 220px;
+  contain: layout paint style;
+}
 
     .card.highlight{
       border:1px solid rgba(56,189,248,.35);
