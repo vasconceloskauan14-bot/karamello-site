@@ -372,26 +372,8 @@
       font-size:.9rem;
     }
     .badge.pillBlue{border-color: rgba(124,58,237,.30);background: rgba(124,58,237,.10);}
-    .badge.admin{border-color: rgba(255,60,80,.30);background: rgba(255,60,80,.10);}
     .badge.you{border-color: rgba(56,189,248,.30);background: rgba(56,189,248,.10);}
     .badge.off{opacity:.6}
-
-    /* ⭐ estrela premium admin (vermelha) */
-    .admin-star{
-      width:18px; height:18px; border-radius:50%;
-      background: radial-gradient(circle at 35% 35%, #ff5a5a, #b0002f 70%);
-      box-shadow: 0 0 18px rgba(255, 60, 80, .55), 0 0 0 3px rgba(255, 60, 80, .10);
-      position:relative;
-      flex:0 0 auto;
-    }
-    .admin-star::after{
-      content:"★";
-      position:absolute; inset:0;
-      display:grid; place-items:center;
-      font-size:12px;
-      color:rgba(255,255,255,.92);
-      text-shadow: 0 0 10px rgba(255,255,255,.35);
-    }
 
     /* ===== Editor Dashboard ===== */
     .editor-grid{
@@ -621,7 +603,7 @@
         <!-- ✅ B: TELA ESCOLHA DO EDITOR (CLIENTE) -->
         <section id="screenPickEditor" class="screen">
           <div class="section-title">Escolha seu Editor ⭐</div>
-          <div class="pill">Você verá editores compatíveis com o seu pedido (nota 0–10 e selo premium do admin).</div>
+          <div class="pill">Você verá editores compatíveis com o seu pedido (nota 0–10).</div>
 
           <div class="toolbar">
             <div class="left">
@@ -631,7 +613,6 @@
             <div class="right">
               <select id="pickSort" style="min-width:240px">
                 <option value="best">Melhores avaliados</option>
-                <option value="admin">Com estrela premium primeiro</option>
                 <option value="fast">Mais rápidos (simulado)</option>
               </select>
             </div>
@@ -642,7 +623,7 @@
           <button class="btn secondary" style="margin-top:18px" type="button" onclick="backToOrder()">Voltar</button>
         </section>
 
-        <!-- ✅ EDITOR DASHBOARD (CAPRICHADO) -->
+        <!-- ✅ EDITOR DASHBOARD -->
         <section id="screenEditor" class="screen">
           <div class="section-title">Bem-vindo, <span id="editorName">Editor</span> 👋</div>
           <div class="pill">Complete seu perfil, selecione pacotes e fique disponível para receber pedidos.</div>
@@ -663,23 +644,21 @@
                 </label>
               </div>
 
+              <!-- KPI: comissão e selo do admin ocultos (só ADM vê no futuro) -->
               <div class="kpi">
-                <div class="k">
-                  <div class="t">Comissão</div>
-                  <div class="v"><span id="edCommission">25</span>% <small id="edTierText">(padrão)</small></div>
+                <div class="k" style="display:none">
+                  <div class="t">Comissão (ADM)</div>
+                  <div class="v"><span id="edCommission">25</span>% <small id="edTierText">(fixo)</small></div>
                 </div>
+
                 <div class="k">
                   <div class="t">Avaliação</div>
                   <div class="v"><span id="edRating">8.7</span><small>/10</small></div>
                 </div>
-                <div class="k">
-                  <div class="t">Selo do admin</div>
-                  <div class="v" style="display:flex;align-items:center;gap:10px">
-                    <span id="edStarText">Não</span>
-                    <span id="edStarBadge" class="badge admin" style="display:none;align-items:center;gap:8px">
-                      <span class="admin-star"></span> Premium
-                    </span>
-                  </div>
+
+                <div class="k" style="display:none">
+                  <div class="t">Selo do admin (ADM)</div>
+                  <div class="v"><span id="edStarText">Não</span></div>
                 </div>
               </div>
 
@@ -693,11 +672,9 @@
                   </select>
                 </div>
                 <div class="mini">
-                  <label>Nível (comissão)</label>
-                  <select id="edTier">
-                    <option value="padrao">Padrão (25%)</option>
-                    <option value="top">Top (20%)</option>
-                    <option value="alerta">Atenção (30%)</option>
+                  <label>Nível</label>
+                  <select id="edTier" disabled>
+                    <option value="padrao">Definido pelo admin (futuro)</option>
                   </select>
                 </div>
               </div>
@@ -734,12 +711,8 @@
                 <button class="btn secondary" type="button" onclick="resetEditor()">Reset (demo)</button>
               </div>
 
-              <button class="btn secondary" type="button" onclick="toggleAdminStar()" style="margin-top:10px">
-                (Demo) Alternar estrela premium do admin ⭐
-              </button>
-
               <div class="hint">
-                * Regras futuras: comissão variável por desempenho (Top 20%, padrão 25%, alerta 30%) + avaliações 0–10 + estrela premium manual do admin.
+                * Comissão é fixa e só aparece no painel ADM: Karamello 25% / Editor 75%.
               </div>
             </div>
 
@@ -1032,9 +1005,8 @@
         setTimeout(()=>{ renderPackages(); calcCustom(); },80);
       }else{
         editorName.textContent = nome;
-        // garante que o editor local use o nome real no card público
         const ed = loadEditor() || defaultEditor();
-        ed.displayName = nome + " " + (sobrenome||"");
+        ed.displayName = (nome + " " + (sobrenome||"")).trim();
         saveEditor(ed);
         applyEditorToUI(ed);
         renderEditorPackages(ed.packages || []);
@@ -1050,12 +1022,11 @@
     let currentOrder = null;
     let lastOrderScreen = null;
 
-    // Demos (teste)
     const DEMO_EDITORS = [
-      { id:"e1", name:"Nox Studio", xp:"avancado", soft:"CapCut, Premiere", bio:"Cortes rápidos + ritmo + look premium. Foco em Reels/TikTok.", nota:9.6, adminStar:true,  packs:[4,6,9,11,13,14,15], available:true, tags:["Reels","Ritmo","Premium"] },
-      { id:"e2", name:"Luna Color",  xp:"intermediario", soft:"Lightroom, Photoshop", bio:"Foto pro: cor, nitidez, pele e fundo. Resultado clean e elegante.", nota:9.2, adminStar:false, packs:[1,2,3,5,8,10,12,15], available:true, tags:["Foto","Cor","Clean"] },
-      { id:"e3", name:"Vibe Sync",   xp:"avancado", soft:"Premiere, After Effects", bio:"Motion e transições premium. Sincroniza com música e CTA.", nota:9.4, adminStar:false, packs:[4,6,7,9,11,13,14,15], available:true, tags:["Motion","Música","CTA"] },
-      { id:"e4", name:"CineLite",    xp:"intermediario", soft:"CapCut", bio:"Bom custo-benefício, entrega rápida, ajustes essenciais bem feitos.", nota:8.8, adminStar:false, packs:[1,2,4,6,7,8,10,11,13], available:true, tags:["Rápido","Custo-benefício"] },
+      { id:"e1", name:"Nox Studio", xp:"avancado", soft:"CapCut, Premiere", bio:"Cortes rápidos + ritmo + look premium. Foco em Reels/TikTok.", nota:9.6, packs:[4,6,9,11,13,14,15], available:true, tags:["Reels","Ritmo","Premium"] },
+      { id:"e2", name:"Luna Color",  xp:"intermediario", soft:"Lightroom, Photoshop", bio:"Foto pro: cor, nitidez, pele e fundo. Resultado clean e elegante.", nota:9.2, packs:[1,2,3,5,8,10,12,15], available:true, tags:["Foto","Cor","Clean"] },
+      { id:"e3", name:"Vibe Sync",   xp:"avancado", soft:"Premiere, After Effects", bio:"Motion e transições premium. Sincroniza com música e CTA.", nota:9.4, packs:[4,6,7,9,11,13,14,15], available:true, tags:["Motion","Música","CTA"] },
+      { id:"e4", name:"CineLite",    xp:"intermediario", soft:"CapCut", bio:"Bom custo-benefício, entrega rápida, ajustes essenciais bem feitos.", nota:8.8, packs:[1,2,4,6,7,8,10,11,13], available:true, tags:["Rápido","Custo-benefício"] },
     ];
 
     function openPickEditor(order, fromScreen){
@@ -1086,8 +1057,8 @@
 
       const xp = ed.xp || "iniciante";
       const nota = typeof ed.rating === "number" ? ed.rating : 8.7;
-
       const tags = parseTags(ed.tags || "");
+
       return {
         id:"localEditor",
         name: (ed.displayName && ed.displayName.trim()) ? ed.displayName.trim() : (editorName.textContent || "Editor"),
@@ -1095,12 +1066,10 @@
         soft: (ed.soft || "—").trim(),
         bio: (ed.bio || "Editor cadastrado no Karamello.").trim(),
         nota,
-        adminStar: !!ed.adminStar,
         packs,
         available: true,
         tags,
-        you: true,
-        speed: ed.speed || "normal"
+        you: true
       };
     }
 
@@ -1108,12 +1077,10 @@
       const localEd = getLocalEditorAsCandidate();
       const all = [...DEMO_EDITORS, ...(localEd ? [localEd] : [])];
 
-      // Pacote pronto: filtra por quem aceita aquele pacote
       if(order.type === "package" && order.packageId){
         return all.filter(e => e.available && e.packs.includes(order.packageId));
       }
 
-      // Personalizado: aproxima por família (foto/vídeo)
       if(order.type === "custom"){
         const hasVideos = (order.videos||0) > 0;
         const hasFotos  = (order.fotos||0) > 0;
@@ -1134,26 +1101,15 @@
     }
 
     function speedScore(ed){
-      // simulação simples: top + avancado + admin tende a ser "mais rápido"
       let s = 0;
       if(ed.xp === "avancado") s += 2;
       else if(ed.xp === "intermediario") s += 1;
-
-      if(ed.adminStar) s += 1;
-      if(ed.speed === "rapido") s += 2;
-      if(ed.speed === "lento") s -= 1;
-
       return s + (ed.nota || 0) / 10;
     }
 
     function sortEditors(list){
       const mode = pickSort?.value || "best";
       const copy = [...list];
-
-      if(mode === "admin"){
-        copy.sort((a,b)=> (b.adminStar===true)-(a.adminStar===true) || (b.nota-a.nota));
-        return copy;
-      }
       if(mode === "fast"){
         copy.sort((a,b)=> speedScore(b) - speedScore(a));
         return copy;
@@ -1198,7 +1154,6 @@
           <div class="eBadges">
             <span class="badge pillBlue">Pacotes: ${ed.packs.length}</span>
             ${ed.you ? `<span class="badge you">Você</span>` : ``}
-            ${ed.adminStar ? `<span class="badge admin" style="display:inline-flex;align-items:center;gap:8px"><span class="admin-star"></span> Selo premium</span>` : ``}
           </div>
 
           ${tagHTML ? `<div class="eBadges" style="margin-top:8px">${tagHTML}</div>` : ``}
@@ -1215,9 +1170,8 @@
       const ed = all.find(x => x.id === editorId);
       if(!ed || !currentOrder) return;
 
-      const extra = ed.adminStar ? " (⭐ selo premium)" : "";
       alert(
-        `Editor selecionado: ${ed.name}${extra}\n`+
+        `Editor selecionado: ${ed.name}\n`+
         `Nota: ${Number(ed.nota).toFixed(1)}/10\n\n`+
         `Pedido: ${currentOrder.title}\n`+
         `Total: ${currentOrder.total}\n`+
@@ -1240,7 +1194,7 @@
     }
 
     // ===== Editor: LocalStorage + UI =====
-    const LS_EDITOR = "karamello_editor_v3";
+    const LS_EDITOR = "karamello_editor_v4";
 
     const edAvailable = document.getElementById("edAvailable");
     const edAvailText = document.getElementById("edAvailText");
@@ -1250,7 +1204,6 @@
     const edRating = document.getElementById("edRating");
 
     const edStarText = document.getElementById("edStarText");
-    const edStarBadge = document.getElementById("edStarBadge");
 
     const edXp = document.getElementById("edXp");
     const edTier = document.getElementById("edTier");
@@ -1274,16 +1227,18 @@
         displayName: "",
         available: false,
         xp: "iniciante",
-        tier: "padrao",
-        commission: 25,
+
+        // ADM only (futuro)
+        commission: 25,     // Karamello 25%
+        editorShare: 75,    // Editor 75%
+        adminStar: false,   // só você mexe no ADM no futuro
+
         rating: 8.7,
-        adminStar: false,
         bio: "",
         soft: "",
         whats: "",
         portfolio: "",
         tags: "",
-        speed: "normal",
         packages: []
       };
     }
@@ -1300,15 +1255,12 @@
       localStorage.setItem(LS_EDITOR, JSON.stringify(ed));
     }
 
-    function setCommissionByTier(ed){
-      if(ed.tier === "top"){
-        ed.commission = 20; edTierText.textContent = "(top)";
-      }else if(ed.tier === "alerta"){
-        ed.commission = 30; edTierText.textContent = "(alerta)";
-      }else{
-        ed.commission = 25; edTierText.textContent = "(padrão)";
-      }
-      edCommission.textContent = String(ed.commission);
+    // ✅ travado: Karamello 25% / Editor 75% (não aparece pro editor)
+    function setCommissionFixed(ed){
+      ed.commission = 25;
+      ed.editorShare = 75;
+      if(edTierText) edTierText.textContent = "(fixo)";
+      if(edCommission) edCommission.textContent = "25";
     }
 
     function parseTags(str){
@@ -1334,7 +1286,7 @@
       edAvailText.textContent = ed.available ? "On" : "Off";
 
       edXp.value = ed.xp || "iniciante";
-      edTier.value = ed.tier || "padrao";
+      if(edTier) edTier.value = "padrao";
 
       edBio.value = ed.bio || "";
       edSoft.value = ed.soft || "";
@@ -1344,15 +1296,10 @@
 
       edRating.textContent = (typeof ed.rating === "number" ? ed.rating.toFixed(1) : "8.7");
 
-      if(ed.adminStar){
-        edStarText.textContent = "Sim";
-        edStarBadge.style.display = "inline-flex";
-      }else{
-        edStarText.textContent = "Não";
-        edStarBadge.style.display = "none";
-      }
+      // ADM only (mantém interno, mas não mostra nada)
+      if(edStarText) edStarText.textContent = ed.adminStar ? "Sim" : "Não";
+      setCommissionFixed(ed);
 
-      setCommissionByTier(ed);
       renderTagsPreview(parseTags(ed.tags || ""));
       renderEditorPackages(ed.packages || []);
       renderPublicPreview(ed);
@@ -1377,7 +1324,6 @@
         <div class="eBadges">
           <span class="badge pillBlue">Pacotes: ${(ed.packages||[]).length}</span>
           <span class="badge ${ed.available ? "" : "off"}">${ed.available ? "Disponível" : "Indisponível"}</span>
-          ${ed.adminStar ? `<span class="badge admin" style="display:inline-flex;align-items:center;gap:8px"><span class="admin-star"></span> Selo premium</span>` : ``}
         </div>
 
         ${tagHTML ? `<div class="eBadges" style="margin-top:8px">${tagHTML}</div>` : ``}
@@ -1395,9 +1341,6 @@
 
         if(mode === "video" && !isVideo) return false;
         if(mode === "foto" && !isFoto) return false;
-        if(mode === "mix"){
-          // mix: deixa passar tudo
-        }
 
         if(!q) return true;
         const blob = `${p.id} ${p.name} ${p.items.join(" ")}`.toLowerCase();
@@ -1430,6 +1373,7 @@
           updatePkgCount();
           const ed = loadEditor() || defaultEditor();
           ed.packages = getSelectedEditorPackageIds();
+          setCommissionFixed(ed);
           saveEditor(ed);
           renderPublicPreview(ed);
         });
@@ -1458,8 +1402,9 @@
 
       ed.available = !!edAvailable.checked;
       ed.xp = edXp.value || "iniciante";
-      ed.tier = edTier.value || "padrao";
-      setCommissionByTier(ed);
+
+      // travado
+      setCommissionFixed(ed);
 
       ed.bio = (edBio.value || "").trim();
       ed.soft = (edSoft.value || "").trim();
@@ -1467,7 +1412,6 @@
       ed.portfolio = (edPortfolio.value || "").trim();
       ed.tags = (edTags.value || "").trim();
 
-      // rating demo: mantém se existir
       if(typeof ed.rating !== "number") ed.rating = 8.7;
 
       saveEditor(ed);
@@ -1482,6 +1426,7 @@
     function saveEditorPackages(){
       const ed = loadEditor() || defaultEditor();
       ed.packages = getSelectedEditorPackageIds();
+      setCommissionFixed(ed);
       saveEditor(ed);
       renderPublicPreview(ed);
       alert("Pacotes salvos ✅");
@@ -1492,15 +1437,9 @@
       updatePkgCount();
       const ed = loadEditor() || defaultEditor();
       ed.packages = getSelectedEditorPackageIds();
+      setCommissionFixed(ed);
       saveEditor(ed);
       renderPublicPreview(ed);
-    }
-
-    function toggleAdminStar(){
-      const ed = loadEditor() || defaultEditor();
-      ed.adminStar = !ed.adminStar;
-      saveEditor(ed);
-      applyEditorToUI(ed);
     }
 
     function resetEditor(){
@@ -1514,19 +1453,40 @@
     edAvailable.addEventListener("change", ()=>{
       const ed = loadEditor() || defaultEditor();
       ed.available = !!edAvailable.checked;
+      setCommissionFixed(ed);
       saveEditor(ed);
       edAvailText.textContent = ed.available ? "On" : "Off";
       renderPublicPreview(ed);
     });
 
-    edXp.addEventListener("change", ()=>{ const ed=loadEditor()||defaultEditor(); ed.xp=edXp.value; saveEditor(ed); renderPublicPreview(ed); });
-    edTier.addEventListener("change", ()=>{ const ed=loadEditor()||defaultEditor(); ed.tier=edTier.value; setCommissionByTier(ed); saveEditor(ed); });
+    edXp.addEventListener("change", ()=>{
+      const ed=loadEditor()||defaultEditor();
+      ed.xp=edXp.value;
+      setCommissionFixed(ed);
+      saveEditor(ed);
+      renderPublicPreview(ed);
+    });
 
-    edBio.addEventListener("input", ()=>{ const ed=loadEditor()||defaultEditor(); ed.bio=edBio.value; saveEditor(ed); renderPublicPreview(ed); });
-    edSoft.addEventListener("input", ()=>{ const ed=loadEditor()||defaultEditor(); ed.soft=edSoft.value; saveEditor(ed); renderPublicPreview(ed); });
+    edBio.addEventListener("input", ()=>{
+      const ed=loadEditor()||defaultEditor();
+      ed.bio=edBio.value;
+      setCommissionFixed(ed);
+      saveEditor(ed);
+      renderPublicPreview(ed);
+    });
+
+    edSoft.addEventListener("input", ()=>{
+      const ed=loadEditor()||defaultEditor();
+      ed.soft=edSoft.value;
+      setCommissionFixed(ed);
+      saveEditor(ed);
+      renderPublicPreview(ed);
+    });
+
     edTags.addEventListener("input", ()=>{
       const ed=loadEditor()||defaultEditor();
       ed.tags=edTags.value;
+      setCommissionFixed(ed);
       saveEditor(ed);
       renderTagsPreview(parseTags(ed.tags));
       renderPublicPreview(ed);
@@ -1536,6 +1496,7 @@
       const ed = loadEditor() || defaultEditor();
       renderEditorPackages(ed.packages || []);
     });
+
     edQuick.addEventListener("change", ()=>{
       const ed = loadEditor() || defaultEditor();
       renderEditorPackages(ed.packages || []);
@@ -1553,7 +1514,6 @@
     // Boot
     window.addEventListener('DOMContentLoaded', ()=>{
       calcCustom();
-
       const ed = loadEditor() || defaultEditor();
       applyEditorToUI(ed);
     });
