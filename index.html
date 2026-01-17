@@ -6,17 +6,17 @@
   <title>Karamello | Edição Profissional</title>
   <style>
     :root{
-      --bg:#0b1021;
-      --bg2:#0f1a38;
+      --bg:#070b18;
       --panel:#0b1226;
       --panel2:#0a1022;
       --text:#e5e7eb;
       --muted:#9ca3af;
-      --accent1:#7c3aed;
-      --accent2:#2563eb;
-      --cyan:#38bdf8;
+      --accent1:#7c3aed; /* roxo */
+      --accent2:#2563eb; /* azul */
+      --accent3:#38bdf8; /* ciano */
       --border:rgba(255,255,255,.12);
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
@@ -25,15 +25,83 @@
       color:var(--text);
       overflow-x:hidden;
       color-scheme: dark;
-
-      /* ✅ Fundo fosco (sem faixas separadas) */
-      background:
-        radial-gradient(1400px 900px at 10% 10%, rgba(124,58,237,.28), transparent 60%),
-        radial-gradient(1200px 800px at 90% 15%, rgba(37,99,235,.26), transparent 62%),
-        radial-gradient(900px 700px at 55% 70%, rgba(56,189,248,.10), transparent 65%),
-        linear-gradient(180deg, rgba(10,16,34,.92), rgba(9,14,30,.95));
+      background: var(--bg);
+      position:relative;
     }
 
+    /* ✅ Fundo em degradê único misturando 3 cores */
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      background:
+        radial-gradient(1200px 800px at 12% 10%, rgba(124,58,237,.40), transparent 62%),
+        radial-gradient(1200px 800px at 88% 12%, rgba(37,99,235,.36), transparent 62%),
+        radial-gradient(1100px 900px at 50% 85%, rgba(56,189,248,.18), transparent 62%),
+        linear-gradient(135deg, rgba(124,58,237,.22) 0%, rgba(37,99,235,.20) 48%, rgba(56,189,248,.12) 100%),
+        linear-gradient(180deg, rgba(7,11,24,.96), rgba(5,8,18,.98));
+      filter:saturate(1.15);
+    }
+
+    /* ✅ Decorações animadas (orbs) */
+    .orb{
+      position:fixed;
+      width:520px;
+      height:520px;
+      border-radius:50%;
+      z-index:-2;
+      opacity:.45;
+      filter: blur(28px);
+      animation: float 10s ease-in-out infinite;
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+    .orb.one{
+      left:-160px; top:120px;
+      background: radial-gradient(circle at 35% 35%, rgba(124,58,237,.95), rgba(124,58,237,0) 60%);
+      animation-duration: 12s;
+    }
+    .orb.two{
+      right:-220px; top:40px;
+      background: radial-gradient(circle at 40% 35%, rgba(37,99,235,.95), rgba(37,99,235,0) 60%);
+      animation-duration: 14s;
+      animation-delay: -2s;
+    }
+    .orb.three{
+      left:22%; bottom:-260px;
+      width:680px; height:680px;
+      background: radial-gradient(circle at 50% 40%, rgba(56,189,248,.75), rgba(56,189,248,0) 62%);
+      animation-duration: 16s;
+      animation-delay: -4s;
+    }
+
+    @keyframes float{
+      0%{ transform: translate3d(0,0,0) scale(1); }
+      50%{ transform: translate3d(0,-22px,0) scale(1.03); }
+      100%{ transform: translate3d(0,0,0) scale(1); }
+    }
+
+    /* ✅ Sparkles (pontinhos animados bem leves) */
+    .sparkles{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      pointer-events:none;
+      opacity:.35;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.35) 1px, transparent 1.6px),
+        radial-gradient(circle, rgba(56,189,248,.22) 1px, transparent 1.6px);
+      background-size: 54px 54px, 72px 72px;
+      background-position: 0 0, 20px 18px;
+      animation: drift 18s linear infinite;
+      mask-image: radial-gradient(closest-side, rgba(0,0,0,1), rgba(0,0,0,.25), transparent);
+    }
+    @keyframes drift{
+      from{ transform: translate3d(0,0,0); }
+      to{ transform: translate3d(-90px, -70px, 0); }
+    }
+
+    /* Entrada profissional */
     .page{
       min-height:100vh;
       display:flex;
@@ -46,15 +114,11 @@
 
     header{
       padding:44px 18px 28px;
-      /* ✅ Header também em degradê fosco */
       background:
-        radial-gradient(800px 380px at 20% 0%, rgba(124,58,237,.35), transparent 60%),
-        radial-gradient(800px 380px at 80% 0%, rgba(37,99,235,.30), transparent 60%),
-        linear-gradient(90deg, rgba(124,58,237,.55), rgba(37,99,235,.55));
+        linear-gradient(90deg, rgba(124,58,237,.55), rgba(37,99,235,.52), rgba(56,189,248,.26));
       border-bottom:1px solid rgba(255,255,255,.12);
       backdrop-filter: blur(10px);
     }
-
     .wrap{max-width:1100px;margin:0 auto}
     h1{
       margin:0;
@@ -74,16 +138,13 @@
     main::before{
       content:"";
       position:absolute; inset:0;
-      background: rgba(2,6,23,.18);
+      background: rgba(2,6,23,.20);
       pointer-events:none;
     }
     main > .wrap{position:relative; z-index:1;}
 
     .screen{display:none;opacity:0;transform: translateY(10px);}
-    .screen.show{
-      display:block;
-      animation: screenIn .35s ease forwards;
-    }
+    .screen.show{display:block;animation: screenIn .35s ease forwards;}
     @keyframes screenIn{to{opacity:1;transform:translateY(0)}}
 
     .hero{
@@ -102,11 +163,7 @@
       box-shadow: 0 18px 50px rgba(0,0,0,.42);
       backdrop-filter: blur(10px);
     }
-    .card h3{
-      margin:0 0 8px;
-      font-size:1.15rem;
-      color:#c7d2fe;
-    }
+    .card h3{margin:0 0 8px;font-size:1.15rem;color:#c7d2fe;}
     .card p{margin:0;color:var(--muted);line-height:1.35}
 
     .btn{
@@ -139,15 +196,9 @@
     }
     @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, 1fr);} }
     @media (max-width: 620px){ .grid{grid-template-columns: 1fr;} }
-
     .grid .full{grid-column: 1 / -1;}
 
-    .price{
-      margin:10px 0 10px;
-      font-weight:900;
-      font-size:1.25rem;
-      color: var(--cyan);
-    }
+    .price{margin:10px 0 10px;font-weight:900;font-size:1.25rem;color: var(--accent3);}
     ul{margin:10px 0 0; padding-left:18px; color:#cbd5e1}
     li{margin:6px 0}
 
@@ -222,14 +273,8 @@
     input::placeholder, textarea::placeholder{color: rgba(229,231,235,.68)}
     input:focus, textarea:focus, select:focus{border-color: rgba(56,189,248,.55)}
     select option{background: var(--panel); color: var(--text);}
-
     input[type="date"]::-webkit-datetime-edit{ color: var(--text); }
-    input[type="date"]::-webkit-calendar-picker-indicator{
-      filter: invert(1);
-      opacity:.85;
-      cursor:pointer;
-    }
-
+    input[type="date"]::-webkit-calendar-picker-indicator{filter: invert(1);opacity:.85;cursor:pointer;}
     .hint{color:var(--muted); font-size:.9rem; margin-top:10px}
 
     .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -246,7 +291,7 @@
       background: rgba(56,189,248,.06);
     }
     .total-line{display:flex;justify-content:space-between;align-items:center}
-    .total-line strong{font-size:1.25rem;color:var(--cyan)}
+    .total-line strong{font-size:1.25rem;color:var(--accent3)}
     .total-sub{margin-top:6px;color:var(--muted);font-size:.95rem}
 
     footer{
@@ -257,6 +302,13 @@
   </style>
 </head>
 <body>
+  <!-- ✅ Background layers -->
+  <div class="bg"></div>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <div class="orb three"></div>
+  <div class="sparkles"></div>
+
   <div class="page">
     <header>
       <div class="wrap">
@@ -293,7 +345,7 @@
           <div class="grid" style="margin-top:12px">
             <div class="card highlight full">
               <h3>Monte seu pacote</h3>
-              <p>Escolha quantas fotos/vídeos você quer, para qual plataforma e o tipo de vídeo. O site soma tudo por trás e mostra só o total.</p>
+              <p>Escolha quantas fotos/vídeos você quer, plataforma e tipo de vídeo. O site soma tudo por trás e mostra só o total.</p>
 
               <div class="mini-grid" style="margin-top:12px">
                 <div class="mini">
@@ -327,7 +379,6 @@
               </div>
 
               <div class="checks" style="margin-top:10px">
-                <!-- VISUAL (vídeo) -->
                 <label class="chk"><input data-custom-opt id="optCorCine" type="checkbox" /> Cor cinematográfica (vídeos)</label>
                 <label class="chk"><input data-custom-opt id="optLegenda" type="checkbox" /> Legendas (vídeos)</label>
                 <label class="chk"><input data-custom-opt id="optTransicoes" type="checkbox" /> Transições premium (vídeos)</label>
@@ -336,13 +387,11 @@
                 <label class="chk"><input data-custom-opt id="optEstabilizar" type="checkbox" /> Estabilização (vídeos)</label>
                 <label class="chk"><input data-custom-opt id="optSpeedRamp" type="checkbox" /> Speed ramp / slow motion (vídeos)</label>
 
-                <!-- ÁUDIO (vídeo) -->
                 <label class="chk"><input data-custom-opt id="optSFX" type="checkbox" /> Efeitos sonoros (SFX) (vídeos)</label>
                 <label class="chk"><input data-custom-opt id="optAudio" type="checkbox" /> Melhorar áudio + reduzir ruído (vídeos)</label>
                 <label class="chk"><input data-custom-opt id="optMusicSync" type="checkbox" /> Sincronizar cortes com música (vídeos)</label>
                 <label class="chk"><input data-custom-opt id="optVoiceClean" type="checkbox" /> Limpeza de voz / clareza (vídeos)</label>
 
-                <!-- FOTO -->
                 <label class="chk"><input data-custom-opt id="optRetoquePro" type="checkbox" /> Retoque avançado (fotos)</label>
                 <label class="chk"><input data-custom-opt id="optPele" type="checkbox" /> Suavizar pele (fotos)</label>
                 <label class="chk"><input data-custom-opt id="optFundo" type="checkbox" /> Remover/alterar fundo (fotos)</label>
@@ -351,7 +400,6 @@
                 <label class="chk"><input data-custom-opt id="optObjeto" type="checkbox" /> Remover objetos (fotos)</label>
                 <label class="chk"><input data-custom-opt id="optTexto" type="checkbox" /> Texto/arte simples (fotos)</label>
 
-                <!-- POR PEDIDO -->
                 <label class="chk"><input data-custom-opt id="optThumbnail" type="checkbox" /> Thumbnail (capa) (1 unidade)</label>
                 <label class="chk"><input data-custom-opt id="optUrgente" type="checkbox" /> Prioridade (entrega mais rápida)</label>
               </div>
@@ -377,12 +425,15 @@
         <section id="screenEditor" class="screen">
           <div class="section-title">Bem-vindo, <span id="editorName">Editor</span> 👋</div>
           <div class="pill">Em breve você vai escolher em quais pacotes quer trabalhar.</div>
+
           <div class="card" style="margin-top:14px">
             <h3>Próximos passos</h3>
             <p>Na próxima etapa: perfil do editor + escolher pacotes + lista de editores para o cliente selecionar.</p>
           </div>
+
           <button class="btn secondary" style="margin-top:18px" type="button" onclick="goBackStart()">Voltar</button>
         </section>
+
       </div>
     </main>
 
@@ -421,6 +472,7 @@
 
     const inNome = document.getElementById('inNome');
     const inSobrenome = document.getElementById('inSobrenome');
+
     const clientName = document.getElementById('clientName');
     const editorName = document.getElementById('editorName');
 
@@ -470,7 +522,6 @@
       {id:14, name:'Vídeo Longo 60s',  price:259.40,eta:'48h',   items:['1 Vídeo longo (até 60s)','Edição avançada']},
       {id:15, name:'Premium Creator',  price:329.90,eta:'48h',   items:['15 Fotos + 3 Vídeos curtos','Look premium + revisão']},
     ];
-
     function brl(v){ return v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}); }
 
     function renderPackages(){
@@ -489,7 +540,6 @@
         grid.appendChild(card);
       });
     }
-
     function choosePackage(id){
       const p = packages.find(x => x.id === id);
       alert(`Pacote selecionado: ${p.id}. ${p.name}\nValor: ${brl(p.price)}\nEntrega: ${p.eta}`);
@@ -611,6 +661,7 @@
     });
 
     window.addEventListener('DOMContentLoaded', ()=>{ calcCustom(); });
+
   </script>
 </body>
 </html>
