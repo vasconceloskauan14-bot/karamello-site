@@ -43,7 +43,7 @@
       filter:saturate(1.1);
     }
 
-    /* ✅ Orbs animadas leves (sem exagero) */
+    /* ✅ Orbs animadas leves */
     .orb{
       position:fixed;
       width:520px; height:520px;
@@ -81,7 +81,7 @@
       100%{ transform: translate3d(0,0,0) scale(1); }
     }
 
-    /* ✅ Sparkles SUPER leves */
+    /* ✅ Sparkles leves */
     .sparkles{
       position:fixed; inset:0; z-index:-1;
       pointer-events:none;
@@ -160,12 +160,10 @@
       border-radius:18px;
       padding:18px;
       box-shadow: 0 10px 26px rgba(0,0,0,.35);
-
       content-visibility: auto;
       contain-intrinsic-size: 320px 220px;
       contain: layout paint style;
     }
-
     .card h3{margin:0 0 8px;font-size:1.15rem;color:#c7d2fe;}
     .card p{margin:0;color:var(--muted);line-height:1.35}
 
@@ -187,6 +185,13 @@
       background: rgba(255,255,255,.06);
       border:1px solid rgba(255,255,255,.14);
       color: var(--text);
+    }
+    .btn.small{
+      width:auto;
+      padding:10px 12px;
+      border-radius:12px;
+      margin-top:0;
+      font-size:.95rem;
     }
 
     .section-title{margin:26px 0 12px; color:#c7d2fe; font-size:1.25rem;}
@@ -279,7 +284,9 @@
     .hint{color:var(--muted); font-size:.9rem; margin-top:10px}
 
     .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width: 620px){ .mini-grid{grid-template-columns:1fr} }
     .mini label{display:block;font-size:.88rem;color:#cbd5e1;margin:0 0 6px}
+
     .checks{display:grid;gap:8px}
     .chk{display:flex;gap:10px;align-items:center;color:#cbd5e1;font-size:.95rem}
     .chk input{width:auto;margin:0}
@@ -306,74 +313,44 @@
       .orb{ filter: blur(16px); opacity:.28; }
     }
 
-    /* ===== B: Seleção de Editores (Cliente) ===== */
-    .toolbar{
-      display:flex; gap:10px; flex-wrap:wrap;
-      align-items:center; justify-content:space-between;
-      margin-top:12px;
+    /* ===== Avatares + Estrelas ===== */
+    .who{
+      display:flex; align-items:center; gap:10px;
+      margin-top:10px;
     }
-    .toolbar .left, .toolbar .right{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
-    .chip{
-      padding:8px 10px;
+    .avatar{
+      width:44px; height:44px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color:#e5e7eb;
-      font-size:.92rem;
+      border:1px solid rgba(255,255,255,.18);
+      background:
+        radial-gradient(circle at 30% 30%, rgba(56,189,248,.55), transparent 55%),
+        radial-gradient(circle at 70% 70%, rgba(124,58,237,.55), transparent 55%),
+        rgba(255,255,255,.06);
+      box-shadow: 0 10px 24px rgba(0,0,0,.35);
+      overflow:hidden;
+      flex:0 0 auto;
     }
-    .editor-cards{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:14px;
-      margin-top:12px;
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+    .who .meta{display:flex;flex-direction:column;gap:2px}
+    .stars{
+      display:inline-flex; gap:3px; align-items:center;
+      font-size:14px;
+      letter-spacing:.2px;
     }
-    @media (max-width: 980px){ .editor-cards{grid-template-columns: repeat(2, 1fr);} }
-    @media (max-width: 620px){ .editor-cards{grid-template-columns: 1fr;} }
-
-    .eCard{
-      background: linear-gradient(180deg, rgba(11,18,38,.92), rgba(10,16,34,.88));
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:18px;
-      padding:14px;
-      box-shadow: 0 10px 26px rgba(0,0,0,.35);
-      content-visibility:auto;
-      contain-intrinsic-size: 320px 260px;
-      contain: layout paint style;
+    .star{
+      color: rgba(56,189,248,.95);
+      text-shadow: 0 0 10px rgba(56,189,248,.25);
     }
-    .eTop{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
-    .eName{font-weight:900; color:#e5e7eb; font-size:1.05rem}
-    .eMeta{color:rgba(229,231,235,.70); font-size:.92rem; margin-top:4px}
-
-    .rating{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(56,189,248,.22);
-      background: rgba(56,189,248,.08);
-      color:#e5e7eb;
-      font-size:.92rem;
-      white-space:nowrap;
+    .star.off{
+      color: rgba(229,231,235,.28);
+      text-shadow:none;
     }
-    .dot{
-      width:8px; height:8px; border-radius:50%;
-      background: rgba(56,189,248,.9);
-      box-shadow: 0 0 12px rgba(56,189,248,.35);
-    }
-    .small{font-size:.9rem;color:rgba(229,231,235,.75);}
-
-    .eBio{margin-top:10px;color:rgba(156,163,175,.95);line-height:1.35;font-size:.95rem;}
-    .eBadges{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
-    .badge{
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color:#e5e7eb;
+    .stars small{
+      color: rgba(229,231,235,.70);
+      margin-left:8px;
       font-size:.9rem;
+      font-weight:700;
     }
-    .badge.pillBlue{border-color: rgba(124,58,237,.30);background: rgba(124,58,237,.10);}
-    .badge.you{border-color: rgba(56,189,248,.30);background: rgba(56,189,248,.10);}
-    .badge.off{opacity:.6}
 
     /* ===== Editor Dashboard ===== */
     .editor-grid{
@@ -381,24 +358,25 @@
       grid-template-columns: 1.05fr .95fr;
       gap:14px;
       margin-top:14px;
+      align-items:start;
     }
     @media (max-width: 860px){ .editor-grid{grid-template-columns:1fr;} }
 
     .kpi{
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap:10px;
       margin-top:10px;
     }
-    @media (max-width: 620px){ .kpi{grid-template-columns:1fr;} }
     .kpi .k{
       border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.05);
       border-radius:14px;
       padding:10px;
+      min-height:66px;
     }
     .k .t{color:rgba(229,231,235,.72); font-size:.85rem}
-    .k .v{font-weight:900; margin-top:4px; font-size:1.05rem; color:#c7d2fe}
+    .k .v{font-weight:900; margin-top:6px; font-size:1.05rem; color:#c7d2fe}
     .k .v small{font-weight:700; color:rgba(229,231,235,.75); font-size:.9rem}
 
     .row-inline{
@@ -476,6 +454,46 @@
     .pkg-title{ font-weight:900; color:#e5e7eb }
     .pkg-sub{ color:rgba(229,231,235,.72); font-size:.92rem; margin-top:2px }
     .pkg-meta{ color:rgba(156,163,175,.92); font-size:.9rem; margin-top:6px }
+
+    .uploadRow{
+      display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .uploadRow .avatar{width:56px;height:56px}
+
+    /* ===== (Opcional) cards de editor para o cliente (demo) ===== */
+    .editor-cards{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+      margin-top:12px;
+    }
+    @media (max-width: 980px){ .editor-cards{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 620px){ .editor-cards{grid-template-columns: 1fr;} }
+    .eCard{
+      background: linear-gradient(180deg, rgba(11,18,38,.92), rgba(10,16,34,.88));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:18px;
+      padding:14px;
+      box-shadow: 0 10px 26px rgba(0,0,0,.35);
+      content-visibility:auto;
+      contain-intrinsic-size: 320px 280px;
+      contain: layout paint style;
+    }
+    .eTop{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+    .eName{font-weight:900; color:#e5e7eb; font-size:1.05rem}
+    .eMeta{color:rgba(229,231,235,.70); font-size:.92rem; margin-top:4px}
+    .eBio{margin-top:10px;color:rgba(156,163,175,.95);line-height:1.35;font-size:.95rem;}
+    .eBadges{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
+    .badge{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:#e5e7eb;
+      font-size:.9rem;
+    }
+    .badge.you{border-color: rgba(56,189,248,.30);background: rgba(56,189,248,.10);}
   </style>
 </head>
 
@@ -497,24 +515,100 @@
     <main>
       <div class="wrap">
 
+        <!-- START -->
         <section id="screenStart" class="screen show">
           <div class="hero">
             <div class="card">
               <h3>Sou Cliente</h3>
-              <p>Escolha um pacote pronto ou monte um pacote personalizado para suas fotos e vídeos.</p>
+              <p>Crie seu perfil de comprador e depois escolha um pacote pronto ou monte um personalizado.</p>
               <button class="btn" type="button" onclick="openCadastro('cliente')">Criar conta (Cliente)</button>
             </div>
             <div class="card">
               <h3>Quero Trabalhar</h3>
-              <p>Cadastre-se como editor e receba pedidos de edição dentro da plataforma.</p>
+              <p>Cadastre-se como editor, complete o perfil e fique disponível para receber pedidos.</p>
               <button class="btn" type="button" onclick="openCadastro('editor')">Criar conta (Editor)</button>
             </div>
           </div>
         </section>
 
+        <!-- CLIENTE: PERFIL (ANTES DOS PACOTES) -->
+        <section id="screenClientProfile" class="screen">
+          <div class="section-title">Seu perfil (Cliente)</div>
+          <div class="pill">Complete seu perfil para uma experiência melhor (começa com 5 estrelas).</div>
+
+          <div class="card" style="margin-top:12px">
+            <div class="who">
+              <div class="avatar" id="clientAvatarBox"></div>
+              <div class="meta">
+                <div style="font-weight:900" id="clientProfileName">Cliente</div>
+                <div class="stars" id="clientStars"></div>
+              </div>
+            </div>
+
+            <div class="uploadRow">
+              <label class="btn secondary small" style="cursor:pointer">
+                Enviar foto
+                <input id="clientPhoto" type="file" accept="image/*" style="display:none">
+              </label>
+              <button class="btn secondary small" type="button" onclick="removeClientPhoto()">Remover</button>
+              <div class="hint" style="margin-top:0">* Foto opcional (salva no navegador).</div>
+            </div>
+
+            <div class="mini-grid" style="margin-top:12px">
+              <div class="mini">
+                <label>WhatsApp</label>
+                <input id="clWhats" placeholder="(DDD) 99999-9999" />
+              </div>
+              <div class="mini">
+                <label>Cidade</label>
+                <input id="clCity" placeholder="Ex: São Paulo - SP" />
+              </div>
+            </div>
+
+            <div class="mini-grid" style="margin-top:10px">
+              <div class="mini">
+                <label>Nicho / Categoria</label>
+                <input id="clNiche" placeholder="Ex: Moda, Gaming, Fitness, Loja, Influencer..." />
+              </div>
+              <div class="mini">
+                <label>Rede principal</label>
+                <select id="clMainPlatform">
+                  <option value="instagram">Instagram</option>
+                  <option value="tiktok">TikTok</option>
+                  <option value="youtube">YouTube</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="kwai">Kwai</option>
+                  <option value="pinterest">Pinterest</option>
+                  <option value="linkedin">LinkedIn</option>
+                  <option value="x">X (Twitter)</option>
+                  <option value="snap">Snapchat</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field" style="margin-top:10px">
+              <label>Sobre você / Objetivo</label>
+              <textarea id="clAbout" placeholder="Ex: Quero vídeos curtos para Reels/TikTok, estilo cinematográfico, cortes rápidos, legendas..."></textarea>
+            </div>
+
+            <div class="mini-grid" style="margin-top:12px">
+              <button class="btn" type="button" onclick="saveClientProfileAndGo()">Salvar e continuar</button>
+              <button class="btn secondary" type="button" onclick="goBackStart()">Voltar</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- CLIENTE: PACOTES -->
         <section id="screenClient" class="screen">
-          <div class="section-title">Bem-vindo, <span id="clientName">Cliente</span> 👋</div>
-          <div class="pill">Escolha um pacote pronto ou monte um pacote personalizado.</div>
+          <div class="who">
+            <div class="avatar" id="clientAvatarTop"></div>
+            <div class="meta">
+              <div class="section-title" style="margin:0">Bem-vindo, <span id="clientName">Cliente</span> 👋</div>
+              <div class="stars" id="clientStarsTop"></div>
+            </div>
+          </div>
+
+          <div class="pill" style="margin-top:10px">Escolha um pacote pronto ou monte um pacote personalizado.</div>
 
           <div class="section-title" style="margin-top:18px">Pacotes prontos (15 opções)</div>
           <div id="packagesGrid" class="grid" style="margin-top:12px"></div>
@@ -538,12 +632,22 @@
 
               <div class="mini-grid" style="margin-top:10px">
                 <div class="mini">
-                  <label>Plataforma</label>
+                  <label>Plataforma / Rede</label>
                   <select id="custPlataforma">
                     <option value="reels">Instagram Reels</option>
                     <option value="tiktok">TikTok</option>
                     <option value="insta">Instagram Feed</option>
                     <option value="shorts">YouTube Shorts</option>
+                    <option value="ytlong">YouTube (vídeo normal)</option>
+                    <option value="facebookreels">Facebook Reels</option>
+                    <option value="facebook">Facebook (vídeo normal)</option>
+                    <option value="kwai">Kwai</option>
+                    <option value="snap">Snapchat Spotlight</option>
+                    <option value="pinterest">Pinterest Idea Pins</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="x">X (Twitter)</option>
+                    <option value="twitch">Twitch (clipe)</option>
+                    <option value="discord">Discord</option>
                   </select>
                 </div>
                 <div class="mini">
@@ -600,30 +704,7 @@
           <button class="btn secondary" style="margin-top:18px" type="button" onclick="goBackStart()">Voltar</button>
         </section>
 
-        <!-- ✅ B: TELA ESCOLHA DO EDITOR (CLIENTE) -->
-        <section id="screenPickEditor" class="screen">
-          <div class="section-title">Escolha seu Editor ⭐</div>
-          <div class="pill">Você verá editores compatíveis com o seu pedido (nota 0–10).</div>
-
-          <div class="toolbar">
-            <div class="left">
-              <span class="chip" id="pickInfo">Pedido: —</span>
-              <span class="chip">Avaliação: 0–10</span>
-            </div>
-            <div class="right">
-              <select id="pickSort" style="min-width:240px">
-                <option value="best">Melhores avaliados</option>
-                <option value="fast">Mais rápidos (simulado)</option>
-              </select>
-            </div>
-          </div>
-
-          <div id="editorsGrid" class="editor-cards"></div>
-
-          <button class="btn secondary" style="margin-top:18px" type="button" onclick="backToOrder()">Voltar</button>
-        </section>
-
-        <!-- ✅ EDITOR DASHBOARD -->
+        <!-- EDITOR -->
         <section id="screenEditor" class="screen">
           <div class="section-title">Bem-vindo, <span id="editorName">Editor</span> 👋</div>
           <div class="pill">Complete seu perfil, selecione pacotes e fique disponível para receber pedidos.</div>
@@ -644,21 +725,36 @@
                 </label>
               </div>
 
-              <!-- KPI: comissão e selo do admin ocultos (só ADM vê no futuro) -->
-              <div class="kpi">
-                <div class="k" style="display:none">
-                  <div class="t">Comissão (ADM)</div>
-                  <div class="v"><span id="edCommission">25</span>% <small id="edTierText">(fixo)</small></div>
+              <div class="who" style="margin-top:12px">
+                <div class="avatar" id="editorAvatarBox"></div>
+                <div class="meta">
+                  <div style="font-weight:900" id="editorFullName">Editor</div>
+                  <div class="stars" id="editorStars"></div>
                 </div>
+              </div>
 
+              <div class="uploadRow">
+                <label class="btn secondary small" style="cursor:pointer">
+                  Enviar foto
+                  <input id="editorPhoto" type="file" accept="image/*" style="display:none">
+                </label>
+                <button class="btn secondary small" type="button" onclick="removeEditorPhoto()">Remover</button>
+                <div class="hint" style="margin-top:0">* Foto opcional (salva no navegador).</div>
+              </div>
+
+              <div class="kpi">
                 <div class="k">
                   <div class="t">Avaliação</div>
-                  <div class="v"><span id="edRating">8.7</span><small>/10</small></div>
+                  <div class="v"><span id="edRatingTxt">5.0</span><small>/5</small></div>
+                  <div class="stars" id="edStarsRow" style="margin-top:6px"></div>
                 </div>
-
-                <div class="k" style="display:none">
-                  <div class="t">Selo do admin (ADM)</div>
-                  <div class="v"><span id="edStarText">Não</span></div>
+                <div class="k">
+                  <div class="t">Concluídos</div>
+                  <div class="v"><span id="edDone">0</span><small> pedidos</small></div>
+                </div>
+                <div class="k">
+                  <div class="t">Status</div>
+                  <div class="v"><span id="edStatus">Novo</span></div>
                 </div>
               </div>
 
@@ -672,10 +768,8 @@
                   </select>
                 </div>
                 <div class="mini">
-                  <label>Nível</label>
-                  <select id="edTier" disabled>
-                    <option value="padrao">Definido pelo admin (futuro)</option>
-                  </select>
+                  <label>WhatsApp (opcional)</label>
+                  <input id="edWhats" placeholder="(DDD) 99999-9999" />
                 </div>
               </div>
 
@@ -690,14 +784,9 @@
                   <input id="edSoft" placeholder="CapCut, Premiere, Lightroom..." />
                 </div>
                 <div class="mini">
-                  <label>WhatsApp (opcional)</label>
-                  <input id="edWhats" placeholder="(DDD) 99999-9999" />
+                  <label>Portfólio (link)</label>
+                  <input id="edPortfolio" placeholder="https://..." />
                 </div>
-              </div>
-
-              <div class="field" style="margin-top:10px">
-                <label>Portfólio (link)</label>
-                <input id="edPortfolio" placeholder="https://..." />
               </div>
 
               <div class="field" style="margin-top:10px">
@@ -712,7 +801,7 @@
               </div>
 
               <div class="hint">
-                * Comissão é fixa e só aparece no painel ADM: Karamello 25% / Editor 75%.
+                * Comissão é fixa e só aparece no painel ADM no futuro (Karamello 25% / Editor 75%).
               </div>
             </div>
 
@@ -757,9 +846,8 @@
             </div>
           </div>
 
-          <!-- Preview público -->
           <div class="section-title" style="margin-top:22px">Como você aparece para o cliente</div>
-          <div class="pill">Esse é o card que vai aparecer na tela de escolha do editor.</div>
+          <div class="pill">Preview do seu card público.</div>
 
           <div class="editor-cards" style="margin-top:12px">
             <div class="eCard" id="edPublicPreview"></div>
@@ -774,6 +862,7 @@
     <footer>© 2026 • Karamello • Edição profissional</footer>
   </div>
 
+  <!-- MODAL CADASTRO -->
   <div id="overlay" class="overlay" aria-hidden="true">
     <div id="modal" class="modal" role="dialog" aria-modal="true">
       <div class="modalHead">
@@ -795,6 +884,32 @@
   </div>
 
   <script>
+    // ===== Util =====
+    function escapeHtml(str){
+      return String(str ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function renderStarsHTML(value, max=5){
+      const v = Math.max(0, Math.min(max, Number(value||0)));
+      const full = Math.floor(v);
+      const empty = max - full;
+      let html = "";
+      for(let i=0;i<full;i++) html += `<span class="star">★</span>`;
+      for(let i=0;i<empty;i++) html += `<span class="star off">★</span>`;
+      html += `<small>${v.toFixed(1)}/${max}</small>`;
+      return html;
+    }
+
+    function setAvatar(box, dataUrl){
+      if(!box) return;
+      box.innerHTML = dataUrl ? `<img alt="Foto" src="${dataUrl}">` : "";
+    }
+
     // ===== Base =====
     const overlay = document.getElementById('overlay');
     const modal = document.getElementById('modal');
@@ -802,8 +917,8 @@
     const btnCadastrar = document.getElementById('btnCadastrar');
 
     const screenStart = document.getElementById('screenStart');
+    const screenClientProfile = document.getElementById('screenClientProfile');
     const screenClient = document.getElementById('screenClient');
-    const screenPickEditor = document.getElementById('screenPickEditor');
     const screenEditor = document.getElementById('screenEditor');
 
     const inNome = document.getElementById('inNome');
@@ -836,13 +951,17 @@
     overlay.addEventListener('click', (e) => { if(e.target === overlay) closeCadastro(); });
 
     function showScreen(which){
-      [screenStart, screenClient, screenPickEditor, screenEditor].forEach(s => s.classList.remove('show'));
+      [screenStart, screenClientProfile, screenClient, screenEditor].forEach(s => s.classList.remove('show'));
       setTimeout(() => {
         which.classList.add('show');
         window.scrollTo({top:0, behavior:'smooth'});
       }, 50);
     }
     function goBackStart(){ showScreen(screenStart); }
+
+    // ===== Storage =====
+    const LS_EDITOR = "karamello_editor_v5";
+    const LS_CLIENT = "karamello_client_v1";
 
     // ===== Pacotes =====
     const packages = [
@@ -862,7 +981,6 @@
       {id:14, name:'Vídeo Longo 60s',  price:259.40,eta:'48h',   items:['1 Vídeo longo (até 60s)','Edição avançada']},
       {id:15, name:'Premium Creator',  price:329.90,eta:'48h',   items:['15 Fotos + 3 Vídeos curtos','Look premium + revisão']},
     ];
-
     function brl(v){ return v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}); }
 
     function renderPackages(){
@@ -872,17 +990,331 @@
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-          <h3>${p.id}. ${p.name}</h3>
-          <p>Entrega a partir de <strong>${p.eta}</strong> (mínimo 13h30)</p>
+          <h3>${p.id}. ${escapeHtml(p.name)}</h3>
+          <p>Entrega a partir de <strong>${escapeHtml(p.eta)}</strong> (mínimo 13h30)</p>
           <div class="price">${brl(p.price)}</div>
-          <ul>${p.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+          <ul>${p.items.map(i=>`<li>${escapeHtml(i)}</li>`).join('')}</ul>
           <button class="btn" type="button" onclick="choosePackage(${p.id})">Escolher pacote</button>
         `;
         grid.appendChild(card);
       });
     }
 
-    // ===== Personalizado =====
+    function choosePackage(id){
+      const p = packages.find(x => x.id === id);
+      alert(`Pacote selecionado: ${p.id}. ${p.name}\nValor: ${brl(p.price)}\nEntrega: ${p.eta}`);
+    }
+
+    // ===== CLIENTE =====
+    const clientAvatarBox = document.getElementById("clientAvatarBox");
+    const clientAvatarTop = document.getElementById("clientAvatarTop");
+    const clientProfileName = document.getElementById("clientProfileName");
+    const clientStars = document.getElementById("clientStars");
+    const clientStarsTop = document.getElementById("clientStarsTop");
+
+    const clientPhoto = document.getElementById("clientPhoto");
+    const clWhats = document.getElementById("clWhats");
+    const clCity = document.getElementById("clCity");
+    const clNiche = document.getElementById("clNiche");
+    const clMainPlatform = document.getElementById("clMainPlatform");
+    const clAbout = document.getElementById("clAbout");
+
+    function getClient(){
+      const raw = localStorage.getItem(LS_CLIENT);
+      let data = {};
+      try{ data = raw ? JSON.parse(raw) : {}; }catch(e){ data = {}; }
+      if(typeof data.rating !== "number") data.rating = 5.0;
+      if(!data.name) data.name = "Cliente";
+      return data;
+    }
+    function setClient(data){
+      localStorage.setItem(LS_CLIENT, JSON.stringify(data));
+    }
+
+    function paintClientUI(){
+      const c = getClient();
+      clientProfileName.textContent = c.name || "Cliente";
+      clientName.textContent = c.name || "Cliente";
+
+      clientStars.innerHTML = renderStarsHTML(c.rating, 5);
+      clientStarsTop.innerHTML = renderStarsHTML(c.rating, 5);
+
+      setAvatar(clientAvatarBox, c.photo || "");
+      setAvatar(clientAvatarTop, c.photo || "");
+
+      clWhats.value = c.whats || "";
+      clCity.value = c.city || "";
+      clNiche.value = c.niche || "";
+      clMainPlatform.value = c.mainPlatform || "instagram";
+      clAbout.value = c.about || "";
+    }
+
+    function handleImageFile(file, cb){
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = () => cb(String(reader.result || ""));
+      reader.readAsDataURL(file);
+    }
+
+    clientPhoto.addEventListener("change", (e)=>{
+      const file = e.target.files && e.target.files[0];
+      if(!file) return;
+      handleImageFile(file, (dataUrl)=>{
+        const c = getClient();
+        c.photo = dataUrl;
+        setClient(c);
+        paintClientUI();
+      });
+      clientPhoto.value = "";
+    });
+
+    function removeClientPhoto(){
+      const c = getClient();
+      delete c.photo;
+      setClient(c);
+      paintClientUI();
+    }
+
+    function saveClientProfileAndGo(){
+      const c = getClient();
+      c.whats = (clWhats.value||"").trim();
+      c.city = (clCity.value||"").trim();
+      c.niche = (clNiche.value||"").trim();
+      c.mainPlatform = clMainPlatform.value || "instagram";
+      c.about = (clAbout.value||"").trim();
+      setClient(c);
+
+      renderPackages();
+      calcCustom();
+      showScreen(screenClient);
+    }
+
+    // ===== EDITOR =====
+    const editorAvatarBox = document.getElementById("editorAvatarBox");
+    const editorFullName = document.getElementById("editorFullName");
+    const editorStars = document.getElementById("editorStars");
+
+    const editorPhoto = document.getElementById("editorPhoto");
+    const edAvailable = document.getElementById("edAvailable");
+    const edAvailText = document.getElementById("edAvailText");
+    const edRatingTxt = document.getElementById("edRatingTxt");
+    const edStarsRow = document.getElementById("edStarsRow");
+    const edDone = document.getElementById("edDone");
+    const edStatus = document.getElementById("edStatus");
+
+    const edXp = document.getElementById("edXp");
+    const edWhats = document.getElementById("edWhats");
+    const edBio = document.getElementById("edBio");
+    const edSoft = document.getElementById("edSoft");
+    const edPortfolio = document.getElementById("edPortfolio");
+    const edTags = document.getElementById("edTags");
+    const edTagsPreview = document.getElementById("edTagsPreview");
+
+    const editorPackagesBox = document.getElementById("editorPackages");
+    const edSearchPkg = document.getElementById("edSearchPkg");
+    const edQuick = document.getElementById("edQuick");
+    const edPkgCount = document.getElementById("edPkgCount");
+    const edPkgHint = document.getElementById("edPkgHint");
+    const edPublicPreview = document.getElementById("edPublicPreview");
+
+    function getEditor(){
+      const raw = localStorage.getItem(LS_EDITOR);
+      let data = {};
+      try{ data = raw ? JSON.parse(raw) : {}; }catch(e){ data = {}; }
+      if(typeof data.rating !== "number") data.rating = 5.0;
+      if(typeof data.done !== "number") data.done = 0;
+      if(!data.name) data.name = "Editor";
+      if(!Array.isArray(data.packages)) data.packages = [];
+      if(typeof data.available !== "boolean") data.available = false;
+      return data;
+    }
+    function setEditor(data){
+      localStorage.setItem(LS_EDITOR, JSON.stringify(data));
+    }
+
+    function paintEditorUI(){
+      const ed = getEditor();
+      editorName.textContent = ed.name || "Editor";
+      editorFullName.textContent = ed.name || "Editor";
+
+      setAvatar(editorAvatarBox, ed.photo || "");
+      editorStars.innerHTML = renderStarsHTML(ed.rating, 5);
+      edRatingTxt.textContent = (ed.rating || 5).toFixed(1);
+      edStarsRow.innerHTML = renderStarsHTML(ed.rating, 5);
+
+      edDone.textContent = String(ed.done || 0);
+      edStatus.textContent = ed.available ? "Disponível" : "Novo";
+
+      edAvailable.checked = !!ed.available;
+      edAvailText.textContent = ed.available ? "On" : "Off";
+
+      edXp.value = ed.xp || "iniciante";
+      edWhats.value = ed.whats || "";
+      edBio.value = ed.bio || "";
+      edSoft.value = ed.soft || "";
+      edPortfolio.value = ed.portfolio || "";
+      edTags.value = ed.tags || "";
+
+      renderTagsPreview();
+      renderEditorPackages();
+      updatePkgCount();
+      renderPublicPreview();
+    }
+
+    editorPhoto.addEventListener("change", (e)=>{
+      const file = e.target.files && e.target.files[0];
+      if(!file) return;
+      handleImageFile(file, (dataUrl)=>{
+        const ed = getEditor();
+        ed.photo = dataUrl;
+        setEditor(ed);
+        paintEditorUI();
+      });
+      editorPhoto.value = "";
+    });
+
+    function removeEditorPhoto(){
+      const ed = getEditor();
+      delete ed.photo;
+      setEditor(ed);
+      paintEditorUI();
+    }
+
+    edAvailable.addEventListener("change", ()=>{
+      const ed = getEditor();
+      ed.available = !!edAvailable.checked;
+      setEditor(ed);
+      edAvailText.textContent = ed.available ? "On" : "Off";
+      edStatus.textContent = ed.available ? "Disponível" : "Novo";
+      renderPublicPreview();
+    });
+
+    function saveEditorProfile(){
+      const ed = getEditor();
+      ed.xp = edXp.value || "iniciante";
+      ed.whats = (edWhats.value||"").trim();
+      ed.bio = (edBio.value||"").trim();
+      ed.soft = (edSoft.value||"").trim();
+      ed.portfolio = (edPortfolio.value||"").trim();
+      ed.tags = (edTags.value||"").trim();
+      setEditor(ed);
+      renderTagsPreview();
+      renderPublicPreview();
+      alert("Perfil do editor salvo!");
+    }
+
+    function resetEditor(){
+      localStorage.removeItem(LS_EDITOR);
+      paintEditorUI();
+      alert("Resetado (demo).");
+    }
+
+    function splitTags(){
+      const raw = (edTags.value||"").split(",").map(s=>s.trim()).filter(Boolean);
+      return raw.slice(0, 10);
+    }
+    function renderTagsPreview(){
+      const tags = splitTags();
+      edTagsPreview.innerHTML = tags.map(t=>`<span class="tag blue">${escapeHtml(t)}</span>`).join("");
+    }
+    edTags.addEventListener("input", ()=>{ renderTagsPreview(); renderPublicPreview(); });
+
+    function renderEditorPackages(){
+      const ed = getEditor();
+      const q = (edSearchPkg.value||"").trim().toLowerCase();
+      const quick = edQuick.value || "all";
+
+      const filtered = packages.filter(p=>{
+        const name = (p.name||"").toLowerCase();
+        const isVideo = name.includes("vídeo") || name.includes("short") || name.includes("45") || name.includes("60");
+        const isFoto = name.includes("foto");
+        if(quick==="video" && !isVideo) return false;
+        if(quick==="foto" && !isFoto) return false;
+        if(quick==="mix" && !(isVideo || isFoto)) return false;
+        if(q && !(name.includes(q) || String(p.id).includes(q))) return false;
+        return true;
+      });
+
+      editorPackagesBox.innerHTML = filtered.map(p=>{
+        const checked = ed.packages.includes(p.id) ? "checked" : "";
+        return `
+          <label class="pkg-item">
+            <input type="checkbox" data-ed-pkg="${p.id}" ${checked} />
+            <div>
+              <div class="pkg-title">${escapeHtml(p.id + ". " + p.name)}</div>
+              <div class="pkg-sub">Entrega: ${escapeHtml(p.eta)} • Valor: ${brl(p.price)}</div>
+              <div class="pkg-meta">${p.items.map(i=>escapeHtml(i)).join(" • ")}</div>
+            </div>
+          </label>
+        `;
+      }).join("");
+
+      editorPackagesBox.querySelectorAll('input[data-ed-pkg]').forEach(chk=>{
+        chk.addEventListener("change", ()=>{
+          const id = Number(chk.getAttribute("data-ed-pkg"));
+          const ed2 = getEditor();
+          const set = new Set(ed2.packages);
+          if(chk.checked) set.add(id); else set.delete(id);
+          ed2.packages = Array.from(set);
+          setEditor(ed2);
+          updatePkgCount();
+          renderPublicPreview();
+        });
+      });
+    }
+
+    function updatePkgCount(){
+      const ed = getEditor();
+      const count = ed.packages.length;
+      edPkgCount.textContent = String(count);
+      edPkgHint.textContent = count ? "Pronto: você já aparece para pedidos compatíveis." : "Dica: selecione pelo menos 1 pacote para aparecer para clientes.";
+    }
+
+    edSearchPkg.addEventListener("input", renderEditorPackages);
+    edQuick.addEventListener("change", renderEditorPackages);
+
+    function saveEditorPackages(){
+      updatePkgCount();
+      alert("Pacotes salvos!");
+    }
+
+    function selectAllEditorPackages(on){
+      const ed = getEditor();
+      ed.packages = on ? packages.map(p=>p.id) : [];
+      setEditor(ed);
+      renderEditorPackages();
+      updatePkgCount();
+      renderPublicPreview();
+    }
+
+    function renderPublicPreview(){
+      const ed = getEditor();
+      const tags = (ed.tags||"").split(",").map(s=>s.trim()).filter(Boolean).slice(0,6);
+      const badges = [];
+      if(ed.available) badges.push(`<span class="badge you">Disponível</span>`);
+      if(ed.packages.length) badges.push(`<span class="badge">Pacotes: ${ed.packages.length}</span>`);
+      const bio = ed.bio ? escapeHtml(ed.bio) : "Adicione uma bio para aparecer melhor para os clientes.";
+
+      edPublicPreview.innerHTML = `
+        <div class="eTop">
+          <div style="display:flex; gap:10px; align-items:center">
+            <div class="avatar" style="width:48px;height:48px">${ed.photo ? `<img alt="Foto" src="${ed.photo}">` : ""}</div>
+            <div>
+              <div class="eName">${escapeHtml(ed.name||"Editor")}</div>
+              <div class="stars">${renderStarsHTML(ed.rating,5)}</div>
+            </div>
+          </div>
+        </div>
+        <div class="eBio">${bio}</div>
+        <div class="eBadges">
+          ${badges.join("")}
+          ${tags.map(t=>`<span class="badge">${escapeHtml(t)}</span>`).join("")}
+        </div>
+        <button class="btn" type="button" style="margin-top:12px" onclick="alert('Preview: cliente veria este card.')">Ver como cliente</button>
+      `;
+    }
+
+    // ===== Personalizado (Cliente) =====
     const custFotos = document.getElementById('custFotos');
     const custVideos = document.getElementById('custVideos');
     const custPlataforma = document.getElementById('custPlataforma');
@@ -895,7 +1327,12 @@
       video15: 44.90,
       video45: 66.70,
       video60: 84.60,
-      platformMult: { reels:1.00, tiktok:1.00, insta:1.04, shorts:1.04 }
+      platformMult: {
+        reels:1.00, tiktok:1.00, insta:1.04, shorts:1.04,
+        ytlong:1.08, facebookreels:1.02, facebook:1.04,
+        kwai:1.00, snap:1.04, pinterest:1.04,
+        linkedin:1.08, x:1.06, twitch:1.08, discord:1.03
+      }
     };
 
     const EXTRA_OPTIONS = [
@@ -972,16 +1409,7 @@
     }
 
     function confirmCustom(){
-      const fotos = Math.max(0, parseInt(custFotos.value||'0',10));
-      const vids  = Math.max(0, parseInt(custVideos.value||'0',10));
-
-      openPickEditor({
-        type: "custom",
-        title: `Personalizado • ${fotos} fotos • ${vids} vídeos`,
-        fotos, videos: vids,
-        total: custTotal.textContent,
-        eta: custEntrega.textContent
-      }, screenClient);
+      alert(`Personalizado criado!\nTotal: ${custTotal.textContent}\nEntrega: ${custEntrega.textContent}`);
     }
 
     [custFotos,custVideos,custPlataforma,custTipoVideo].forEach(el=>{
@@ -992,7 +1420,7 @@
       el.addEventListener('change', calcCustom);
     });
 
-    // ===== Cadastro (entra como cliente/editor) =====
+    // ===== Cadastro fluxo =====
     btnCadastrar.addEventListener('click', ()=>{
       const nome=(inNome.value||'').trim();
       const sobrenome=(inSobrenome.value||'').trim();
@@ -1000,522 +1428,27 @@
       closeCadastro();
 
       if(role==='cliente'){
-        clientName.textContent = nome;
-        showScreen(screenClient);
-        setTimeout(()=>{ renderPackages(); calcCustom(); },80);
+        const c = getClient();
+        c.name = nome;
+        c.rating = 5.0; // começa 5 estrelas
+        setClient(c);
+        paintClientUI();
+        showScreen(screenClientProfile);
       }else{
-        editorName.textContent = nome;
-        const ed = loadEditor() || defaultEditor();
-        ed.displayName = (nome + " " + (sobrenome||"")).trim();
-        saveEditor(ed);
-        applyEditorToUI(ed);
-        renderEditorPackages(ed.packages || []);
+        const ed = getEditor();
+        ed.name = nome;
+        ed.rating = 5.0; // começa 5 estrelas
+        setEditor(ed);
+        paintEditorUI();
         showScreen(screenEditor);
       }
     });
 
-    // ===== B: Seleção de Editores (Cliente) =====
-    const editorsGrid = document.getElementById('editorsGrid');
-    const pickInfo = document.getElementById('pickInfo');
-    const pickSort = document.getElementById('pickSort');
-
-    let currentOrder = null;
-    let lastOrderScreen = null;
-
-    const DEMO_EDITORS = [
-      { id:"e1", name:"Nox Studio", xp:"avancado", soft:"CapCut, Premiere", bio:"Cortes rápidos + ritmo + look premium. Foco em Reels/TikTok.", nota:9.6, packs:[4,6,9,11,13,14,15], available:true, tags:["Reels","Ritmo","Premium"] },
-      { id:"e2", name:"Luna Color",  xp:"intermediario", soft:"Lightroom, Photoshop", bio:"Foto pro: cor, nitidez, pele e fundo. Resultado clean e elegante.", nota:9.2, packs:[1,2,3,5,8,10,12,15], available:true, tags:["Foto","Cor","Clean"] },
-      { id:"e3", name:"Vibe Sync",   xp:"avancado", soft:"Premiere, After Effects", bio:"Motion e transições premium. Sincroniza com música e CTA.", nota:9.4, packs:[4,6,7,9,11,13,14,15], available:true, tags:["Motion","Música","CTA"] },
-      { id:"e4", name:"CineLite",    xp:"intermediario", soft:"CapCut", bio:"Bom custo-benefício, entrega rápida, ajustes essenciais bem feitos.", nota:8.8, packs:[1,2,4,6,7,8,10,11,13], available:true, tags:["Rápido","Custo-benefício"] },
-    ];
-
-    function openPickEditor(order, fromScreen){
-      currentOrder = order;
-      lastOrderScreen = fromScreen;
-      pickInfo.textContent = `Pedido: ${order.title}`;
-      renderEditorsForOrder(order);
-      showScreen(screenPickEditor);
-    }
-
-    function backToOrder(){
-      if(lastOrderScreen) showScreen(lastOrderScreen);
-      else showScreen(screenClient);
-    }
-
-    pickSort?.addEventListener('change', ()=>{
-      if(currentOrder) renderEditorsForOrder(currentOrder);
-    });
-
-    function getLocalEditorAsCandidate(){
-      const ed = loadEditor();
-      if(!ed) return null;
-
-      const packs = Array.isArray(ed.packages) ? ed.packages : [];
-      const available = !!ed.available;
-      if(!packs.length) return null;
-      if(!available) return null;
-
-      const xp = ed.xp || "iniciante";
-      const nota = typeof ed.rating === "number" ? ed.rating : 8.7;
-      const tags = parseTags(ed.tags || "");
-
-      return {
-        id:"localEditor",
-        name: (ed.displayName && ed.displayName.trim()) ? ed.displayName.trim() : (editorName.textContent || "Editor"),
-        xp,
-        soft: (ed.soft || "—").trim(),
-        bio: (ed.bio || "Editor cadastrado no Karamello.").trim(),
-        nota,
-        packs,
-        available: true,
-        tags,
-        you: true
-      };
-    }
-
-    function eligibleEditors(order){
-      const localEd = getLocalEditorAsCandidate();
-      const all = [...DEMO_EDITORS, ...(localEd ? [localEd] : [])];
-
-      if(order.type === "package" && order.packageId){
-        return all.filter(e => e.available && e.packs.includes(order.packageId));
-      }
-
-      if(order.type === "custom"){
-        const hasVideos = (order.videos||0) > 0;
-        const hasFotos  = (order.fotos||0) > 0;
-
-        const videoFamily = [4,6,7,9,11,13,14,15];
-        const photoFamily = [1,2,3,5,8,10,12,15];
-
-        const needed = new Set([
-          ...(hasVideos ? videoFamily : []),
-          ...(hasFotos ? photoFamily : [])
-        ]);
-
-        const filtered = all.filter(e => e.available && e.packs.some(pid => needed.has(pid)));
-        return filtered.length ? filtered : all.filter(e => e.available);
-      }
-
-      return all.filter(e => e.available);
-    }
-
-    function speedScore(ed){
-      let s = 0;
-      if(ed.xp === "avancado") s += 2;
-      else if(ed.xp === "intermediario") s += 1;
-      return s + (ed.nota || 0) / 10;
-    }
-
-    function sortEditors(list){
-      const mode = pickSort?.value || "best";
-      const copy = [...list];
-      if(mode === "fast"){
-        copy.sort((a,b)=> speedScore(b) - speedScore(a));
-        return copy;
-      }
-      copy.sort((a,b)=> (b.nota-a.nota));
-      return copy;
-    }
-
-    function xpLabel(xp){
-      if(xp === "avancado") return "Avançado";
-      if(xp === "intermediario") return "Intermediário";
-      return "Iniciante";
-    }
-
-    function renderEditorsForOrder(order){
-      const list = sortEditors(eligibleEditors(order));
-      editorsGrid.innerHTML = "";
-
-      if(!list.length){
-        editorsGrid.innerHTML = `<div class="card full"><h3>Nenhum editor disponível agora</h3><p>Tente novamente em alguns minutos.</p></div>`;
-        return;
-      }
-
-      list.forEach(ed=>{
-        const card = document.createElement("div");
-        card.className = "eCard";
-
-        const tags = (ed.tags || []).slice(0,3);
-        const tagHTML = tags.length ? tags.map(t=>`<span class="badge">${escapeHtml(t)}</span>`).join("") : "";
-
-        card.innerHTML = `
-          <div class="eTop">
-            <div>
-              <div class="eName">${escapeHtml(ed.name)}</div>
-              <div class="eMeta">${xpLabel(ed.xp)} • ${escapeHtml(ed.soft || "—")}</div>
-            </div>
-            <div class="rating"><span class="dot"></span><strong>${Number(ed.nota).toFixed(1)}</strong><span class="small">/10</span></div>
-          </div>
-
-          <div class="eBio">${escapeHtml(ed.bio || "")}</div>
-
-          <div class="eBadges">
-            <span class="badge pillBlue">Pacotes: ${ed.packs.length}</span>
-            ${ed.you ? `<span class="badge you">Você</span>` : ``}
-          </div>
-
-          ${tagHTML ? `<div class="eBadges" style="margin-top:8px">${tagHTML}</div>` : ``}
-
-          <button class="btn" type="button" style="margin-top:12px" onclick="selectEditor('${ed.id}')">Escolher este editor</button>
-        `;
-        editorsGrid.appendChild(card);
-      });
-    }
-
-    function selectEditor(editorId){
-      const localEd = getLocalEditorAsCandidate();
-      const all = [...DEMO_EDITORS, ...(localEd ? [localEd] : [])];
-      const ed = all.find(x => x.id === editorId);
-      if(!ed || !currentOrder) return;
-
-      alert(
-        `Editor selecionado: ${ed.name}\n`+
-        `Nota: ${Number(ed.nota).toFixed(1)}/10\n\n`+
-        `Pedido: ${currentOrder.title}\n`+
-        `Total: ${currentOrder.total}\n`+
-        `Entrega: ${currentOrder.eta}\n\n`+
-        `Próximo passo: checkout/finalização (vamos colocar depois).`
-      );
-
-      showScreen(screenClient);
-    }
-
-    function choosePackage(id){
-      const p = packages.find(x => x.id === id);
-      openPickEditor({
-        type: "package",
-        packageId: p.id,
-        title: `${p.id}. ${p.name}`,
-        total: brl(p.price),
-        eta: p.eta
-      }, screenClient);
-    }
-
-    // ===== Editor: LocalStorage + UI =====
-    const LS_EDITOR = "karamello_editor_v4";
-
-    const edAvailable = document.getElementById("edAvailable");
-    const edAvailText = document.getElementById("edAvailText");
-
-    const edCommission = document.getElementById("edCommission");
-    const edTierText = document.getElementById("edTierText");
-    const edRating = document.getElementById("edRating");
-
-    const edStarText = document.getElementById("edStarText");
-
-    const edXp = document.getElementById("edXp");
-    const edTier = document.getElementById("edTier");
-    const edBio = document.getElementById("edBio");
-    const edSoft = document.getElementById("edSoft");
-    const edWhats = document.getElementById("edWhats");
-    const edPortfolio = document.getElementById("edPortfolio");
-    const edTags = document.getElementById("edTags");
-    const edTagsPreview = document.getElementById("edTagsPreview");
-
-    const edSearchPkg = document.getElementById("edSearchPkg");
-    const edQuick = document.getElementById("edQuick");
-    const editorPackages = document.getElementById("editorPackages");
-    const edPkgCount = document.getElementById("edPkgCount");
-    const edPkgHint = document.getElementById("edPkgHint");
-
-    const edPublicPreview = document.getElementById("edPublicPreview");
-
-    function defaultEditor(){
-      return {
-        displayName: "",
-        available: false,
-        xp: "iniciante",
-
-        // ADM only (futuro)
-        commission: 25,     // Karamello 25%
-        editorShare: 75,    // Editor 75%
-        adminStar: false,   // só você mexe no ADM no futuro
-
-        rating: 8.7,
-        bio: "",
-        soft: "",
-        whats: "",
-        portfolio: "",
-        tags: "",
-        packages: []
-      };
-    }
-
-    function loadEditor(){
-      try{
-        const raw = localStorage.getItem(LS_EDITOR);
-        if(!raw) return null;
-        return JSON.parse(raw);
-      }catch(e){ return null; }
-    }
-
-    function saveEditor(ed){
-      localStorage.setItem(LS_EDITOR, JSON.stringify(ed));
-    }
-
-    // ✅ travado: Karamello 25% / Editor 75% (não aparece pro editor)
-    function setCommissionFixed(ed){
-      ed.commission = 25;
-      ed.editorShare = 75;
-      if(edTierText) edTierText.textContent = "(fixo)";
-      if(edCommission) edCommission.textContent = "25";
-    }
-
-    function parseTags(str){
-      return (str || "")
-        .split(",")
-        .map(s => s.trim())
-        .filter(Boolean)
-        .slice(0, 10);
-    }
-
-    function renderTagsPreview(tags){
-      edTagsPreview.innerHTML = "";
-      tags.forEach(t=>{
-        const el = document.createElement("span");
-        el.className = "tag blue";
-        el.textContent = t;
-        edTagsPreview.appendChild(el);
-      });
-    }
-
-    function applyEditorToUI(ed){
-      edAvailable.checked = !!ed.available;
-      edAvailText.textContent = ed.available ? "On" : "Off";
-
-      edXp.value = ed.xp || "iniciante";
-      if(edTier) edTier.value = "padrao";
-
-      edBio.value = ed.bio || "";
-      edSoft.value = ed.soft || "";
-      edWhats.value = ed.whats || "";
-      edPortfolio.value = ed.portfolio || "";
-      edTags.value = ed.tags || "";
-
-      edRating.textContent = (typeof ed.rating === "number" ? ed.rating.toFixed(1) : "8.7");
-
-      // ADM only (mantém interno, mas não mostra nada)
-      if(edStarText) edStarText.textContent = ed.adminStar ? "Sim" : "Não";
-      setCommissionFixed(ed);
-
-      renderTagsPreview(parseTags(ed.tags || ""));
-      renderEditorPackages(ed.packages || []);
-      renderPublicPreview(ed);
-    }
-
-    function renderPublicPreview(ed){
-      const name = (ed.displayName && ed.displayName.trim()) ? ed.displayName.trim() : (editorName.textContent || "Editor");
-      const tags = parseTags(ed.tags || "").slice(0,3);
-      const tagHTML = tags.length ? tags.map(t=>`<span class="badge">${escapeHtml(t)}</span>`).join("") : "";
-
-      edPublicPreview.innerHTML = `
-        <div class="eTop">
-          <div>
-            <div class="eName">${escapeHtml(name)}</div>
-            <div class="eMeta">${xpLabel(ed.xp)} • ${escapeHtml(ed.soft || "—")}</div>
-          </div>
-          <div class="rating"><span class="dot"></span><strong>${Number(ed.rating || 8.7).toFixed(1)}</strong><span class="small">/10</span></div>
-        </div>
-
-        <div class="eBio">${escapeHtml(ed.bio || "Escreva uma bio curta e forte para atrair clientes.")}</div>
-
-        <div class="eBadges">
-          <span class="badge pillBlue">Pacotes: ${(ed.packages||[]).length}</span>
-          <span class="badge ${ed.available ? "" : "off"}">${ed.available ? "Disponível" : "Indisponível"}</span>
-        </div>
-
-        ${tagHTML ? `<div class="eBadges" style="margin-top:8px">${tagHTML}</div>` : ``}
-      `;
-    }
-
-    function filteredPackagesForEditor(){
-      const q = (edSearchPkg.value || "").trim().toLowerCase();
-      const mode = edQuick.value || "all";
-
-      return packages.filter(p=>{
-        const name = (p.name || "").toLowerCase();
-        const isVideo = name.includes("vídeo") || name.includes("video") || name.includes("short") || name.includes("45") || name.includes("60");
-        const isFoto = name.includes("foto");
-
-        if(mode === "video" && !isVideo) return false;
-        if(mode === "foto" && !isFoto) return false;
-
-        if(!q) return true;
-        const blob = `${p.id} ${p.name} ${p.items.join(" ")}`.toLowerCase();
-        return blob.includes(q);
-      });
-    }
-
-    function renderEditorPackages(selectedIds){
-      const list = filteredPackagesForEditor();
-      editorPackages.innerHTML = "";
-
-      list.forEach(p=>{
-        const row = document.createElement("label");
-        row.className = "pkg-item";
-        const checked = (selectedIds || []).includes(p.id);
-
-        row.innerHTML = `
-          <input type="checkbox" data-ed-pkg="${p.id}" ${checked ? "checked" : ""}/>
-          <div style="flex:1">
-            <div class="pkg-title">${p.id}. ${escapeHtml(p.name)}</div>
-            <div class="pkg-sub">${p.items.map(escapeHtml).join(" • ")}</div>
-            <div class="pkg-meta">Entrega: ${escapeHtml(p.eta)} • Valor: ${brl(p.price)}</div>
-          </div>
-        `;
-        editorPackages.appendChild(row);
-      });
-
-      editorPackages.querySelectorAll('input[data-ed-pkg]').forEach(inp=>{
-        inp.addEventListener("change", ()=>{
-          updatePkgCount();
-          const ed = loadEditor() || defaultEditor();
-          ed.packages = getSelectedEditorPackageIds();
-          setCommissionFixed(ed);
-          saveEditor(ed);
-          renderPublicPreview(ed);
-        });
-      });
-
-      updatePkgCount();
-    }
-
-    function getSelectedEditorPackageIds(){
-      return Array.from(document.querySelectorAll('input[data-ed-pkg]'))
-        .filter(i => i.checked)
-        .map(i => parseInt(i.getAttribute("data-ed-pkg"), 10))
-        .filter(n => Number.isFinite(n));
-    }
-
-    function updatePkgCount(){
-      const ids = getSelectedEditorPackageIds();
-      edPkgCount.textContent = String(ids.length);
-      edPkgHint.textContent = ids.length
-        ? "Perfeito. Você já pode aparecer em pedidos compatíveis."
-        : "Dica: selecione pelo menos 1 pacote para aparecer para clientes.";
-    }
-
-    function saveEditorProfile(){
-      const ed = loadEditor() || defaultEditor();
-
-      ed.available = !!edAvailable.checked;
-      ed.xp = edXp.value || "iniciante";
-
-      // travado
-      setCommissionFixed(ed);
-
-      ed.bio = (edBio.value || "").trim();
-      ed.soft = (edSoft.value || "").trim();
-      ed.whats = (edWhats.value || "").trim();
-      ed.portfolio = (edPortfolio.value || "").trim();
-      ed.tags = (edTags.value || "").trim();
-
-      if(typeof ed.rating !== "number") ed.rating = 8.7;
-
-      saveEditor(ed);
-
-      renderTagsPreview(parseTags(ed.tags));
-      renderPublicPreview(ed);
-
-      edAvailText.textContent = ed.available ? "On" : "Off";
-      alert("Perfil do editor salvo ✅");
-    }
-
-    function saveEditorPackages(){
-      const ed = loadEditor() || defaultEditor();
-      ed.packages = getSelectedEditorPackageIds();
-      setCommissionFixed(ed);
-      saveEditor(ed);
-      renderPublicPreview(ed);
-      alert("Pacotes salvos ✅");
-    }
-
-    function selectAllEditorPackages(state){
-      document.querySelectorAll('input[data-ed-pkg]').forEach(i => i.checked = !!state);
-      updatePkgCount();
-      const ed = loadEditor() || defaultEditor();
-      ed.packages = getSelectedEditorPackageIds();
-      setCommissionFixed(ed);
-      saveEditor(ed);
-      renderPublicPreview(ed);
-    }
-
-    function resetEditor(){
-      localStorage.removeItem(LS_EDITOR);
-      const ed = defaultEditor();
-      applyEditorToUI(ed);
-      alert("Reset feito (demo) ✅");
-    }
-
-    // Eventos editor (live preview)
-    edAvailable.addEventListener("change", ()=>{
-      const ed = loadEditor() || defaultEditor();
-      ed.available = !!edAvailable.checked;
-      setCommissionFixed(ed);
-      saveEditor(ed);
-      edAvailText.textContent = ed.available ? "On" : "Off";
-      renderPublicPreview(ed);
-    });
-
-    edXp.addEventListener("change", ()=>{
-      const ed=loadEditor()||defaultEditor();
-      ed.xp=edXp.value;
-      setCommissionFixed(ed);
-      saveEditor(ed);
-      renderPublicPreview(ed);
-    });
-
-    edBio.addEventListener("input", ()=>{
-      const ed=loadEditor()||defaultEditor();
-      ed.bio=edBio.value;
-      setCommissionFixed(ed);
-      saveEditor(ed);
-      renderPublicPreview(ed);
-    });
-
-    edSoft.addEventListener("input", ()=>{
-      const ed=loadEditor()||defaultEditor();
-      ed.soft=edSoft.value;
-      setCommissionFixed(ed);
-      saveEditor(ed);
-      renderPublicPreview(ed);
-    });
-
-    edTags.addEventListener("input", ()=>{
-      const ed=loadEditor()||defaultEditor();
-      ed.tags=edTags.value;
-      setCommissionFixed(ed);
-      saveEditor(ed);
-      renderTagsPreview(parseTags(ed.tags));
-      renderPublicPreview(ed);
-    });
-
-    edSearchPkg.addEventListener("input", ()=>{
-      const ed = loadEditor() || defaultEditor();
-      renderEditorPackages(ed.packages || []);
-    });
-
-    edQuick.addEventListener("change", ()=>{
-      const ed = loadEditor() || defaultEditor();
-      renderEditorPackages(ed.packages || []);
-    });
-
-    function escapeHtml(str){
-      return String(str ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    // Boot
     window.addEventListener('DOMContentLoaded', ()=>{
+      // carrega dados salvos se tiver
+      paintClientUI();
+      paintEditorUI();
       calcCustom();
-      const ed = loadEditor() || defaultEditor();
-      applyEditorToUI(ed);
     });
   </script>
 </body>
