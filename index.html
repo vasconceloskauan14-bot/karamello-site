@@ -153,17 +153,14 @@
     }
     @media (max-width: 860px){ .hero{grid-template-columns:1fr} }
 
-    /* ✅ CARD OTIMIZADO (para não travar nos pacotes) */
+    /* ✅ CARD OTIMIZADO */
     .card{
       background: linear-gradient(180deg, rgba(11,18,38,.92), rgba(10,16,34,.88));
       border:1px solid var(--border);
       border-radius:18px;
       padding:18px;
-
-      /* sombra mais leve */
       box-shadow: 0 10px 26px rgba(0,0,0,.35);
 
-      /* performance */
       content-visibility: auto;
       contain-intrinsic-size: 320px 220px;
       contain: layout paint style;
@@ -309,7 +306,7 @@
       .orb{ filter: blur(16px); opacity:.28; }
     }
 
-    /* ===== Seleção de Editores (Cliente) ===== */
+    /* ===== B: Seleção de Editores (Cliente) ===== */
     .toolbar{
       display:flex; gap:10px; flex-wrap:wrap;
       align-items:center; justify-content:space-between;
@@ -332,6 +329,7 @@
     }
     @media (max-width: 980px){ .editor-cards{grid-template-columns: repeat(2, 1fr);} }
     @media (max-width: 620px){ .editor-cards{grid-template-columns: 1fr;} }
+
     .eCard{
       background: linear-gradient(180deg, rgba(11,18,38,.92), rgba(10,16,34,.88));
       border:1px solid rgba(255,255,255,.12);
@@ -339,12 +337,13 @@
       padding:14px;
       box-shadow: 0 10px 26px rgba(0,0,0,.35);
       content-visibility:auto;
-      contain-intrinsic-size: 320px 240px;
+      contain-intrinsic-size: 320px 260px;
       contain: layout paint style;
     }
     .eTop{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
     .eName{font-weight:900; color:#e5e7eb; font-size:1.05rem}
     .eMeta{color:rgba(229,231,235,.70); font-size:.92rem; margin-top:4px}
+
     .rating{
       display:inline-flex; align-items:center; gap:8px;
       padding:6px 10px;
@@ -361,6 +360,7 @@
       box-shadow: 0 0 12px rgba(56,189,248,.35);
     }
     .small{font-size:.9rem;color:rgba(229,231,235,.75);}
+
     .eBio{margin-top:10px;color:rgba(156,163,175,.95);line-height:1.35;font-size:.95rem;}
     .eBadges{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
     .badge{
@@ -373,11 +373,16 @@
     }
     .badge.pillBlue{border-color: rgba(124,58,237,.30);background: rgba(124,58,237,.10);}
     .badge.admin{border-color: rgba(255,60,80,.30);background: rgba(255,60,80,.10);}
+    .badge.you{border-color: rgba(56,189,248,.30);background: rgba(56,189,248,.10);}
+    .badge.off{opacity:.6}
+
+    /* ⭐ estrela premium admin (vermelha) */
     .admin-star{
       width:18px; height:18px; border-radius:50%;
       background: radial-gradient(circle at 35% 35%, #ff5a5a, #b0002f 70%);
       box-shadow: 0 0 18px rgba(255, 60, 80, .55), 0 0 0 3px rgba(255, 60, 80, .10);
       position:relative;
+      flex:0 0 auto;
     }
     .admin-star::after{
       content:"★";
@@ -387,6 +392,108 @@
       color:rgba(255,255,255,.92);
       text-shadow: 0 0 10px rgba(255,255,255,.35);
     }
+
+    /* ===== Editor Dashboard ===== */
+    .editor-grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:14px;
+      margin-top:14px;
+    }
+    @media (max-width: 860px){ .editor-grid{grid-template-columns:1fr;} }
+
+    .kpi{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+      margin-top:10px;
+    }
+    @media (max-width: 620px){ .kpi{grid-template-columns:1fr;} }
+    .kpi .k{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      border-radius:14px;
+      padding:10px;
+    }
+    .k .t{color:rgba(229,231,235,.72); font-size:.85rem}
+    .k .v{font-weight:900; margin-top:4px; font-size:1.05rem; color:#c7d2fe}
+    .k .v small{font-weight:700; color:rgba(229,231,235,.75); font-size:.9rem}
+
+    .row-inline{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    }
+
+    .switch{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      user-select:none;
+    }
+    .switch input{ display:none; }
+    .track{
+      width:44px; height:24px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      position:relative;
+      transition: .15s ease;
+      flex:0 0 auto;
+    }
+    .thumb{
+      width:18px; height:18px; border-radius:50%;
+      position:absolute; top:50%; transform: translateY(-50%);
+      left:3px;
+      background: rgba(229,231,235,.85);
+      transition: .15s ease;
+      box-shadow: 0 6px 16px rgba(0,0,0,.35);
+    }
+    .switch input:checked + .track{
+      background: rgba(56,189,248,.16);
+      border-color: rgba(56,189,248,.35);
+    }
+    .switch input:checked + .track .thumb{
+      left:23px;
+      background: rgba(56,189,248,.95);
+      box-shadow: 0 0 16px rgba(56,189,248,.35);
+    }
+    .switch .label{
+      color:#e5e7eb; font-weight:800; font-size:.95rem;
+    }
+    .switch .sub{
+      color:rgba(229,231,235,.72); font-size:.85rem; margin-top:2px;
+    }
+
+    .tags{
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin-top:8px;
+    }
+    .tag{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:#e5e7eb;
+      font-size:.88rem;
+    }
+    .tag.blue{
+      border-color: rgba(56,189,248,.25);
+      background: rgba(56,189,248,.08);
+    }
+
+    .pkg-list{display:grid; gap:10px; margin-top:10px;}
+    .pkg-item{
+      display:flex; gap:12px; align-items:flex-start;
+      padding:10px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+    }
+    .pkg-item input{ margin-top:3px; }
+    .pkg-title{ font-weight:900; color:#e5e7eb }
+    .pkg-sub{ color:rgba(229,231,235,.72); font-size:.92rem; margin-top:2px }
+    .pkg-meta{ color:rgba(156,163,175,.92); font-size:.9rem; margin-top:6px }
   </style>
 </head>
 
@@ -511,7 +618,7 @@
           <button class="btn secondary" style="margin-top:18px" type="button" onclick="goBackStart()">Voltar</button>
         </section>
 
-        <!-- ✅ NOVA TELA: ESCOLHA DO EDITOR (PARTE B) -->
+        <!-- ✅ B: TELA ESCOLHA DO EDITOR (CLIENTE) -->
         <section id="screenPickEditor" class="screen">
           <div class="section-title">Escolha seu Editor ⭐</div>
           <div class="pill">Você verá editores compatíveis com o seu pedido (nota 0–10 e selo premium do admin).</div>
@@ -522,7 +629,7 @@
               <span class="chip">Avaliação: 0–10</span>
             </div>
             <div class="right">
-              <select id="pickSort" style="min-width:220px">
+              <select id="pickSort" style="min-width:240px">
                 <option value="best">Melhores avaliados</option>
                 <option value="admin">Com estrela premium primeiro</option>
                 <option value="fast">Mais rápidos (simulado)</option>
@@ -535,13 +642,154 @@
           <button class="btn secondary" style="margin-top:18px" type="button" onclick="backToOrder()">Voltar</button>
         </section>
 
+        <!-- ✅ EDITOR DASHBOARD (CAPRICHADO) -->
         <section id="screenEditor" class="screen">
           <div class="section-title">Bem-vindo, <span id="editorName">Editor</span> 👋</div>
-          <div class="pill">Em breve você vai escolher em quais pacotes quer trabalhar.</div>
+          <div class="pill">Complete seu perfil, selecione pacotes e fique disponível para receber pedidos.</div>
 
-          <div class="card" style="margin-top:14px">
-            <h3>Próximos passos</h3>
-            <p>Na próxima etapa: perfil do editor + escolher pacotes + lista de editores para o cliente selecionar.</p>
+          <div class="editor-grid">
+            <!-- Perfil -->
+            <div class="card">
+              <div class="row-inline">
+                <h3 style="margin:0;color:#c7d2fe">Seu perfil (Editor)</h3>
+
+                <label class="switch" title="Aparecer para clientes">
+                  <input id="edAvailable" type="checkbox" />
+                  <span class="track"><span class="thumb"></span></span>
+                  <span>
+                    <div class="label">Disponível</div>
+                    <div class="sub" id="edAvailText">Off</div>
+                  </span>
+                </label>
+              </div>
+
+              <div class="kpi">
+                <div class="k">
+                  <div class="t">Comissão</div>
+                  <div class="v"><span id="edCommission">25</span>% <small id="edTierText">(padrão)</small></div>
+                </div>
+                <div class="k">
+                  <div class="t">Avaliação</div>
+                  <div class="v"><span id="edRating">8.7</span><small>/10</small></div>
+                </div>
+                <div class="k">
+                  <div class="t">Selo do admin</div>
+                  <div class="v" style="display:flex;align-items:center;gap:10px">
+                    <span id="edStarText">Não</span>
+                    <span id="edStarBadge" class="badge admin" style="display:none;align-items:center;gap:8px">
+                      <span class="admin-star"></span> Premium
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-grid" style="margin-top:12px">
+                <div class="mini">
+                  <label>Experiência</label>
+                  <select id="edXp">
+                    <option value="iniciante">Iniciante</option>
+                    <option value="intermediario">Intermediário</option>
+                    <option value="avancado">Avançado</option>
+                  </select>
+                </div>
+                <div class="mini">
+                  <label>Nível (comissão)</label>
+                  <select id="edTier">
+                    <option value="padrao">Padrão (25%)</option>
+                    <option value="top">Top (20%)</option>
+                    <option value="alerta">Atenção (30%)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field" style="margin-top:10px">
+                <label>Bio (curta e forte)</label>
+                <textarea id="edBio" placeholder="Ex: cortes rápidos + cor cinematográfica + áudio limpo. Especialista em Reels e TikTok."></textarea>
+              </div>
+
+              <div class="mini-grid" style="margin-top:10px">
+                <div class="mini">
+                  <label>Softwares</label>
+                  <input id="edSoft" placeholder="CapCut, Premiere, Lightroom..." />
+                </div>
+                <div class="mini">
+                  <label>WhatsApp (opcional)</label>
+                  <input id="edWhats" placeholder="(DDD) 99999-9999" />
+                </div>
+              </div>
+
+              <div class="field" style="margin-top:10px">
+                <label>Portfólio (link)</label>
+                <input id="edPortfolio" placeholder="https://..." />
+              </div>
+
+              <div class="field" style="margin-top:10px">
+                <label>Tags (separe por vírgula)</label>
+                <input id="edTags" placeholder="Reels, TikTok, Motion, Cor cine, Foto pro, Áudio..." />
+                <div id="edTagsPreview" class="tags"></div>
+              </div>
+
+              <div class="mini-grid" style="margin-top:12px">
+                <button class="btn" type="button" onclick="saveEditorProfile()">Salvar perfil</button>
+                <button class="btn secondary" type="button" onclick="resetEditor()">Reset (demo)</button>
+              </div>
+
+              <button class="btn secondary" type="button" onclick="toggleAdminStar()" style="margin-top:10px">
+                (Demo) Alternar estrela premium do admin ⭐
+              </button>
+
+              <div class="hint">
+                * Regras futuras: comissão variável por desempenho (Top 20%, padrão 25%, alerta 30%) + avaliações 0–10 + estrela premium manual do admin.
+              </div>
+            </div>
+
+            <!-- Pacotes -->
+            <div class="card">
+              <h3>Pacotes que você quer trabalhar</h3>
+              <p>Marque os pacotes que você aceita. Assim você só aparece em pedidos compatíveis.</p>
+
+              <div class="mini-grid" style="margin-top:10px">
+                <div class="mini">
+                  <label>Buscar pacote</label>
+                  <input id="edSearchPkg" placeholder="Ex: Foto, Short, 45s..." />
+                </div>
+                <div class="mini">
+                  <label>Atalhos</label>
+                  <select id="edQuick">
+                    <option value="all">—</option>
+                    <option value="video">Só Vídeo</option>
+                    <option value="foto">Só Foto</option>
+                    <option value="mix">Mix (Foto + Vídeo)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div id="editorPackages" class="pkg-list"></div>
+
+              <div class="total-box" style="margin-top:12px">
+                <div class="total-line">
+                  <span>Selecionados</span>
+                  <strong id="edPkgCount">0</strong>
+                </div>
+                <div class="total-sub" id="edPkgHint">Dica: selecione pelo menos 1 pacote para aparecer para clientes.</div>
+              </div>
+
+              <div class="mini-grid" style="margin-top:12px">
+                <button class="btn" type="button" onclick="saveEditorPackages()">Salvar pacotes</button>
+                <button class="btn secondary" type="button" onclick="selectAllEditorPackages(true)">Marcar todos</button>
+              </div>
+              <button class="btn secondary" type="button" onclick="selectAllEditorPackages(false)" style="margin-top:10px">Desmarcar todos</button>
+
+              <div class="hint">* Sem backend: isso é salvo no seu navegador (LocalStorage).</div>
+            </div>
+          </div>
+
+          <!-- Preview público -->
+          <div class="section-title" style="margin-top:22px">Como você aparece para o cliente</div>
+          <div class="pill">Esse é o card que vai aparecer na tela de escolha do editor.</div>
+
+          <div class="editor-cards" style="margin-top:12px">
+            <div class="eCard" id="edPublicPreview"></div>
           </div>
 
           <button class="btn secondary" style="margin-top:18px" type="button" onclick="goBackStart()">Voltar</button>
@@ -574,6 +822,7 @@
   </div>
 
   <script>
+    // ===== Base =====
     const overlay = document.getElementById('overlay');
     const modal = document.getElementById('modal');
     const titleCadastro = document.getElementById('titleCadastro');
@@ -615,10 +864,14 @@
 
     function showScreen(which){
       [screenStart, screenClient, screenPickEditor, screenEditor].forEach(s => s.classList.remove('show'));
-      setTimeout(() => { which.classList.add('show'); window.scrollTo({top:0, behavior:'smooth'}); }, 50);
+      setTimeout(() => {
+        which.classList.add('show');
+        window.scrollTo({top:0, behavior:'smooth'});
+      }, 50);
     }
     function goBackStart(){ showScreen(screenStart); }
 
+    // ===== Pacotes =====
     const packages = [
       {id:1,  name:'Starter Foto',     price:27.40, eta:'13h30', items:['1 Foto (básica)','Cor + nitidez']},
       {id:2,  name:'Duo Foto',         price:41.80, eta:'13h30', items:['2 Fotos (básicas)','Cor + nitidez']},
@@ -656,6 +909,7 @@
       });
     }
 
+    // ===== Personalizado =====
     const custFotos = document.getElementById('custFotos');
     const custVideos = document.getElementById('custVideos');
     const custPlataforma = document.getElementById('custPlataforma');
@@ -744,6 +998,19 @@
       custEntrega.textContent = calcEntrega(total, urgent);
     }
 
+    function confirmCustom(){
+      const fotos = Math.max(0, parseInt(custFotos.value||'0',10));
+      const vids  = Math.max(0, parseInt(custVideos.value||'0',10));
+
+      openPickEditor({
+        type: "custom",
+        title: `Personalizado • ${fotos} fotos • ${vids} vídeos`,
+        fotos, videos: vids,
+        total: custTotal.textContent,
+        eta: custEntrega.textContent
+      }, screenClient);
+    }
+
     [custFotos,custVideos,custPlataforma,custTipoVideo].forEach(el=>{
       el.addEventListener('input', calcCustom);
       el.addEventListener('change', calcCustom);
@@ -752,22 +1019,30 @@
       el.addEventListener('change', calcCustom);
     });
 
+    // ===== Cadastro (entra como cliente/editor) =====
     btnCadastrar.addEventListener('click', ()=>{
       const nome=(inNome.value||'').trim();
       const sobrenome=(inSobrenome.value||'').trim();
       if(!nome||!sobrenome){ alert('Preencha Nome e Sobrenome.'); return; }
       closeCadastro();
+
       if(role==='cliente'){
         clientName.textContent = nome;
         showScreen(screenClient);
         setTimeout(()=>{ renderPackages(); calcCustom(); },80);
       }else{
         editorName.textContent = nome;
+        // garante que o editor local use o nome real no card público
+        const ed = loadEditor() || defaultEditor();
+        ed.displayName = nome + " " + (sobrenome||"");
+        saveEditor(ed);
+        applyEditorToUI(ed);
+        renderEditorPackages(ed.packages || []);
         showScreen(screenEditor);
       }
     });
 
-    // ===== PARTE B: Seleção de Editores =====
+    // ===== B: Seleção de Editores (Cliente) =====
     const editorsGrid = document.getElementById('editorsGrid');
     const pickInfo = document.getElementById('pickInfo');
     const pickSort = document.getElementById('pickSort');
@@ -775,11 +1050,12 @@
     let currentOrder = null;
     let lastOrderScreen = null;
 
+    // Demos (teste)
     const DEMO_EDITORS = [
-      { id:"e1", name:"Nox Studio", xp:"avancado", soft:"CapCut, Premiere", bio:"Cortes rápidos + ritmo + look premium. Foco em Reels/TikTok.", nota:9.6, adminStar:true,  packs:[4,6,9,11,13,14,15] },
-      { id:"e2", name:"Luna Color",  xp:"intermediario", soft:"Lightroom, Photoshop", bio:"Foto pro: cor, nitidez, pele e fundo. Resultado clean e elegante.", nota:9.2, adminStar:false, packs:[1,2,3,5,8,10,12,15] },
-      { id:"e3", name:"Vibe Sync",   xp:"avancado", soft:"Premiere, After Effects", bio:"Motion e transições premium. Sincroniza com música e CTA.", nota:9.4, adminStar:false, packs:[4,6,7,9,11,13,14,15] },
-      { id:"e4", name:"CineLite",    xp:"intermediario", soft:"CapCut", bio:"Bom custo-benefício, entrega rápida, ajustes essenciais bem feitos.", nota:8.8, adminStar:false, packs:[1,2,4,6,7,8,10,11,13] },
+      { id:"e1", name:"Nox Studio", xp:"avancado", soft:"CapCut, Premiere", bio:"Cortes rápidos + ritmo + look premium. Foco em Reels/TikTok.", nota:9.6, adminStar:true,  packs:[4,6,9,11,13,14,15], available:true, tags:["Reels","Ritmo","Premium"] },
+      { id:"e2", name:"Luna Color",  xp:"intermediario", soft:"Lightroom, Photoshop", bio:"Foto pro: cor, nitidez, pele e fundo. Resultado clean e elegante.", nota:9.2, adminStar:false, packs:[1,2,3,5,8,10,12,15], available:true, tags:["Foto","Cor","Clean"] },
+      { id:"e3", name:"Vibe Sync",   xp:"avancado", soft:"Premiere, After Effects", bio:"Motion e transições premium. Sincroniza com música e CTA.", nota:9.4, adminStar:false, packs:[4,6,7,9,11,13,14,15], available:true, tags:["Motion","Música","CTA"] },
+      { id:"e4", name:"CineLite",    xp:"intermediario", soft:"CapCut", bio:"Bom custo-benefício, entrega rápida, ajustes essenciais bem feitos.", nota:8.8, adminStar:false, packs:[1,2,4,6,7,8,10,11,13], available:true, tags:["Rápido","Custo-benefício"] },
     ];
 
     function openPickEditor(order, fromScreen){
@@ -799,10 +1075,45 @@
       if(currentOrder) renderEditorsForOrder(currentOrder);
     });
 
+    function getLocalEditorAsCandidate(){
+      const ed = loadEditor();
+      if(!ed) return null;
+
+      const packs = Array.isArray(ed.packages) ? ed.packages : [];
+      const available = !!ed.available;
+      if(!packs.length) return null;
+      if(!available) return null;
+
+      const xp = ed.xp || "iniciante";
+      const nota = typeof ed.rating === "number" ? ed.rating : 8.7;
+
+      const tags = parseTags(ed.tags || "");
+      return {
+        id:"localEditor",
+        name: (ed.displayName && ed.displayName.trim()) ? ed.displayName.trim() : (editorName.textContent || "Editor"),
+        xp,
+        soft: (ed.soft || "—").trim(),
+        bio: (ed.bio || "Editor cadastrado no Karamello.").trim(),
+        nota,
+        adminStar: !!ed.adminStar,
+        packs,
+        available: true,
+        tags,
+        you: true,
+        speed: ed.speed || "normal"
+      };
+    }
+
     function eligibleEditors(order){
+      const localEd = getLocalEditorAsCandidate();
+      const all = [...DEMO_EDITORS, ...(localEd ? [localEd] : [])];
+
+      // Pacote pronto: filtra por quem aceita aquele pacote
       if(order.type === "package" && order.packageId){
-        return DEMO_EDITORS.filter(e => e.packs.includes(order.packageId));
+        return all.filter(e => e.available && e.packs.includes(order.packageId));
       }
+
+      // Personalizado: aproxima por família (foto/vídeo)
       if(order.type === "custom"){
         const hasVideos = (order.videos||0) > 0;
         const hasFotos  = (order.fotos||0) > 0;
@@ -815,10 +1126,24 @@
           ...(hasFotos ? photoFamily : [])
         ]);
 
-        const filtered = DEMO_EDITORS.filter(e => e.packs.some(pid => needed.has(pid)));
-        return filtered.length ? filtered : DEMO_EDITORS;
+        const filtered = all.filter(e => e.available && e.packs.some(pid => needed.has(pid)));
+        return filtered.length ? filtered : all.filter(e => e.available);
       }
-      return DEMO_EDITORS;
+
+      return all.filter(e => e.available);
+    }
+
+    function speedScore(ed){
+      // simulação simples: top + avancado + admin tende a ser "mais rápido"
+      let s = 0;
+      if(ed.xp === "avancado") s += 2;
+      else if(ed.xp === "intermediario") s += 1;
+
+      if(ed.adminStar) s += 1;
+      if(ed.speed === "rapido") s += 2;
+      if(ed.speed === "lento") s -= 1;
+
+      return s + (ed.nota || 0) / 10;
     }
 
     function sortEditors(list){
@@ -830,11 +1155,17 @@
         return copy;
       }
       if(mode === "fast"){
-        copy.sort((a,b)=> (b.nota-a.nota));
+        copy.sort((a,b)=> speedScore(b) - speedScore(a));
         return copy;
       }
       copy.sort((a,b)=> (b.nota-a.nota));
       return copy;
+    }
+
+    function xpLabel(xp){
+      if(xp === "avancado") return "Avançado";
+      if(xp === "intermediario") return "Intermediário";
+      return "Iniciante";
     }
 
     function renderEditorsForOrder(order){
@@ -850,23 +1181,27 @@
         const card = document.createElement("div");
         card.className = "eCard";
 
-        const xpLabel = ed.xp === "avancado" ? "Avançado" : ed.xp === "intermediario" ? "Intermediário" : "Iniciante";
+        const tags = (ed.tags || []).slice(0,3);
+        const tagHTML = tags.length ? tags.map(t=>`<span class="badge">${escapeHtml(t)}</span>`).join("") : "";
 
         card.innerHTML = `
           <div class="eTop">
             <div>
-              <div class="eName">${ed.name}</div>
-              <div class="eMeta">${xpLabel} • ${ed.soft || "—"}</div>
+              <div class="eName">${escapeHtml(ed.name)}</div>
+              <div class="eMeta">${xpLabel(ed.xp)} • ${escapeHtml(ed.soft || "—")}</div>
             </div>
             <div class="rating"><span class="dot"></span><strong>${Number(ed.nota).toFixed(1)}</strong><span class="small">/10</span></div>
           </div>
 
-          <div class="eBio">${ed.bio || ""}</div>
+          <div class="eBio">${escapeHtml(ed.bio || "")}</div>
 
           <div class="eBadges">
             <span class="badge pillBlue">Pacotes: ${ed.packs.length}</span>
+            ${ed.you ? `<span class="badge you">Você</span>` : ``}
             ${ed.adminStar ? `<span class="badge admin" style="display:inline-flex;align-items:center;gap:8px"><span class="admin-star"></span> Selo premium</span>` : ``}
           </div>
+
+          ${tagHTML ? `<div class="eBadges" style="margin-top:8px">${tagHTML}</div>` : ``}
 
           <button class="btn" type="button" style="margin-top:12px" onclick="selectEditor('${ed.id}')">Escolher este editor</button>
         `;
@@ -875,7 +1210,9 @@
     }
 
     function selectEditor(editorId){
-      const ed = DEMO_EDITORS.find(x => x.id === editorId);
+      const localEd = getLocalEditorAsCandidate();
+      const all = [...DEMO_EDITORS, ...(localEd ? [localEd] : [])];
+      const ed = all.find(x => x.id === editorId);
       if(!ed || !currentOrder) return;
 
       const extra = ed.adminStar ? " (⭐ selo premium)" : "";
@@ -888,11 +1225,9 @@
         `Próximo passo: checkout/finalização (vamos colocar depois).`
       );
 
-      // volta pro cliente por enquanto
       showScreen(screenClient);
     }
 
-    // ✅ AQUI: agora escolher pacote abre a seleção de editor
     function choosePackage(id){
       const p = packages.find(x => x.id === id);
       openPickEditor({
@@ -904,21 +1239,324 @@
       }, screenClient);
     }
 
-    // ✅ AQUI: personalizado também abre a seleção de editor
-    function confirmCustom(){
-      const fotos = Math.max(0, parseInt(custFotos.value||'0',10));
-      const vids  = Math.max(0, parseInt(custVideos.value||'0',10));
+    // ===== Editor: LocalStorage + UI =====
+    const LS_EDITOR = "karamello_editor_v3";
 
-      openPickEditor({
-        type: "custom",
-        title: `Personalizado • ${fotos} fotos • ${vids} vídeos`,
-        fotos, videos: vids,
-        total: custTotal.textContent,
-        eta: custEntrega.textContent
-      }, screenClient);
+    const edAvailable = document.getElementById("edAvailable");
+    const edAvailText = document.getElementById("edAvailText");
+
+    const edCommission = document.getElementById("edCommission");
+    const edTierText = document.getElementById("edTierText");
+    const edRating = document.getElementById("edRating");
+
+    const edStarText = document.getElementById("edStarText");
+    const edStarBadge = document.getElementById("edStarBadge");
+
+    const edXp = document.getElementById("edXp");
+    const edTier = document.getElementById("edTier");
+    const edBio = document.getElementById("edBio");
+    const edSoft = document.getElementById("edSoft");
+    const edWhats = document.getElementById("edWhats");
+    const edPortfolio = document.getElementById("edPortfolio");
+    const edTags = document.getElementById("edTags");
+    const edTagsPreview = document.getElementById("edTagsPreview");
+
+    const edSearchPkg = document.getElementById("edSearchPkg");
+    const edQuick = document.getElementById("edQuick");
+    const editorPackages = document.getElementById("editorPackages");
+    const edPkgCount = document.getElementById("edPkgCount");
+    const edPkgHint = document.getElementById("edPkgHint");
+
+    const edPublicPreview = document.getElementById("edPublicPreview");
+
+    function defaultEditor(){
+      return {
+        displayName: "",
+        available: false,
+        xp: "iniciante",
+        tier: "padrao",
+        commission: 25,
+        rating: 8.7,
+        adminStar: false,
+        bio: "",
+        soft: "",
+        whats: "",
+        portfolio: "",
+        tags: "",
+        speed: "normal",
+        packages: []
+      };
     }
 
-    window.addEventListener('DOMContentLoaded', ()=>{ calcCustom(); });
+    function loadEditor(){
+      try{
+        const raw = localStorage.getItem(LS_EDITOR);
+        if(!raw) return null;
+        return JSON.parse(raw);
+      }catch(e){ return null; }
+    }
+
+    function saveEditor(ed){
+      localStorage.setItem(LS_EDITOR, JSON.stringify(ed));
+    }
+
+    function setCommissionByTier(ed){
+      if(ed.tier === "top"){
+        ed.commission = 20; edTierText.textContent = "(top)";
+      }else if(ed.tier === "alerta"){
+        ed.commission = 30; edTierText.textContent = "(alerta)";
+      }else{
+        ed.commission = 25; edTierText.textContent = "(padrão)";
+      }
+      edCommission.textContent = String(ed.commission);
+    }
+
+    function parseTags(str){
+      return (str || "")
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean)
+        .slice(0, 10);
+    }
+
+    function renderTagsPreview(tags){
+      edTagsPreview.innerHTML = "";
+      tags.forEach(t=>{
+        const el = document.createElement("span");
+        el.className = "tag blue";
+        el.textContent = t;
+        edTagsPreview.appendChild(el);
+      });
+    }
+
+    function applyEditorToUI(ed){
+      edAvailable.checked = !!ed.available;
+      edAvailText.textContent = ed.available ? "On" : "Off";
+
+      edXp.value = ed.xp || "iniciante";
+      edTier.value = ed.tier || "padrao";
+
+      edBio.value = ed.bio || "";
+      edSoft.value = ed.soft || "";
+      edWhats.value = ed.whats || "";
+      edPortfolio.value = ed.portfolio || "";
+      edTags.value = ed.tags || "";
+
+      edRating.textContent = (typeof ed.rating === "number" ? ed.rating.toFixed(1) : "8.7");
+
+      if(ed.adminStar){
+        edStarText.textContent = "Sim";
+        edStarBadge.style.display = "inline-flex";
+      }else{
+        edStarText.textContent = "Não";
+        edStarBadge.style.display = "none";
+      }
+
+      setCommissionByTier(ed);
+      renderTagsPreview(parseTags(ed.tags || ""));
+      renderEditorPackages(ed.packages || []);
+      renderPublicPreview(ed);
+    }
+
+    function renderPublicPreview(ed){
+      const name = (ed.displayName && ed.displayName.trim()) ? ed.displayName.trim() : (editorName.textContent || "Editor");
+      const tags = parseTags(ed.tags || "").slice(0,3);
+      const tagHTML = tags.length ? tags.map(t=>`<span class="badge">${escapeHtml(t)}</span>`).join("") : "";
+
+      edPublicPreview.innerHTML = `
+        <div class="eTop">
+          <div>
+            <div class="eName">${escapeHtml(name)}</div>
+            <div class="eMeta">${xpLabel(ed.xp)} • ${escapeHtml(ed.soft || "—")}</div>
+          </div>
+          <div class="rating"><span class="dot"></span><strong>${Number(ed.rating || 8.7).toFixed(1)}</strong><span class="small">/10</span></div>
+        </div>
+
+        <div class="eBio">${escapeHtml(ed.bio || "Escreva uma bio curta e forte para atrair clientes.")}</div>
+
+        <div class="eBadges">
+          <span class="badge pillBlue">Pacotes: ${(ed.packages||[]).length}</span>
+          <span class="badge ${ed.available ? "" : "off"}">${ed.available ? "Disponível" : "Indisponível"}</span>
+          ${ed.adminStar ? `<span class="badge admin" style="display:inline-flex;align-items:center;gap:8px"><span class="admin-star"></span> Selo premium</span>` : ``}
+        </div>
+
+        ${tagHTML ? `<div class="eBadges" style="margin-top:8px">${tagHTML}</div>` : ``}
+      `;
+    }
+
+    function filteredPackagesForEditor(){
+      const q = (edSearchPkg.value || "").trim().toLowerCase();
+      const mode = edQuick.value || "all";
+
+      return packages.filter(p=>{
+        const name = (p.name || "").toLowerCase();
+        const isVideo = name.includes("vídeo") || name.includes("video") || name.includes("short") || name.includes("45") || name.includes("60");
+        const isFoto = name.includes("foto");
+
+        if(mode === "video" && !isVideo) return false;
+        if(mode === "foto" && !isFoto) return false;
+        if(mode === "mix"){
+          // mix: deixa passar tudo
+        }
+
+        if(!q) return true;
+        const blob = `${p.id} ${p.name} ${p.items.join(" ")}`.toLowerCase();
+        return blob.includes(q);
+      });
+    }
+
+    function renderEditorPackages(selectedIds){
+      const list = filteredPackagesForEditor();
+      editorPackages.innerHTML = "";
+
+      list.forEach(p=>{
+        const row = document.createElement("label");
+        row.className = "pkg-item";
+        const checked = (selectedIds || []).includes(p.id);
+
+        row.innerHTML = `
+          <input type="checkbox" data-ed-pkg="${p.id}" ${checked ? "checked" : ""}/>
+          <div style="flex:1">
+            <div class="pkg-title">${p.id}. ${escapeHtml(p.name)}</div>
+            <div class="pkg-sub">${p.items.map(escapeHtml).join(" • ")}</div>
+            <div class="pkg-meta">Entrega: ${escapeHtml(p.eta)} • Valor: ${brl(p.price)}</div>
+          </div>
+        `;
+        editorPackages.appendChild(row);
+      });
+
+      editorPackages.querySelectorAll('input[data-ed-pkg]').forEach(inp=>{
+        inp.addEventListener("change", ()=>{
+          updatePkgCount();
+          const ed = loadEditor() || defaultEditor();
+          ed.packages = getSelectedEditorPackageIds();
+          saveEditor(ed);
+          renderPublicPreview(ed);
+        });
+      });
+
+      updatePkgCount();
+    }
+
+    function getSelectedEditorPackageIds(){
+      return Array.from(document.querySelectorAll('input[data-ed-pkg]'))
+        .filter(i => i.checked)
+        .map(i => parseInt(i.getAttribute("data-ed-pkg"), 10))
+        .filter(n => Number.isFinite(n));
+    }
+
+    function updatePkgCount(){
+      const ids = getSelectedEditorPackageIds();
+      edPkgCount.textContent = String(ids.length);
+      edPkgHint.textContent = ids.length
+        ? "Perfeito. Você já pode aparecer em pedidos compatíveis."
+        : "Dica: selecione pelo menos 1 pacote para aparecer para clientes.";
+    }
+
+    function saveEditorProfile(){
+      const ed = loadEditor() || defaultEditor();
+
+      ed.available = !!edAvailable.checked;
+      ed.xp = edXp.value || "iniciante";
+      ed.tier = edTier.value || "padrao";
+      setCommissionByTier(ed);
+
+      ed.bio = (edBio.value || "").trim();
+      ed.soft = (edSoft.value || "").trim();
+      ed.whats = (edWhats.value || "").trim();
+      ed.portfolio = (edPortfolio.value || "").trim();
+      ed.tags = (edTags.value || "").trim();
+
+      // rating demo: mantém se existir
+      if(typeof ed.rating !== "number") ed.rating = 8.7;
+
+      saveEditor(ed);
+
+      renderTagsPreview(parseTags(ed.tags));
+      renderPublicPreview(ed);
+
+      edAvailText.textContent = ed.available ? "On" : "Off";
+      alert("Perfil do editor salvo ✅");
+    }
+
+    function saveEditorPackages(){
+      const ed = loadEditor() || defaultEditor();
+      ed.packages = getSelectedEditorPackageIds();
+      saveEditor(ed);
+      renderPublicPreview(ed);
+      alert("Pacotes salvos ✅");
+    }
+
+    function selectAllEditorPackages(state){
+      document.querySelectorAll('input[data-ed-pkg]').forEach(i => i.checked = !!state);
+      updatePkgCount();
+      const ed = loadEditor() || defaultEditor();
+      ed.packages = getSelectedEditorPackageIds();
+      saveEditor(ed);
+      renderPublicPreview(ed);
+    }
+
+    function toggleAdminStar(){
+      const ed = loadEditor() || defaultEditor();
+      ed.adminStar = !ed.adminStar;
+      saveEditor(ed);
+      applyEditorToUI(ed);
+    }
+
+    function resetEditor(){
+      localStorage.removeItem(LS_EDITOR);
+      const ed = defaultEditor();
+      applyEditorToUI(ed);
+      alert("Reset feito (demo) ✅");
+    }
+
+    // Eventos editor (live preview)
+    edAvailable.addEventListener("change", ()=>{
+      const ed = loadEditor() || defaultEditor();
+      ed.available = !!edAvailable.checked;
+      saveEditor(ed);
+      edAvailText.textContent = ed.available ? "On" : "Off";
+      renderPublicPreview(ed);
+    });
+
+    edXp.addEventListener("change", ()=>{ const ed=loadEditor()||defaultEditor(); ed.xp=edXp.value; saveEditor(ed); renderPublicPreview(ed); });
+    edTier.addEventListener("change", ()=>{ const ed=loadEditor()||defaultEditor(); ed.tier=edTier.value; setCommissionByTier(ed); saveEditor(ed); });
+
+    edBio.addEventListener("input", ()=>{ const ed=loadEditor()||defaultEditor(); ed.bio=edBio.value; saveEditor(ed); renderPublicPreview(ed); });
+    edSoft.addEventListener("input", ()=>{ const ed=loadEditor()||defaultEditor(); ed.soft=edSoft.value; saveEditor(ed); renderPublicPreview(ed); });
+    edTags.addEventListener("input", ()=>{
+      const ed=loadEditor()||defaultEditor();
+      ed.tags=edTags.value;
+      saveEditor(ed);
+      renderTagsPreview(parseTags(ed.tags));
+      renderPublicPreview(ed);
+    });
+
+    edSearchPkg.addEventListener("input", ()=>{
+      const ed = loadEditor() || defaultEditor();
+      renderEditorPackages(ed.packages || []);
+    });
+    edQuick.addEventListener("change", ()=>{
+      const ed = loadEditor() || defaultEditor();
+      renderEditorPackages(ed.packages || []);
+    });
+
+    function escapeHtml(str){
+      return String(str ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    // Boot
+    window.addEventListener('DOMContentLoaded', ()=>{
+      calcCustom();
+
+      const ed = loadEditor() || defaultEditor();
+      applyEditorToUI(ed);
+    });
   </script>
 </body>
 </html>
