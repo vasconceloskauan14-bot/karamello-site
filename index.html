@@ -100,9 +100,6 @@
       to{ transform: translate3d(-80px, -60px, 0); }
     }
 
-    /* ✅ Pausar animações quando a aba não está visível */
-    .paused .orb, .paused .sparkles { animation-play-state: paused !important; }
-
     /* ✅ Entrada */
     .page{
       min-height:100vh;
@@ -303,55 +300,6 @@
     .total-line{display:flex;justify-content:space-between;align-items:center}
     .total-line strong{font-size:1.25rem;color:var(--accent3)}
     .total-sub{margin-top:6px;color:var(--muted);font-size:.95rem}
-    .total-sub strong{color:#e5e7eb}
-
-    /* ✅ NOVO: Tempo de entrega (vertical, azul/roxo/ciano) */
-    .deliveryList{display:grid; gap:10px; margin-top:8px;}
-    .dOpt{
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      padding:10px 12px;
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      cursor:pointer;
-      user-select:none;
-      transition: transform .12s ease, border-color .12s ease, background .12s ease;
-    }
-    .dOpt:hover{transform: translateY(-1px); border-color: rgba(56,189,248,.30);}
-    .dOpt input{margin-top:4px; width:auto;}
-    .dOpt .t{font-weight:900; color:#e5e7eb;}
-    .dOpt .s{margin-top:2px; color: rgba(229,231,235,.74); font-size:.92rem;}
-    .dOpt .chip{
-      margin-left:auto;
-      padding:6px 10px;
-      border-radius:999px;
-      font-weight:900;
-      border:1px solid rgba(56,189,248,.26);
-      background: rgba(56,189,248,.10);
-      color:#e5e7eb;
-      white-space:nowrap;
-    }
-    .dOpt.checked{
-      border-color: rgba(56,189,248,.42);
-      background:
-        linear-gradient(90deg, rgba(124,58,237,.18), rgba(37,99,235,.16), rgba(56,189,248,.10)),
-        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      box-shadow: 0 10px 24px rgba(0,0,0,.28), 0 0 0 4px rgba(56,189,248,.05);
-    }
-    .rushLine{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-top:8px;
-      padding-top:8px;
-      border-top:1px dashed rgba(255,255,255,.12);
-      color: rgba(229,231,235,.80);
-      font-size:.95rem;
-    }
-    .rushLine strong{color: var(--accent3);}
 
     footer{padding:18px;color:rgba(229,231,235,.7);text-align:center;}
 
@@ -754,66 +702,6 @@
                 </div>
               </div>
 
-              <!-- ✅ NOVO: Escolha de prazo (vertical, no estilo do site) -->
-              <div class="field" style="margin-top:12px">
-                <label>Tempo de entrega</label>
-                <div id="custPrazoList" class="deliveryList">
-                  <label class="dOpt checked">
-                    <input type="radio" name="custPrazo" value="auto" checked>
-                    <div>
-                      <div class="t">Automático (recomendado)</div>
-                      <div class="s">O site calcula pelo tamanho do pedido</div>
-                    </div>
-                    <span class="chip" id="custAutoChip">—</span>
-                  </label>
-
-                  <label class="dOpt">
-                    <input type="radio" name="custPrazo" value="13h30">
-                    <div>
-                      <div class="t">Express</div>
-                      <div class="s">Prioridade máxima</div>
-                    </div>
-                    <span class="chip">13h30</span>
-                  </label>
-
-                  <label class="dOpt">
-                    <input type="radio" name="custPrazo" value="14h30">
-                    <div>
-                      <div class="t">Rápido</div>
-                      <div class="s">Entrega acelerada</div>
-                    </div>
-                    <span class="chip">14h30</span>
-                  </label>
-
-                  <label class="dOpt">
-                    <input type="radio" name="custPrazo" value="18h00">
-                    <div>
-                      <div class="t">Padrão</div>
-                      <div class="s">Bom custo-benefício</div>
-                    </div>
-                    <span class="chip">18h00</span>
-                  </label>
-
-                  <label class="dOpt">
-                    <input type="radio" name="custPrazo" value="24h">
-                    <div>
-                      <div class="t">Sem pressa</div>
-                      <div class="s">Entrega tranquila</div>
-                    </div>
-                    <span class="chip">24h</span>
-                  </label>
-
-                  <label class="dOpt">
-                    <input type="radio" name="custPrazo" value="48h">
-                    <div>
-                      <div class="t">Flex</div>
-                      <div class="s">Entrega mais longa</div>
-                    </div>
-                    <span class="chip">48h</span>
-                  </label>
-                </div>
-              </div>
-
               <div class="checks" style="margin-top:10px">
                 <label class="chk"><input data-custom-opt id="optCorCine" type="checkbox" /> Cor cinematográfica (vídeos)</label>
                 <label class="chk"><input data-custom-opt id="optLegenda" type="checkbox" /> Legendas (vídeos)</label>
@@ -837,6 +725,7 @@
                 <label class="chk"><input data-custom-opt id="optTexto" type="checkbox" /> Texto/arte simples (fotos)</label>
 
                 <label class="chk"><input data-custom-opt id="optThumbnail" type="checkbox" /> Thumbnail (capa) (1 unidade)</label>
+                <label class="chk"><input data-custom-opt id="optUrgente" type="checkbox" /> Prioridade (entrega mais rápida)</label>
               </div>
 
               <div class="field" style="margin-top:12px">
@@ -846,12 +735,7 @@
 
               <div class="total-box">
                 <div class="total-line"><span>Valor total</span><strong id="custTotal">R$ 0</strong></div>
-                <div class="total-sub">Entrega: <strong id="custEntrega">13h30</strong></div>
-
-                <div class="rushLine" id="custRushWrap" style="display:none">
-                  <span>Taxa de urgência</span>
-                  <strong id="custRushFee">R$ 0</strong>
-                </div>
+                <div class="total-sub">Entrega estimada: <strong id="custEntrega">13h30</strong> (mínimo)</div>
               </div>
 
               <button class="btn" type="button" onclick="confirmCustom()">Continuar com o personalizado</button>
@@ -870,7 +754,7 @@
           <div class="toolbar">
             <div class="left">
               <span class="chip" id="pickInfo">Pedido: —</span>
-              <span class="chip">Avaliação: ⭐⭐⭐⭐⭐</span>
+              <span class="chip">Avaliação inicial: 5.0/10</span>
             </div>
             <div class="right">
               <select id="pickSort" style="min-width:240px">
@@ -923,11 +807,11 @@
                 <div class="hint" style="margin-top:0">* Foto opcional (salva no navegador).</div>
               </div>
 
-              <!-- KPIs úteis (sem comissão/admin aqui) -->
+              <!-- KPIs úteis -->
               <div class="kpi">
                 <div class="k">
                   <div class="t">Avaliação</div>
-                  <div class="v"><span id="edRatingTxt">5.0</span><small>/5</small></div>
+                  <div class="v"><span id="edRatingTxt">5.0</span><small>/10</small></div>
                   <div class="stars" id="edStarsRow" style="margin-top:6px"></div>
                 </div>
                 <div class="k">
@@ -1011,6 +895,7 @@
 
               <div id="editorPackages" class="pkg-list"></div>
 
+              <!-- ✅ BOTÃO SETA -->
               <div class="moreRow">
                 <button class="btn secondary small" id="toggleMorePkgs" type="button" onclick="toggleMorePackages()">
                   Ver mais pacotes ↓
@@ -1085,7 +970,9 @@
     }
     function brl(v){ return Number(v||0).toLocaleString('pt-BR', {style:'currency', currency:'BRL'}); }
 
-    function renderStarsHTML(value, max=5){
+    const STARS_MAX = 10; // ✅ agora vai até 10 (todo mundo começa em 5)
+
+    function renderStarsHTML(value, max=STARS_MAX){
       const v = Math.max(0, Math.min(max, Number(value||0)));
       const full = Math.round(v);
       let html = "";
@@ -1126,11 +1013,6 @@
     function lsSet(key, value){
       try{ localStorage.setItem(key, JSON.stringify(value)); }catch(e){}
     }
-
-    // ✅ Pausa animações quando aba estiver em background
-    document.addEventListener("visibilitychange", ()=>{
-      document.documentElement.classList.toggle("paused", document.hidden);
-    });
 
     // ===== Base (screens) =====
     const overlay = document.getElementById('overlay');
@@ -1177,9 +1059,7 @@
       [screenStart, screenClientProfile, screenClient, screenPickEditor, screenEditor].forEach(s => s.classList.remove('show'));
       setTimeout(() => {
         which.classList.add('show');
-        const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if(reduce) window.scrollTo(0,0);
-        else window.scrollTo({top:0, behavior:'auto'}); // ✅ menos jank que smooth
+        window.scrollTo({top:0, behavior:'smooth'});
       }, 50);
     }
     function goBackStart(){ showScreen(screenStart); }
@@ -1210,7 +1090,6 @@
     function renderPackages(){
       const grid = document.getElementById('packagesGrid');
       grid.innerHTML = '';
-      const frag = document.createDocumentFragment(); // ✅ evita reflow
       packages.forEach(p => {
         const card = document.createElement('div');
         card.className = 'card';
@@ -1221,9 +1100,8 @@
           <ul>${p.items.map(i=>`<li>${escapeHtml(i)}</li>`).join('')}</ul>
           <button class="btn" type="button" onclick="choosePackage(${p.id})">Escolher pacote</button>
         `;
-        frag.appendChild(card);
+        grid.appendChild(card);
       });
-      grid.appendChild(frag);
     }
 
     // ===== CLIENTE (perfil) =====
@@ -1256,16 +1134,20 @@
         mainPlatform:"instagram",
         about:""
       };
+
       clientData.first = nome || clientData.first;
-      clientData.last = sobrenome || clientData.last;
-      clientData.full = full || clientData.full;
-      clientData.stars = 5.0;
+      clientData.last  = sobrenome || clientData.last;
+      clientData.full  = full || clientData.full;
+
+      // ✅ começa em 5, mas não reseta se já tiver outra nota
+      if(typeof clientData.stars !== "number") clientData.stars = 5.0;
+
       lsSet(LS_CLIENT, clientData);
     }
 
     function paintClientProfile(){
       clientProfileName.textContent = clientData?.full || "Cliente";
-      clientStars.innerHTML = renderStarsHTML(5.0, 5);
+      clientStars.innerHTML = renderStarsHTML(clientData?.stars ?? 5.0);
 
       setAvatar(clientAvatarBox, clientData?.photo, (clientData?.full||"C")[0]);
       clWhats.value = clientData?.whats || "";
@@ -1277,7 +1159,7 @@
 
     function paintClientTop(){
       clientName.textContent = clientData?.first || "Cliente";
-      clientStarsTop.innerHTML = renderStarsHTML(5.0, 5);
+      clientStarsTop.innerHTML = renderStarsHTML(clientData?.stars ?? 5.0);
       setAvatar(clientAvatarTop, clientData?.photo, (clientData?.full||"C")[0]);
     }
 
@@ -1305,12 +1187,15 @@
       clientData.niche = (clNiche.value||"").trim();
       clientData.mainPlatform = clMainPlatform.value || "instagram";
       clientData.about = (clAbout.value||"").trim();
-      clientData.stars = 5.0;
+
+      // ✅ NÃO reseta estrelas aqui
+      if(typeof clientData.stars !== "number") clientData.stars = 5.0;
+
       lsSet(LS_CLIENT, clientData);
 
       paintClientTop();
       showScreen(screenClient);
-      setTimeout(()=>{ renderPackages(); scheduleCalc(); }, 80);
+      setTimeout(()=>{ renderPackages(); calcCustom(); }, 80);
     }
 
     // ===== CUSTOM (Cliente) =====
@@ -1320,10 +1205,6 @@
     const custTipoVideo = document.getElementById('custTipoVideo');
     const custTotal = document.getElementById('custTotal');
     const custEntrega = document.getElementById('custEntrega');
-
-    const custAutoChip = document.getElementById('custAutoChip');
-    const custRushWrap = document.getElementById('custRushWrap');
-    const custRushFee  = document.getElementById('custRushFee');
 
     const PRICES = {
       foto: 21.40,
@@ -1360,43 +1241,24 @@
       { id:'optTexto',      kind:'photo', price:9.40  },
 
       { id:'optThumbnail',  kind:'order', price:19.90 },
+      { id:'optUrgente',    kind:'order', price:29.90 },
     ];
 
-    function etaRank(eta){
-      const map = { "13h30":0, "14h30":1, "18h00":2, "24h":3, "48h":4 };
-      return (eta in map) ? map[eta] : 99;
-    }
+    function calcEntrega(total, urgent){
+      let eta = '13h30';
+      if(total <= 120) eta = '13h30';
+      else if(total <= 250) eta = '14h30';
+      else if(total <= 400) eta = '18h00';
+      else if(total <= 700) eta = '24h';
+      else eta = '48h';
 
-    function calcEntrega(total){
-      if(total <= 120) return '13h30';
-      if(total <= 250) return '14h30';
-      if(total <= 400) return '18h00';
-      if(total <= 700) return '24h';
-      return '48h';
-    }
-
-    // ✅ throttle de cálculo (evita travar quando marca várias opções)
-    let calcQueued = false;
-    function scheduleCalc(){
-      if(calcQueued) return;
-      calcQueued = true;
-      requestAnimationFrame(()=>{ calcQueued = false; calcCustom(); });
-    }
-
-    function paintPrazoChecked(){
-      const list = document.getElementById("custPrazoList");
-      if(!list) return;
-      list.querySelectorAll(".dOpt").forEach(opt => opt.classList.remove("checked"));
-      const checked = list.querySelector('input[name="custPrazo"]:checked');
-      if(checked){
-        const lab = checked.closest(".dOpt");
-        if(lab) lab.classList.add("checked");
+      if(urgent){
+        if(eta === '48h') eta = '24h';
+        else if(eta === '24h') eta = '18h00';
+        else if(eta === '18h00') eta = '14h30';
+        else eta = '13h30';
       }
-    }
-
-    function getSelectedPrazo(){
-      const el = document.querySelector('input[name="custPrazo"]:checked');
-      return el ? el.value : "auto";
+      return eta;
     }
 
     function calcCustom(){
@@ -1422,52 +1284,19 @@
 
       const rawTotal = (fotos*(PRICES.foto+extraPhoto)) + (vids*(unitVideo*mult+extraVideo)) + extraOrder;
       const jitter = (fotos+vids)>0 ? (0.30 + ((fotos*7 + vids*11)%7)*0.10) : 0;
-      const baseTotal = Math.max(0, rawTotal + jitter);
-
-      // base ETA pelo tamanho do pedido
-      const baseEta = calcEntrega(baseTotal);
-      custAutoChip.textContent = baseEta;
-
-      // escolha do cliente
-      const selected = getSelectedPrazo();
-      const chosenEta = (selected === "auto") ? baseEta : selected;
-
-      // taxa de urgência se escolher mais rápido que o recomendado
-      const baseR = etaRank(baseEta);
-      const chosenR = etaRank(chosenEta);
-
-      let rate = 0;
-      if(chosenR < baseR){
-        if(chosenEta === "13h30") rate = 0.25;
-        else if(chosenEta === "14h30") rate = 0.15;
-        else if(chosenEta === "18h00") rate = 0.08;
-      }
-
-      const fee = Math.max(0, baseTotal * rate);
-      const total = baseTotal + fee;
+      const total = Math.max(0, rawTotal + jitter);
 
       custTotal.textContent = brl(total);
-      custEntrega.textContent = chosenEta;
-
-      if(fee > 0.01){
-        custRushWrap.style.display = "flex";
-        custRushFee.textContent = brl(fee);
-      }else{
-        custRushWrap.style.display = "none";
-      }
-
-      paintPrazoChecked();
+      const urgent = document.getElementById('optUrgente')?.checked || false;
+      custEntrega.textContent = calcEntrega(total, urgent);
     }
 
     [custFotos,custVideos,custPlataforma,custTipoVideo].forEach(el=>{
-      el.addEventListener('input', scheduleCalc);
-      el.addEventListener('change', scheduleCalc);
+      el.addEventListener('input', calcCustom);
+      el.addEventListener('change', calcCustom);
     });
     Array.from(document.querySelectorAll('[data-custom-opt]')).forEach(el=>{
-      el.addEventListener('change', scheduleCalc);
-    });
-    Array.from(document.querySelectorAll('input[name="custPrazo"]')).forEach(el=>{
-      el.addEventListener('change', scheduleCalc);
+      el.addEventListener('change', calcCustom);
     });
 
     // ===== Pedido -> Escolher Editor =====
@@ -1559,10 +1388,14 @@
         status:"Novo",
         packages:[]
       };
+
       editorData.first = nome || editorData.first;
-      editorData.last = sobrenome || editorData.last;
-      editorData.full = full || editorData.full;
-      editorData.stars = 5.0;
+      editorData.last  = sobrenome || editorData.last;
+      editorData.full  = full || editorData.full;
+
+      // ✅ começa em 5, mas não reseta se já tiver outra nota
+      if(typeof editorData.stars !== "number") editorData.stars = 5.0;
+
       lsSet(LS_EDITOR, editorData);
     }
 
@@ -1570,9 +1403,10 @@
       editorName.textContent = editorData?.first || "Editor";
       editorFullName.textContent = editorData?.full || "Editor";
 
-      editorStars.innerHTML = renderStarsHTML(5.0,5);
-      edRatingTxt.textContent = "5.0";
-      edStarsRow.innerHTML = renderStarsHTML(5.0,5);
+      const s = (editorData?.stars ?? 5.0);
+      editorStars.innerHTML = renderStarsHTML(s);
+      edRatingTxt.textContent = s.toFixed(1);
+      edStarsRow.innerHTML = renderStarsHTML(s);
 
       edDone.textContent = String(editorData?.done || 0);
       edStatus.textContent = editorData?.status || "Novo";
@@ -1622,7 +1456,9 @@
       const raw = (edTags.value||"").split(",").map(s=>s.trim()).filter(Boolean).slice(0,12);
       edTagsPreview.innerHTML = raw.map(t=>`<span class="tag blue">${escapeHtml(t)}</span>`).join("");
     }
-    edTags?.addEventListener("input", ()=>{ renderTagsPreview(); });
+    edTags?.addEventListener("input", ()=>{
+      renderTagsPreview();
+    });
 
     function saveEditorProfile(){
       editorData.xp = edXp.value || "iniciante";
@@ -1631,7 +1467,10 @@
       editorData.soft = (edSoft.value||"").trim();
       editorData.portfolio = (edPortfolio.value||"").trim();
       editorData.tags = (edTags.value||"").split(",").map(s=>s.trim()).filter(Boolean).slice(0,12);
-      editorData.stars = 5.0;
+
+      // ✅ NÃO reseta estrelas aqui
+      if(typeof editorData.stars !== "number") editorData.stars = 5.0;
+
       lsSet(LS_EDITOR, editorData);
       renderPublicPreview();
       alert("Perfil do editor salvo (demo).");
@@ -1644,7 +1483,7 @@
       goBackStart();
     }
 
-    // ===== Pacotes do Editor =====
+    // ===== Pacotes do Editor (com: thumbs + só 5 + seta + atalho Áudio + áudio no 9+) =====
     let showAllPackages = false;
 
     function toggleMorePackages(){
@@ -1757,13 +1596,15 @@
         ? `<span class="badge you">Disponível</span>`
         : `<span class="badge off">Indisponível</span>`;
 
+      const s = (editorData?.stars ?? 5.0);
+
       edPublicPreview.innerHTML = `
         <div class="eTop">
           <div style="display:flex; gap:10px; align-items:center;">
             <div class="avatar" style="width:48px;height:48px" id="pubAvatar"></div>
             <div>
               <div class="eName">${escapeHtml(editorData?.full || "Editor")}</div>
-              <div class="stars" style="margin-top:4px">${renderStarsHTML(5.0,5)}</div>
+              <div class="stars" style="margin-top:4px">${renderStarsHTML(s)}</div>
               <div class="eMeta">${escapeHtml(editorData?.xp || "iniciante")} • ${escapeHtml(editorData?.soft || "Softwares")}</div>
             </div>
           </div>
@@ -1792,11 +1633,11 @@
 
     // ===== Tela “Escolher Editor” (demo) =====
     const DEMO_EDITORS = [
-      { id:"d1", name:"Editor Neon",   xp:"avancado", tags:["Reels","TikTok","Áudio"], packages:[4,6,9,11,13,14,15], available:true },
-      { id:"d2", name:"Editor Flux",   xp:"intermediario", tags:["Foto pro","Cor cine"], packages:[1,2,3,5,8,10,12,15], available:true },
-      { id:"d3", name:"Editor Pulse",  xp:"intermediario", tags:["Motion","Legendas"], packages:[4,6,7,9,11,13,15], available:true },
-      { id:"d4", name:"Editor Vibe",   xp:"iniciante", tags:["Shorts","Cortes"], packages:[4,6,7,9], available:true },
-      { id:"d5", name:"Editor Clean",  xp:"avancado", tags:["Áudio","Ruído","Voz"], packages:[9,11,13,14,15], available:true },
+      { id:"d1", name:"Editor Neon",  xp:"avancado",      stars:9.2, tags:["Reels","TikTok","Áudio"],   packages:[4,6,9,11,13,14,15], available:true },
+      { id:"d2", name:"Editor Flux",  xp:"intermediario", stars:8.6, tags:["Foto pro","Cor cine"],      packages:[1,2,3,5,8,10,12,15], available:true },
+      { id:"d3", name:"Editor Pulse", xp:"intermediario", stars:8.9, tags:["Motion","Legendas"],        packages:[4,6,7,9,11,13,15], available:true },
+      { id:"d4", name:"Editor Vibe",  xp:"iniciante",     stars:7.4, tags:["Shorts","Cortes"],          packages:[4,6,7,9], available:true },
+      { id:"d5", name:"Editor Clean", xp:"avancado",      stars:9.0, tags:["Áudio","Ruído","Voz"],      packages:[9,11,13,14,15], available:true },
     ];
 
     function getAllEditors(){
@@ -1806,13 +1647,14 @@
           id:"you",
           name: editorData.full || "Você",
           xp: editorData.xp || "iniciante",
+          stars: (editorData.stars ?? 5.0),
           tags: editorData.tags || [],
           packages: editorData.packages || [],
           available: !!editorData.available,
           photo: editorData.photo || ""
         });
       }
-      DEMO_EDITORS.forEach(e=> list.push({...e, stars:5.0}));
+      DEMO_EDITORS.forEach(e=> list.push({...e}));
       return list;
     }
 
@@ -1854,7 +1696,7 @@
         const rank = { avancado:3, intermediario:2, iniciante:1 };
         compatible.sort((a,b)=>(rank[b.xp]||1)-(rank[a.xp]||1));
       }else{
-        compatible.sort((a,b)=>5-5);
+        compatible.sort((a,b)=> (b.stars ?? 0) - (a.stars ?? 0));
       }
 
       grid.innerHTML = "";
@@ -1876,7 +1718,7 @@
               <div class="avatar" style="width:46px;height:46px" id="pickAv_${e.id}">${escapeHtml(e.name[0])}</div>
               <div>
                 <div class="eName">${escapeHtml(e.name)} ${you ? "• (Você)" : ""}</div>
-                <div class="stars" style="margin-top:4px">${renderStarsHTML(5.0,5)}</div>
+                <div class="stars" style="margin-top:4px">${renderStarsHTML(e.stars ?? 5.0)}</div>
                 <div class="eMeta">${escapeHtml(e.xp)} • Pacotes: ${e.packages?.length||0}</div>
               </div>
             </div>
@@ -1921,7 +1763,7 @@
       if(role==='cliente'){
         ensureClientData(nome, sobrenome);
         clientProfileName.textContent = clientData.full;
-        clientStars.innerHTML = renderStarsHTML(5.0,5);
+        clientStars.innerHTML = renderStarsHTML(clientData.stars ?? 5.0);
         paintClientProfile();
         showScreen(screenClientProfile);
       }else{
@@ -1934,10 +1776,7 @@
     window.addEventListener('DOMContentLoaded', ()=>{
       clientData = lsGet(LS_CLIENT, clientData);
       editorData = lsGet(LS_EDITOR, editorData);
-
-      // ✅ inicializa prazo (pinta checked certinho)
-      paintPrazoChecked();
-      scheduleCalc();
+      calcCustom();
     });
   </script>
 </body>
