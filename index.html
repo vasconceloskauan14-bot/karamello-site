@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+from pathlib import Path
+
+html = r"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -341,6 +343,7 @@
       font-size:14px;
       letter-spacing:.2px;
       flex-wrap:wrap;
+      max-width: 100%;
     }
     .star{
       color: rgba(56,189,248,.95);
@@ -540,6 +543,74 @@
       display:flex;
       justify-content:center;
     }
+
+    /* ====== ENTRADA (START) MAIS GRANDE / PREMIUM ====== */
+    .wrap{ max-width: 1200px; }
+
+    header{
+      padding: 78px 18px 56px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+
+    h1{
+      font-size: clamp(2.8rem, 5.2vw, 4.2rem);
+      letter-spacing: .4px;
+    }
+
+    .subtitle{
+      margin-top: 14px;
+      font-size: 1.18rem;
+      max-width: 760px;
+      line-height: 1.35;
+      color: rgba(229,231,235,.92);
+    }
+
+    #screenStart .hero{
+      margin-top: 18px;
+      position: relative;
+    }
+    #screenStart .hero::before{
+      content:"";
+      position:absolute;
+      inset: -26px -18px -26px -18px;
+      border-radius: 26px;
+      background:
+        radial-gradient(900px 420px at 20% 0%, rgba(124,58,237,.18), transparent 60%),
+        radial-gradient(900px 420px at 80% 0%, rgba(56,189,248,.14), transparent 60%);
+      filter: blur(2px);
+      pointer-events:none;
+      z-index:0;
+    }
+    #screenStart .hero > *{ position:relative; z-index:1; }
+
+    .startCard{
+      padding: 22px 22px 20px;
+      border-radius: 22px;
+      min-height: 220px;
+    }
+    .startCard h3{
+      font-size: 1.35rem;
+      margin-bottom: 10px;
+    }
+    .startCard p{
+      font-size: 1.05rem;
+      line-height: 1.45;
+    }
+    .startCard .btn{
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-size: 1.05rem;
+    }
+
+    main{ padding: 34px 18px 70px; }
+
+    @media (max-width: 860px){
+      header{ padding: 62px 16px 46px; }
+      h1{ font-size: clamp(2.4rem, 9vw, 3.3rem); }
+      .subtitle{ font-size: 1.06rem; }
+      .startCard{ min-height: 210px; }
+    }
   </style>
 </head>
 
@@ -564,12 +635,12 @@
         <!-- START -->
         <section id="screenStart" class="screen show">
           <div class="hero">
-            <div class="card">
+            <div class="card startCard">
               <h3>Sou Cliente</h3>
               <p>Crie seu perfil de comprador e depois escolha um pacote pronto ou monte um personalizado.</p>
               <button class="btn" type="button" onclick="openCadastro('cliente')">Criar conta (Cliente)</button>
             </div>
-            <div class="card">
+            <div class="card startCard">
               <h3>Quero Trabalhar</h3>
               <p>Cadastre-se como editor, complete o perfil e fique disponível para receber pedidos.</p>
               <button class="btn" type="button" onclick="openCadastro('editor')">Criar conta (Editor)</button>
@@ -754,7 +825,7 @@
           <div class="toolbar">
             <div class="left">
               <span class="chip" id="pickInfo">Pedido: —</span>
-              <span class="chip">Avaliação inicial: 5.0/10</span>
+              <span class="chip" id="pickRatingChip">Avaliação: 5/10 ⭐</span>
             </div>
             <div class="right">
               <select id="pickSort" style="min-width:240px">
@@ -807,7 +878,7 @@
                 <div class="hint" style="margin-top:0">* Foto opcional (salva no navegador).</div>
               </div>
 
-              <!-- KPIs úteis -->
+              <!-- KPIs úteis (sem comissão/admin aqui) -->
               <div class="kpi">
                 <div class="k">
                   <div class="t">Avaliação</div>
@@ -895,7 +966,7 @@
 
               <div id="editorPackages" class="pkg-list"></div>
 
-              <!-- ✅ BOTÃO SETA -->
+              <!-- ✅ BOTÃO SETA: mostra só 5 e abre o resto -->
               <div class="moreRow">
                 <button class="btn secondary small" id="toggleMorePkgs" type="button" onclick="toggleMorePackages()">
                   Ver mais pacotes ↓
@@ -960,6 +1031,9 @@
 
   <script>
     // ===== Util =====
+    const MAX_STARS = 10;
+    const START_STARS = 5.0;
+
     function escapeHtml(str){
       return String(str ?? "")
         .replaceAll("&","&amp;")
@@ -970,9 +1044,7 @@
     }
     function brl(v){ return Number(v||0).toLocaleString('pt-BR', {style:'currency', currency:'BRL'}); }
 
-    const STARS_MAX = 10; // ✅ agora vai até 10 (todo mundo começa em 5)
-
-    function renderStarsHTML(value, max=STARS_MAX){
+    function renderStarsHTML(value, max=MAX_STARS){
       const v = Math.max(0, Math.min(max, Number(value||0)));
       const full = Math.round(v);
       let html = "";
@@ -1126,7 +1198,7 @@
         first:nome||"Cliente",
         last:sobrenome||"",
         full: full || "Cliente",
-        stars: 5.0,
+        stars: START_STARS,
         photo: "",
         whats:"",
         city:"",
@@ -1134,20 +1206,16 @@
         mainPlatform:"instagram",
         about:""
       };
-
       clientData.first = nome || clientData.first;
-      clientData.last  = sobrenome || clientData.last;
-      clientData.full  = full || clientData.full;
-
-      // ✅ começa em 5, mas não reseta se já tiver outra nota
-      if(typeof clientData.stars !== "number") clientData.stars = 5.0;
-
+      clientData.last = sobrenome || clientData.last;
+      clientData.full = full || clientData.full;
+      clientData.stars = START_STARS; // ✅ sempre começa com 5/10
       lsSet(LS_CLIENT, clientData);
     }
 
     function paintClientProfile(){
       clientProfileName.textContent = clientData?.full || "Cliente";
-      clientStars.innerHTML = renderStarsHTML(clientData?.stars ?? 5.0);
+      clientStars.innerHTML = renderStarsHTML(clientData?.stars ?? START_STARS, MAX_STARS);
 
       setAvatar(clientAvatarBox, clientData?.photo, (clientData?.full||"C")[0]);
       clWhats.value = clientData?.whats || "";
@@ -1159,7 +1227,7 @@
 
     function paintClientTop(){
       clientName.textContent = clientData?.first || "Cliente";
-      clientStarsTop.innerHTML = renderStarsHTML(clientData?.stars ?? 5.0);
+      clientStarsTop.innerHTML = renderStarsHTML(clientData?.stars ?? START_STARS, MAX_STARS);
       setAvatar(clientAvatarTop, clientData?.photo, (clientData?.full||"C")[0]);
     }
 
@@ -1187,10 +1255,7 @@
       clientData.niche = (clNiche.value||"").trim();
       clientData.mainPlatform = clMainPlatform.value || "instagram";
       clientData.about = (clAbout.value||"").trim();
-
-      // ✅ NÃO reseta estrelas aqui
-      if(typeof clientData.stars !== "number") clientData.stars = 5.0;
-
+      clientData.stars = START_STARS;
       lsSet(LS_CLIENT, clientData);
 
       paintClientTop();
@@ -1326,6 +1391,9 @@
 
     function startPickEditor(){
       const pickInfo = document.getElementById("pickInfo");
+      const pickRatingChip = document.getElementById("pickRatingChip");
+      pickRatingChip.textContent = `Avaliação: ${START_STARS.toFixed(0)}/${MAX_STARS} ⭐`;
+
       if(currentOrder?.kind === "package"){
         pickInfo.textContent = `Pedido: ${currentOrder.title} • ${brl(currentOrder.total)} • ${currentOrder.eta}`;
       }else{
@@ -1375,7 +1443,7 @@
         first:nome||"Editor",
         last:sobrenome||"",
         full: full || "Editor",
-        stars: 5.0,
+        stars: START_STARS,
         photo: "",
         available:false,
         xp:"iniciante",
@@ -1388,14 +1456,10 @@
         status:"Novo",
         packages:[]
       };
-
       editorData.first = nome || editorData.first;
-      editorData.last  = sobrenome || editorData.last;
-      editorData.full  = full || editorData.full;
-
-      // ✅ começa em 5, mas não reseta se já tiver outra nota
-      if(typeof editorData.stars !== "number") editorData.stars = 5.0;
-
+      editorData.last = sobrenome || editorData.last;
+      editorData.full = full || editorData.full;
+      editorData.stars = START_STARS; // ✅ sempre começa com 5/10
       lsSet(LS_EDITOR, editorData);
     }
 
@@ -1403,10 +1467,9 @@
       editorName.textContent = editorData?.first || "Editor";
       editorFullName.textContent = editorData?.full || "Editor";
 
-      const s = (editorData?.stars ?? 5.0);
-      editorStars.innerHTML = renderStarsHTML(s);
-      edRatingTxt.textContent = s.toFixed(1);
-      edStarsRow.innerHTML = renderStarsHTML(s);
+      editorStars.innerHTML = renderStarsHTML(editorData?.stars ?? START_STARS, MAX_STARS);
+      edRatingTxt.textContent = String((editorData?.stars ?? START_STARS).toFixed(1));
+      edStarsRow.innerHTML = renderStarsHTML(editorData?.stars ?? START_STARS, MAX_STARS);
 
       edDone.textContent = String(editorData?.done || 0);
       edStatus.textContent = editorData?.status || "Novo";
@@ -1467,10 +1530,7 @@
       editorData.soft = (edSoft.value||"").trim();
       editorData.portfolio = (edPortfolio.value||"").trim();
       editorData.tags = (edTags.value||"").split(",").map(s=>s.trim()).filter(Boolean).slice(0,12);
-
-      // ✅ NÃO reseta estrelas aqui
-      if(typeof editorData.stars !== "number") editorData.stars = 5.0;
-
+      editorData.stars = START_STARS;
       lsSet(LS_EDITOR, editorData);
       renderPublicPreview();
       alert("Perfil do editor salvo (demo).");
@@ -1505,6 +1565,7 @@
       const search = (edSearchPkg?.value || "").toLowerCase().trim();
       const quick = (edQuick?.value || "all");
 
+      // se a pessoa começar a filtrar, já abre o restante para facilitar
       if((search && !showAllPackages) || (quick !== "all" && !showAllPackages)){
         showAllPackages = true;
         const btn = document.getElementById("toggleMorePkgs");
@@ -1514,6 +1575,7 @@
       wrap.innerHTML = "";
 
       packages.forEach((p, index) => {
+        // ✅ regra: mostra só 5 se não abriu
         if (!showAllPackages && index >= 5) return;
 
         const text = `${p.name} ${p.items.join(" ")}`.toLowerCase();
@@ -1526,7 +1588,7 @@
         if (quick === "video" && !isVideo) return;
         if (quick === "foto" && !isFoto) return;
         if (quick === "mix" && !isMix) return;
-        if (quick === "audio" && index < 8) return;
+        if (quick === "audio" && index < 8) return; // ✅ áudio a partir do pacote 9
 
         const checked = (editorData?.packages || []).includes(p.id);
         const audioExtras = (index >= 8)
@@ -1552,6 +1614,7 @@
         wrap.appendChild(el);
       });
 
+      // listeners
       wrap.querySelectorAll('input[type="checkbox"][data-pkg]').forEach(chk=>{
         chk.addEventListener("change", ()=>{
           const id = Number(chk.getAttribute("data-pkg"));
@@ -1596,15 +1659,13 @@
         ? `<span class="badge you">Disponível</span>`
         : `<span class="badge off">Indisponível</span>`;
 
-      const s = (editorData?.stars ?? 5.0);
-
       edPublicPreview.innerHTML = `
         <div class="eTop">
           <div style="display:flex; gap:10px; align-items:center;">
             <div class="avatar" style="width:48px;height:48px" id="pubAvatar"></div>
             <div>
               <div class="eName">${escapeHtml(editorData?.full || "Editor")}</div>
-              <div class="stars" style="margin-top:4px">${renderStarsHTML(s)}</div>
+              <div class="stars" style="margin-top:4px">${renderStarsHTML(editorData?.stars ?? START_STARS, MAX_STARS)}</div>
               <div class="eMeta">${escapeHtml(editorData?.xp || "iniciante")} • ${escapeHtml(editorData?.soft || "Softwares")}</div>
             </div>
           </div>
@@ -1627,33 +1688,36 @@
         <div class="hint" style="margin-top:10px">* Demo sem backend: informações ficam salvas no seu navegador.</div>
       `;
 
+      // pinta avatar no preview
       const pubAvatar = document.getElementById("pubAvatar");
       setAvatar(pubAvatar, editorData?.photo, (editorData?.full||"E")[0]);
     }
 
     // ===== Tela “Escolher Editor” (demo) =====
     const DEMO_EDITORS = [
-      { id:"d1", name:"Editor Neon",  xp:"avancado",      stars:9.2, tags:["Reels","TikTok","Áudio"],   packages:[4,6,9,11,13,14,15], available:true },
-      { id:"d2", name:"Editor Flux",  xp:"intermediario", stars:8.6, tags:["Foto pro","Cor cine"],      packages:[1,2,3,5,8,10,12,15], available:true },
-      { id:"d3", name:"Editor Pulse", xp:"intermediario", stars:8.9, tags:["Motion","Legendas"],        packages:[4,6,7,9,11,13,15], available:true },
-      { id:"d4", name:"Editor Vibe",  xp:"iniciante",     stars:7.4, tags:["Shorts","Cortes"],          packages:[4,6,7,9], available:true },
-      { id:"d5", name:"Editor Clean", xp:"avancado",      stars:9.0, tags:["Áudio","Ruído","Voz"],      packages:[9,11,13,14,15], available:true },
+      { id:"d1", name:"Editor Neon",  xp:"avancado", tags:["Reels","TikTok","Áudio"], packages:[4,6,9,11,13,14,15], available:true,  stars:START_STARS },
+      { id:"d2", name:"Editor Flux",  xp:"intermediario", tags:["Foto pro","Cor cine"], packages:[1,2,3,5,8,10,12,15], available:true, stars:START_STARS },
+      { id:"d3", name:"Editor Pulse", xp:"intermediario", tags:["Motion","Legendas"], packages:[4,6,7,9,11,13,15], available:true, stars:START_STARS },
+      { id:"d4", name:"Editor Vibe",  xp:"iniciante", tags:["Shorts","Cortes"], packages:[4,6,7,9], available:true, stars:START_STARS },
+      { id:"d5", name:"Editor Clean", xp:"avancado", tags:["Áudio","Ruído","Voz"], packages:[9,11,13,14,15], available:true, stars:START_STARS },
     ];
 
     function getAllEditors(){
       const list = [];
+      // editor real (se existir)
       if(editorData){
         list.push({
           id:"you",
           name: editorData.full || "Você",
           xp: editorData.xp || "iniciante",
-          stars: (editorData.stars ?? 5.0),
           tags: editorData.tags || [],
           packages: editorData.packages || [],
           available: !!editorData.available,
-          photo: editorData.photo || ""
+          photo: editorData.photo || "",
+          stars: editorData.stars ?? START_STARS
         });
       }
+      // demos
       DEMO_EDITORS.forEach(e=> list.push({...e}));
       return list;
     }
@@ -1665,10 +1729,12 @@
         return (editor.packages || []).includes(order.packageId);
       }
 
+      // personalizado: regra simples
       const vids = Number(order?.videos||0);
       const fotos = Number(order?.fotos||0);
 
       if(vids > 0){
+        // precisa ter algum pacote de vídeo (id 4+ geralmente)
         return (editor.packages||[]).some(id => {
           const p = packages.find(x=>x.id===id);
           const n = (p?.name||"").toLowerCase();
@@ -1696,7 +1762,7 @@
         const rank = { avancado:3, intermediario:2, iniciante:1 };
         compatible.sort((a,b)=>(rank[b.xp]||1)-(rank[a.xp]||1));
       }else{
-        compatible.sort((a,b)=> (b.stars ?? 0) - (a.stars ?? 0));
+        compatible.sort((a,b)=>(Number(b.stars||START_STARS))-(Number(a.stars||START_STARS)));
       }
 
       grid.innerHTML = "";
@@ -1718,7 +1784,7 @@
               <div class="avatar" style="width:46px;height:46px" id="pickAv_${e.id}">${escapeHtml(e.name[0])}</div>
               <div>
                 <div class="eName">${escapeHtml(e.name)} ${you ? "• (Você)" : ""}</div>
-                <div class="stars" style="margin-top:4px">${renderStarsHTML(e.stars ?? 5.0)}</div>
+                <div class="stars" style="margin-top:4px">${renderStarsHTML(e.stars ?? START_STARS, MAX_STARS)}</div>
                 <div class="eMeta">${escapeHtml(e.xp)} • Pacotes: ${e.packages?.length||0}</div>
               </div>
             </div>
@@ -1737,6 +1803,7 @@
         `;
         grid.appendChild(card);
 
+        // avatar
         const av = document.getElementById(`pickAv_${e.id}`);
         if(av) setAvatar(av, e.photo || "", e.name[0]);
       });
@@ -1763,7 +1830,7 @@
       if(role==='cliente'){
         ensureClientData(nome, sobrenome);
         clientProfileName.textContent = clientData.full;
-        clientStars.innerHTML = renderStarsHTML(clientData.stars ?? 5.0);
+        clientStars.innerHTML = renderStarsHTML(clientData?.stars ?? START_STARS, MAX_STARS);
         paintClientProfile();
         showScreen(screenClientProfile);
       }else{
@@ -1774,6 +1841,7 @@
     });
 
     window.addEventListener('DOMContentLoaded', ()=>{
+      // se já tiver dados salvos, mantém (sem forçar tela)
       clientData = lsGet(LS_CLIENT, clientData);
       editorData = lsGet(LS_EDITOR, editorData);
       calcCustom();
@@ -1781,3 +1849,8 @@
   </script>
 </body>
 </html>
+"""
+
+path = Path("/mnt/data/index.html")
+path.write_text(html, encoding="utf-8")
+str(path)
