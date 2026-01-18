@@ -1,6 +1,4 @@
-from pathlib import Path
-
-html = r"""<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -149,7 +147,7 @@ html = r"""<!DOCTYPE html>
 
     .hero{
       display:grid;
-      grid-template-columns: 1.15fr .85fr;
+      grid-template-columns: 1fr 1fr;
       gap:18px;
       align-items:stretch;
     }
@@ -1034,6 +1032,36 @@ html = r"""<!DOCTYPE html>
     const MAX_STARS = 10;
     const START_STARS = 5.0;
 
+    // Remove qualquer texto de "código" colado sem querer dentro da página (ex: 'path = Path(...)')
+    function removeAccidentalCodeLeaks(){
+      const bad = [
+        'path = Path(',
+        'write_text(',
+        '/mnt/data/',
+        'str(path)',
+        'encoding="utf-8"'
+      ];
+
+      // Remove blocos <pre>/<code> com esses padrões
+      document.querySelectorAll('pre, code').forEach(el=>{
+        const t = (el.textContent||'').trim();
+        if(bad.some(b=>t.includes(b))) el.remove();
+      });
+
+      // Remove nós de texto soltos que contenham esses padrões
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const toRemove = [];
+      while(walker.nextNode()){
+        const n = walker.currentNode;
+        const t = (n.nodeValue||'').trim();
+        if(!t) continue;
+        if(bad.some(b=>t.includes(b))) toRemove.push(n);
+      }
+      toRemove.forEach(n=>{
+        try{ n.parentNode && n.parentNode.removeChild(n); }catch(e){}
+      });
+    }
+
     function escapeHtml(str){
       return String(str ?? "")
         .replaceAll("&","&amp;")
@@ -1841,6 +1869,7 @@ html = r"""<!DOCTYPE html>
     });
 
     window.addEventListener('DOMContentLoaded', ()=>{
+      removeAccidentalCodeLeaks();
       // se já tiver dados salvos, mantém (sem forçar tela)
       clientData = lsGet(LS_CLIENT, clientData);
       editorData = lsGet(LS_EDITOR, editorData);
@@ -1849,8 +1878,3 @@ html = r"""<!DOCTYPE html>
   </script>
 </body>
 </html>
-"""
-
-path = Path("/mnt/data/index.html")
-path.write_text(html, encoding="utf-8")
-str(path)
