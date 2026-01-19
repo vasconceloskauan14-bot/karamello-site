@@ -237,6 +237,9 @@
       border-radius:18px;
       box-shadow: 0 30px 80px rgba(0,0,0,.60);
       overflow:hidden;
+      max-height: calc(100vh - 28px);
+      display:flex;
+      flex-direction:column;
       transform: translateY(10px) scale(.98);
       opacity:0;
       animation: modalIn .25s ease forwards;
@@ -262,24 +265,79 @@
       color:white;
       font-size:18px;
     }
-    .modalBody{padding:18px}
+    .modalBody{
+      padding:18px;
+      flex: 1 1 auto;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ✅ Mobile: evita cortar o formulário (sem mudar o visual, só permite rolagem) */
+    @media (max-width: 560px){
+      .modal{
+        max-height: calc(100vh - 24px);
+        display:flex;
+        flex-direction:column;
+      }
+      .modalBody{
+        overflow:auto;
+        -webkit-overflow-scrolling: touch;
+        padding:16px;
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+      }
+    }
 
 
-    /* ===== Modal: Cadastro <-> Login (animação) ===== */
-    .authWrap{ position:relative; min-height:520px; }
-    .authView{ position:absolute; inset:0; opacity:0; transform: translateX(18px) scale(.995);
-      pointer-events:none; }
-    .authView.active{ opacity:1; transform: translateX(0) scale(1); pointer-events:auto; }
+    /* ===== Modal: Cadastro <-> Login (animação premium) ===== */
+    .authWrap{
+      position:relative;
+      min-height:520px;
+      overflow:hidden; /* evita “vazar” durante a transição */
+    }
 
-    @keyframes authInRight{ from{opacity:0; transform: translateX(22px) scale(.99);} to{opacity:1; transform: translateX(0) scale(1);} }
-    @keyframes authInLeft{ from{opacity:0; transform: translateX(-22px) scale(.99);} to{opacity:1; transform: translateX(0) scale(1);} }
-    @keyframes authOutLeft{ from{opacity:1; transform: translateX(0) scale(1);} to{opacity:0; transform: translateX(-22px) scale(.99);} }
-    @keyframes authOutRight{ from{opacity:1; transform: translateX(0) scale(1);} to{opacity:0; transform: translateX(22px) scale(.99);} }
+    .authView{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transform: translateX(28px) scale(.985);
+      filter: blur(10px);
+      pointer-events:none;
+      will-change: transform, opacity, filter;
+    }
 
-    .authView.enterRight{ animation: authInRight .28s cubic-bezier(.2,.9,.2,1) forwards; }
-    .authView.enterLeft{ animation: authInLeft .28s cubic-bezier(.2,.9,.2,1) forwards; }
-    .authView.leaveLeft{ animation: authOutLeft .26s cubic-bezier(.4,0,.2,1) forwards; }
-    .authView.leaveRight{ animation: authOutRight .26s cubic-bezier(.4,0,.2,1) forwards; }
+    .authView.active{
+      pointer-events:auto;
+      /* evita “tela preta” no celular: view ativa precisa ficar visível */
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      filter: blur(0);
+      z-index:2;
+    }
+
+    /* animações com blur + easing (bem fluida) */
+    @keyframes authInRight{
+      from{ opacity:0; transform: translateX(40px) scale(.98); filter: blur(12px); }
+      to  { opacity:1; transform: translateX(0) scale(1);     filter: blur(0); }
+    }
+    @keyframes authInLeft{
+      from{ opacity:0; transform: translateX(-40px) scale(.98); filter: blur(12px); }
+      to  { opacity:1; transform: translateX(0) scale(1);       filter: blur(0); }
+    }
+    @keyframes authOutLeft{
+      from{ opacity:1; transform: translateX(0) scale(1);       filter: blur(0); }
+      to  { opacity:0; transform: translateX(-40px) scale(.98); filter: blur(12px); }
+    }
+    @keyframes authOutRight{
+      from{ opacity:1; transform: translateX(0) scale(1);      filter: blur(0); }
+      to  { opacity:0; transform: translateX(40px) scale(.98); filter: blur(12px); }
+    }
+
+    .authView.enterRight{ animation: authInRight .34s cubic-bezier(.16,1,.2,1) both; }
+    .authView.enterLeft { animation: authInLeft  .34s cubic-bezier(.16,1,.2,1) both; }
+    .authView.leaveLeft { animation: authOutLeft .30s cubic-bezier(.4,0,.2,1) both; }
+    .authView.leaveRight{ animation: authOutRight .30s cubic-bezier(.4,0,.2,1) both; }
+
+
 
     .linkBtn{
       background:none; border:none; padding:0;
@@ -640,6 +698,254 @@
       .subtitle{ font-size: 1.06rem; }
       .startCard{ min-height: 210px; }
     }
+
+    /* ===== Karamello IA (demo local) ===== */
+    .aiFab{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      z-index:1200;
+      width:56px;
+      height:56px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.16);
+      background:
+        radial-gradient(22px 22px at 30% 30%, rgba(56,189,248,.55), transparent 60%),
+        linear-gradient(135deg, rgba(124,58,237,.92), rgba(37,99,235,.88));
+      box-shadow: 0 14px 34px rgba(0,0,0,.45);
+      color:white;
+      font-size:20px;
+      font-weight:900;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      user-select:none;
+    }
+    .aiFab:active{ transform: translateY(1px); }
+
+    .aiOverlay{
+      position:fixed;
+      inset:0;
+      z-index:1300;
+      display:none;
+      background: rgba(0,0,0,.58);
+      padding:16px;
+      align-items:flex-end;
+      justify-content:flex-end;
+    }
+    .aiOverlay.show{ display:flex; animation: fadeIn .18s ease forwards; }
+
+    .aiPanel{
+      width:min(420px, 100%);
+      max-height: calc(100vh - 32px);
+      border-radius:20px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(11,18,38,.96), rgba(10,16,34,.94));
+      box-shadow: 0 28px 80px rgba(0,0,0,.65);
+      display:flex;
+      flex-direction:column;
+    }
+    .aiHead{
+      padding:12px 14px;
+      background: linear-gradient(90deg, rgba(124,58,237,.78), rgba(37,99,235,.76));
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .aiHead .t{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .aiHead strong{ font-size:1rem; }
+    .aiHead small{ color: rgba(229,231,235,.82); font-weight:700; }
+    .aiClose{
+      width:38px;
+      height:38px;
+      border-radius:14px;
+      border:none;
+      background: rgba(255,255,255,.14);
+      color:white;
+      font-size:18px;
+      cursor:pointer;
+    }
+    .aiBody{
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .aiMsg{
+      max-width: 92%;
+      padding:10px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: rgba(229,231,235,.95);
+      line-height:1.35;
+      font-size:.96rem;
+    }
+    .aiMsg.you{
+      margin-left:auto;
+      background: rgba(56,189,248,.10);
+      border-color: rgba(56,189,248,.22);
+    }
+    .aiQuick{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .aiQBtn{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:#e5e7eb;
+      font-weight:800;
+      font-size:.9rem;
+      cursor:pointer;
+    }
+    .aiFoot{
+      padding:12px;
+      border-top:1px solid rgba(255,255,255,.10);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      background: rgba(0,0,0,.14);
+    }
+    .aiInput{
+      flex:1;
+      padding:11px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      outline:none;
+    }
+    .aiSend{
+      width:auto;
+      padding:11px 12px;
+      border-radius:12px;
+    }
+    @media (max-width: 560px){
+      .aiOverlay{ padding:12px; align-items:flex-end; justify-content:center; }
+      .aiFab{ right:14px; bottom:14px; }
+    }
+  
+
+    /* ====== START PRO (Entrada Premium) ====== */
+    .startPro{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:18px;
+      align-items:start;
+      margin-top:18px;
+    }
+    .startCopy{padding:6px 2px}
+    .startBadge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(229,231,235,.92);
+      font-weight:900;
+      letter-spacing:.2px;
+      width: fit-content;
+    }
+    .startTitle{
+      margin:14px 0 0;
+      font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+      line-height:1.08;
+      letter-spacing:.2px;
+    }
+    .startDesc{
+      margin:10px 0 0;
+      color: rgba(229,231,235,.86);
+      font-size:1.05rem;
+      max-width:56ch;
+      line-height:1.4;
+    }
+    .startChips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .startChip{
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: rgba(229,231,235,.9);
+      font-size:.95rem;
+    }
+    .startChip strong{color:#e5e7eb;font-weight:900}
+
+    .startMini{margin-top:16px;display:grid;gap:10px}
+    .miniCard{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+    .miniIco{
+      width:38px;height:38px;
+      border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      background: linear-gradient(135deg, rgba(124,58,237,.22), rgba(56,189,248,.14));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 10px 22px rgba(0,0,0,.28);
+      flex:0 0 auto;
+    }
+    .miniT{font-weight:900;color:#c7d2fe}
+    .miniP{margin-top:4px;color:rgba(156,163,175,.95);font-size:.95rem;line-height:1.35}
+
+    .startNote{margin-top:14px;color:rgba(229,231,235,.65);font-size:.92rem}
+
+    .startRoles{display:grid;gap:14px}
+    .roleCardPro{
+      background: linear-gradient(180deg, rgba(11,18,38,.92), rgba(10,16,34,.88));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:20px;
+      padding:16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.38);
+    }
+    .roleTop{display:flex;gap:12px;align-items:center}
+    .roleIco{
+      width:46px;height:46px;
+      border-radius:16px;
+      display:flex;align-items:center;justify-content:center;
+      background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(37,99,235,.18));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: 0 12px 26px rgba(0,0,0,.32);
+    }
+    .roleT{font-weight:1000;font-size:1.15rem;color:#e5e7eb}
+    .roleS{margin-top:4px;color:rgba(229,231,235,.72);font-size:.95rem}
+    .roleList{margin:10px 0 0;padding-left:18px;color:#cbd5e1}
+    .roleList li{margin:6px 0}
+
+    @media (max-width: 860px){
+      .startPro{grid-template-columns:1fr;margin-top:10px}
+      .startCopy{padding:0}
+    }
+
+    /* ✅ Ajustes Mobile (entrada mais compacta e premium) */
+    @media (max-width: 620px){
+      header{ padding: 54px 16px 36px; }
+      h1{ font-size: clamp(2.2rem, 10vw, 3rem); }
+      .subtitle{ font-size: 1.03rem; }
+      main{ padding: 26px 16px 66px; }
+      .startTitle{ font-size: clamp(1.85rem, 8.4vw, 2.45rem); }
+      .startChip{ font-size:.92rem; padding:8px 10px; }
+      .roleCardPro{ padding:14px; }
+    }
+
   </style>
 </head>
 
@@ -663,16 +969,77 @@
 
         <!-- START -->
         <section id="screenStart" class="screen show">
-          <div class="hero">
-            <div class="card startCard">
-              <h3>Sou Cliente</h3>
-              <p>Crie seu perfil de comprador e depois escolha um pacote pronto ou monte um personalizado.</p>
-              <button class="btn" type="button" onclick="openCadastro('cliente')">Criar conta (Cliente)</button>
+          <div class="startPro">
+            <div class="startCopy">
+              <div class="startBadge">✨ 2026 • Karamello</div>
+              <h2 class="startTitle">Edição profissional de fotos e vídeos, com cara de premium.</h2>
+              <p class="startDesc">Escolha um pacote pronto ou monte um personalizado. Ideal para Reels, TikTok, Shorts e fotos com acabamento profissional.</p>
+
+              <div class="startChips" aria-label="Destaques">
+                <span class="startChip">⚡ Entrega a partir de <strong>13h30</strong></span>
+                <span class="startChip">⭐ Avaliação <strong>0–10</strong> (começa em 5)</span>
+                <span class="startChip">🔒 CPF único (demo)</span>
+              </div>
+
+              <div class="startMini">
+                <div class="miniCard">
+                  <div class="miniIco">🎯</div>
+                  <div>
+                    <div class="miniT">Pacotes prontos + Personalizado</div>
+                    <div class="miniP">Você escolhe o que precisa. O site mostra só o total.</div>
+                  </div>
+                </div>
+                <div class="miniCard">
+                  <div class="miniIco">🧠</div>
+                  <div>
+                    <div class="miniT">Escolha do editor</div>
+                    <div class="miniP">Veja editores compatíveis com seu pedido (demo).</div>
+                  </div>
+                </div>
+                <div class="miniCard">
+                  <div class="miniIco">✨</div>
+                  <div>
+                    <div class="miniT">Visual consistente</div>
+                    <div class="miniP">Cor cine, cortes, áudio limpo e retoque avançado.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="startNote">* Sem backend nesta versão: dados ficam salvos no navegador (LocalStorage).</div>
             </div>
-            <div class="card startCard">
-              <h3>Quero Trabalhar</h3>
-              <p>Cadastre-se como editor, complete o perfil e fique disponível para receber pedidos.</p>
-              <button class="btn" type="button" onclick="openCadastro('editor')">Criar conta (Editor)</button>
+
+            <div class="startRoles" aria-label="Escolha seu caminho">
+              <div class="roleCardPro">
+                <div class="roleTop">
+                  <div class="roleIco">🛒</div>
+                  <div>
+                    <div class="roleT">Sou Cliente</div>
+                    <div class="roleS">Crie seu perfil e escolha um pacote.</div>
+                  </div>
+                </div>
+                <ul class="roleList">
+                  <li>Pacotes prontos (15 opções)</li>
+                  <li>Personalizado com extras (áudio, legenda, motion...)</li>
+                  <li>Escolha do editor compatível</li>
+                </ul>
+                <button class="btn" type="button" onclick="openCadastro('cliente')">Criar conta (Cliente)</button>
+              </div>
+
+              <div class="roleCardPro">
+                <div class="roleTop">
+                  <div class="roleIco">🎬</div>
+                  <div>
+                    <div class="roleT">Quero Trabalhar</div>
+                    <div class="roleS">Cadastre-se como editor e selecione pacotes.</div>
+                  </div>
+                </div>
+                <ul class="roleList">
+                  <li>Ative “Disponível” para aparecer aos clientes</li>
+                  <li>Escolha os pacotes que você aceita</li>
+                  <li>Perfil com tags, bio e portfólio</li>
+                </ul>
+                <button class="btn" type="button" onclick="openCadastro('editor')">Criar conta (Editor)</button>
+              </div>
             </div>
           </div>
         </section>
@@ -1038,7 +1405,7 @@
             </div>
           </div>
 
-          <button class="btn secondary" style="margin-top:18px" type="button" onclick="goBackStart\(\)">Voltar</button>
+          <button class="btn secondary" style="margin-top:18px" type="button" onclick="goBackStart()">Voltar</button>
         </section>
 
       </div>
@@ -1087,6 +1454,27 @@
             <div class="hint">* Demo sem backend: login valida os dados salvos neste navegador.</div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KARAMELLO IA (demo local, sem backend) -->
+  <button id="aiFab" class="aiFab" type="button" aria-label="Abrir Karamello IA" title="Karamello IA">IA</button>
+  <div id="aiOverlay" class="aiOverlay" aria-hidden="true">
+    <div class="aiPanel" role="dialog" aria-modal="true" aria-label="Karamello IA">
+      <div class="aiHead">
+        <div class="t">
+          <strong>IA Karamello</strong>
+          <small id="aiSub">Assistente inteligente (demo)</small>
+        </div>
+        <button class="aiClose" id="aiClose" type="button">×</button>
+      </div>
+
+      <div class="aiBody" id="aiBody"></div>
+
+      <div class="aiFoot">
+        <input class="aiInput" id="aiInput" placeholder="Pergunte algo..." />
+        <button class="btn small aiSend" id="aiSend" type="button">Enviar</button>
       </div>
     </div>
   </div>
@@ -1193,43 +1581,75 @@
         : ((role === 'cliente') ? 'Entrar como Cliente' : 'Entrar como Editor');
     }
 
+    let switchingAuth = false;
+
     function setAuthMode(mode, animate=true){
-      if(!authWrap || mode === authMode) return;
+      if(!authWrap || mode === authMode || switchingAuth) return;
+
       const from = (authMode === 'register') ? viewRegister : viewLogin;
-      const to = (mode === 'register') ? viewRegister : viewLogin;
+      const to   = (mode === 'register') ? viewRegister : viewLogin;
       if(!from || !to) { authMode = mode; updateAuthTitle(); return; }
 
-      // limpa classes
-      [from, to].forEach(el=>el.classList.remove('enter-left','enter-right','leave-left','leave-right'));
+      switchingAuth = true;
+
+      // limpa classes de animação anteriores
+      [from, to].forEach(el=>{
+        el.classList.remove('enterLeft','enterRight','leaveLeft','leaveRight','enter-left','enter-right','leave-left','leave-right');
+        el.style.zIndex = '';
+      });
+
+      // ativa destino e garante stacking correto
+      to.classList.add('active');
+      to.style.zIndex = '3';
+      from.style.zIndex = '2';
 
       if(!animate){
         from.classList.remove('active');
-        to.classList.add('active');
         authMode = mode;
         updateAuthTitle();
+        switchingAuth = false;
         return;
       }
 
       const toLoginDir = (mode === 'login');
-      from.classList.add(toLoginDir ? 'leave-left' : 'leave-right');
-      to.classList.add('active', toLoginDir ? 'enter-right' : 'enter-left');
+
+      // força reflow pra animação NÃO “pular”
+      void to.offsetWidth;
+
+      requestAnimationFrame(()=>{
+        // usa os nomes novos (Left/Right) mas também funciona com CSS anterior
+        from.classList.add(toLoginDir ? 'leaveLeft' : 'leaveRight');
+        to.classList.add(toLoginDir ? 'enterRight' : 'enterLeft');
+      });
+
       authMode = mode;
       updateAuthTitle();
 
       setTimeout(()=>{
-        from.classList.remove('active','leave-left','leave-right');
-        to.classList.remove('enter-left','enter-right');
-      }, 320);
+        from.classList.remove('active','leaveLeft','leaveRight');
+        to.classList.remove('enterLeft','enterRight');
+        from.style.zIndex = '';
+        to.style.zIndex = '';
+        switchingAuth = false;
+      }, 380);
     }
 
+
     function resetAuthUI(){
+      switchingAuth = false;
       authMode = 'register';
+
       viewRegister?.classList.add('active');
       viewLogin?.classList.remove('active');
-      viewRegister?.classList.remove('enter-left','enter-right','leave-left','leave-right');
-      viewLogin?.classList.remove('enter-left','enter-right','leave-left','leave-right');
+
+      [viewRegister, viewLogin].forEach(el=>{
+        el?.classList.remove('enterLeft','enterRight','leaveLeft','leaveRight','enter-left','enter-right','leave-left','leave-right');
+        if(el) el.style.zIndex = '';
+      });
+
       updateAuthTitle();
     }
+
 
     toLogin?.addEventListener('click', ()=> setAuthMode('login', true));
     toRegister?.addEventListener('click', ()=> setAuthMode('register', true));
@@ -1332,6 +1752,7 @@
       return null;
     }
 
+    
 
     // ===== Pacotes =====
     const packages = [
@@ -1354,6 +1775,7 @@
 
     function renderPackages(){
       const grid = document.getElementById('packagesGrid');
+      if(!grid) return;
       grid.innerHTML = '';
       packages.forEach(p => {
         const card = document.createElement('div');
@@ -1370,66 +1792,65 @@
     }
 
     // ===== CLIENTE (perfil) =====
-    const clientAvatarBox = document.getElementById("clientAvatarBox");
-    const clientAvatarTop = document.getElementById("clientAvatarTop");
-    const clientProfileName = document.getElementById("clientProfileName");
-    const clientStars = document.getElementById("clientStars");
-    const clientStarsTop = document.getElementById("clientStarsTop");
+    const clientAvatarBox = document.getElementById('clientAvatarBox');
+    const clientAvatarTop = document.getElementById('clientAvatarTop');
+    const clientProfileName = document.getElementById('clientProfileName');
+    const clientStars = document.getElementById('clientStars');
+    const clientStarsTop = document.getElementById('clientStarsTop');
 
-    const clientPhoto = document.getElementById("clientPhoto");
-    const clWhats = document.getElementById("clWhats");
-    const clCity = document.getElementById("clCity");
-    const clNiche = document.getElementById("clNiche");
-    const clMainPlatform = document.getElementById("clMainPlatform");
-    const clAbout = document.getElementById("clAbout");
+    const clientPhoto = document.getElementById('clientPhoto');
+    const clWhats = document.getElementById('clWhats');
+    const clCity = document.getElementById('clCity');
+    const clNiche = document.getElementById('clNiche');
+    const clMainPlatform = document.getElementById('clMainPlatform');
+    const clAbout = document.getElementById('clAbout');
 
     let clientData = lsGet(LS_CLIENT, null);
 
     function ensureClientData(nome, sobrenome){
       const full = `${nome} ${sobrenome}`.trim();
       clientData = clientData || {
-        first:nome||"Cliente",
-        last:sobrenome||"",
-        full: full || "Cliente",
+        first:nome||'Cliente',
+        last:sobrenome||'',
+        full: full || 'Cliente',
         stars: START_STARS,
-        photo: "",
-        whats:"",
-        city:"",
-        niche:"",
-        mainPlatform:"instagram",
-        about:"",
-        cpf:"",
-        email:"",
-        dob:""
+        photo:'',
+        whats:'',
+        city:'',
+        niche:'',
+        mainPlatform:'instagram',
+        about:'',
+        cpf:'',
+        email:'',
+        dob:''
       };
       clientData.first = nome || clientData.first;
       clientData.last = sobrenome || clientData.last;
       clientData.full = full || clientData.full;
-      clientData.stars = START_STARS; // ✅ sempre começa com 5/10
+      clientData.stars = START_STARS;
       lsSet(LS_CLIENT, clientData);
     }
 
     function paintClientProfile(){
-      clientProfileName.textContent = clientData?.full || "Cliente";
-      clientStars.innerHTML = renderStarsHTML(clientData?.stars ?? START_STARS, MAX_STARS);
-
-      setAvatar(clientAvatarBox, clientData?.photo, (clientData?.full||"C")[0]);
-      clWhats.value = clientData?.whats || "";
-      clCity.value = clientData?.city || "";
-      clNiche.value = clientData?.niche || "";
-      clMainPlatform.value = clientData?.mainPlatform || "instagram";
-      clAbout.value = clientData?.about || "";
+      if(clientProfileName) clientProfileName.textContent = clientData?.full || 'Cliente';
+      if(clientStars) clientStars.innerHTML = renderStarsHTML(clientData?.stars ?? START_STARS, MAX_STARS);
+      setAvatar(clientAvatarBox, clientData?.photo, (clientData?.full||'C')[0]);
+      if(clWhats) clWhats.value = clientData?.whats || '';
+      if(clCity) clCity.value = clientData?.city || '';
+      if(clNiche) clNiche.value = clientData?.niche || '';
+      if(clMainPlatform) clMainPlatform.value = clientData?.mainPlatform || 'instagram';
+      if(clAbout) clAbout.value = clientData?.about || '';
     }
 
     function paintClientTop(){
-      clientName.textContent = clientData?.first || "Cliente";
-      clientStarsTop.innerHTML = renderStarsHTML(clientData?.stars ?? START_STARS, MAX_STARS);
-      setAvatar(clientAvatarTop, clientData?.photo, (clientData?.full||"C")[0]);
+      if(clientName) clientName.textContent = clientData?.first || 'Cliente';
+      if(clientStarsTop) clientStarsTop.innerHTML = renderStarsHTML(clientData?.stars ?? START_STARS, MAX_STARS);
+      setAvatar(clientAvatarTop, clientData?.photo, (clientData?.full||'C')[0]);
     }
 
-    clientPhoto?.addEventListener("change", async (e)=>{
+    clientPhoto?.addEventListener('change', async (e)=>{
       const file = e.target.files?.[0];
-      if(!file) return;
+      if(!file || !clientData) return;
       const data = await readFileAsDataURL(file);
       clientData.photo = data;
       lsSet(LS_CLIENT, clientData);
@@ -1439,21 +1860,21 @@
 
     function removeClientPhoto(){
       if(!clientData) return;
-      clientData.photo = "";
+      clientData.photo = '';
       lsSet(LS_CLIENT, clientData);
       paintClientProfile();
       paintClientTop();
     }
 
     function saveClientProfileAndGo(){
-      clientData.whats = (clWhats.value||"").trim();
-      clientData.city = (clCity.value||"").trim();
-      clientData.niche = (clNiche.value||"").trim();
-      clientData.mainPlatform = clMainPlatform.value || "instagram";
-      clientData.about = (clAbout.value||"").trim();
+      if(!clientData) clientData = {first:'Cliente', last:'', full:'Cliente', stars:START_STARS};
+      clientData.whats = (clWhats?.value||'').trim();
+      clientData.city = (clCity?.value||'').trim();
+      clientData.niche = (clNiche?.value||'').trim();
+      clientData.mainPlatform = clMainPlatform?.value || 'instagram';
+      clientData.about = (clAbout?.value||'').trim();
       clientData.stars = START_STARS;
       lsSet(LS_CLIENT, clientData);
-
       paintClientTop();
       showScreen(screenClient);
       setTimeout(()=>{ renderPackages(); calcCustom(); }, 80);
@@ -1523,10 +1944,10 @@
     }
 
     function calcCustom(){
-      const fotos = Math.max(0, parseInt(custFotos.value||'0',10));
-      const vids  = Math.max(0, parseInt(custVideos.value||'0',10));
-      const plat  = custPlataforma.value||'reels';
-      const tipo  = custTipoVideo.value||'15';
+      const fotos = Math.max(0, parseInt(custFotos?.value||'0',10));
+      const vids  = Math.max(0, parseInt(custVideos?.value||'0',10));
+      const plat  = custPlataforma?.value||'reels';
+      const tipo  = custTipoVideo?.value||'15';
 
       let unitVideo = PRICES.video15;
       if(tipo==='45') unitVideo = PRICES.video45;
@@ -1547,12 +1968,13 @@
       const jitter = (fotos+vids)>0 ? (0.30 + ((fotos*7 + vids*11)%7)*0.10) : 0;
       const total = Math.max(0, rawTotal + jitter);
 
-      custTotal.textContent = brl(total);
+      if(custTotal) custTotal.textContent = brl(total);
       const urgent = document.getElementById('optUrgente')?.checked || false;
-      custEntrega.textContent = calcEntrega(total, urgent);
+      if(custEntrega) custEntrega.textContent = calcEntrega(total, urgent);
     }
 
     [custFotos,custVideos,custPlataforma,custTipoVideo].forEach(el=>{
+      if(!el) return;
       el.addEventListener('input', calcCustom);
       el.addEventListener('change', calcCustom);
     });
@@ -1566,19 +1988,16 @@
       showAllCustomOptions = !showAllCustomOptions;
       const more = document.getElementById('customOptsMore');
       const btn  = document.getElementById('toggleCustomOpts');
-      if(more){
-        more.classList.toggle('collapsed', !showAllCustomOptions);
-      }
-      if(btn){
-        btn.textContent = showAllCustomOptions ? 'Mostrar menos ↑' : 'Ver mais opções ↓';
-      }
+      if(more) more.classList.toggle('collapsed', !showAllCustomOptions);
+      if(btn) btn.textContent = showAllCustomOptions ? 'Mostrar menos ↑' : 'Ver mais opções ↓';
     }
 
     // ===== Pedido -> Escolher Editor =====
     function choosePackage(id){
       const p = packages.find(x => x.id === id);
+      if(!p) return;
       currentOrder = {
-        kind: "package",
+        kind: 'package',
         packageId: p.id,
         title: `${p.id}. ${p.name}`,
         total: p.price,
@@ -1589,115 +2008,121 @@
 
     function confirmCustom(){
       currentOrder = {
-        kind: "custom",
-        title: "Pacote Personalizado",
-        totalText: custTotal.textContent,
-        eta: custEntrega.textContent,
-        fotos: parseInt(custFotos.value||"0",10),
-        videos: parseInt(custVideos.value||"0",10)
+        kind: 'custom',
+        title: 'Pacote Personalizado',
+        totalText: custTotal?.textContent || brl(0),
+        eta: custEntrega?.textContent || '13h30',
+        fotos: parseInt(custFotos?.value||'0',10),
+        videos: parseInt(custVideos?.value||'0',10)
       };
       startPickEditor();
     }
 
     function startPickEditor(){
-      const pickInfo = document.getElementById("pickInfo");
-      const pickRatingChip = document.getElementById("pickRatingChip");
-      pickRatingChip.textContent = `Avaliação: ${START_STARS.toFixed(0)}/${MAX_STARS} ⭐`;
+      const pickInfo = document.getElementById('pickInfo');
+      const pickRatingChip = document.getElementById('pickRatingChip');
+      if(pickRatingChip) pickRatingChip.textContent = `Avaliação: ${START_STARS.toFixed(0)}/${MAX_STARS} ⭐`;
 
-      if(currentOrder?.kind === "package"){
-        pickInfo.textContent = `Pedido: ${currentOrder.title} • ${brl(currentOrder.total)} • ${currentOrder.eta}`;
+      if(currentOrder?.kind === 'package'){
+        if(pickInfo) pickInfo.textContent = `Pedido: ${currentOrder.title} • ${brl(currentOrder.total)} • ${currentOrder.eta}`;
       }else{
-        pickInfo.textContent = `Pedido: Personalizado • ${currentOrder.totalText} • ${currentOrder.eta}`;
+        if(pickInfo) pickInfo.textContent = `Pedido: Personalizado • ${currentOrder.totalText} • ${currentOrder.eta}`;
       }
       renderPickEditors();
       showScreen(screenPickEditor);
     }
 
-    function backToOrder(){
-      showScreen(screenClient);
-    }
+    function backToOrder(){ showScreen(screenClient); }
 
     // ===== EDITOR (dashboard) =====
-    const editorAvatarBox = document.getElementById("editorAvatarBox");
-    const editorFullName = document.getElementById("editorFullName");
-    const editorStars = document.getElementById("editorStars");
+    const editorAvatarBox = document.getElementById('editorAvatarBox');
+    const editorFullName = document.getElementById('editorFullName');
+    const editorStars = document.getElementById('editorStars');
 
-    const editorPhoto = document.getElementById("editorPhoto");
-    const edAvailable = document.getElementById("edAvailable");
-    const edAvailText = document.getElementById("edAvailText");
+    const editorPhoto = document.getElementById('editorPhoto');
+    const edAvailable = document.getElementById('edAvailable');
+    const edAvailText = document.getElementById('edAvailText');
 
-    const edRatingTxt = document.getElementById("edRatingTxt");
-    const edStarsRow = document.getElementById("edStarsRow");
-    const edDone = document.getElementById("edDone");
-    const edStatus = document.getElementById("edStatus");
+    const edRatingTxt = document.getElementById('edRatingTxt');
+    const edStarsRow = document.getElementById('edStarsRow');
+    const edDone = document.getElementById('edDone');
+    const edStatus = document.getElementById('edStatus');
 
-    const edXp = document.getElementById("edXp");
-    const edWhats = document.getElementById("edWhats");
-    const edBio = document.getElementById("edBio");
-    const edSoft = document.getElementById("edSoft");
-    const edPortfolio = document.getElementById("edPortfolio");
-    const edTags = document.getElementById("edTags");
-    const edTagsPreview = document.getElementById("edTagsPreview");
+    const edXp = document.getElementById('edXp');
+    const edWhats = document.getElementById('edWhats');
+    const edBio = document.getElementById('edBio');
+    const edSoft = document.getElementById('edSoft');
+    const edPortfolio = document.getElementById('edPortfolio');
+    const edTags = document.getElementById('edTags');
+    const edTagsPreview = document.getElementById('edTagsPreview');
 
-    const edSearchPkg = document.getElementById("edSearchPkg");
-    const edQuick = document.getElementById("edQuick");
-    const edPkgCount = document.getElementById("edPkgCount");
-    const edPkgHint = document.getElementById("edPkgHint");
-    const edPublicPreview = document.getElementById("edPublicPreview");
+    const edSearchPkg = document.getElementById('edSearchPkg');
+    const edQuick = document.getElementById('edQuick');
+    const edPkgCount = document.getElementById('edPkgCount');
+    const edPkgHint = document.getElementById('edPkgHint');
+    const edPublicPreview = document.getElementById('edPublicPreview');
 
     let editorData = lsGet(LS_EDITOR, null);
 
     function ensureEditorData(nome, sobrenome){
       const full = `${nome} ${sobrenome}`.trim();
       editorData = editorData || {
-        first:nome||"Editor",
-        last:sobrenome||"",
-        full: full || "Editor",
+        first:nome||'Editor',
+        last:sobrenome||'',
+        full: full || 'Editor',
         stars: START_STARS,
-        photo: "",
+        photo:'',
         available:false,
-        xp:"iniciante",
-        whats:"",
-        bio:"",
-        soft:"",
-        portfolio:"",
+        xp:'iniciante',
+        whats:'',
+        bio:'',
+        soft:'',
+        portfolio:'',
         tags:[],
         done:0,
-        status:"Novo",
+        status:'Novo',
         packages:[],
-        cpf:"",
-        email:"",
-        dob:""
+        cpf:'',
+        email:'',
+        dob:''
       };
       editorData.first = nome || editorData.first;
       editorData.last = sobrenome || editorData.last;
       editorData.full = full || editorData.full;
-      editorData.stars = START_STARS; // ✅ sempre começa com 5/10
+      editorData.stars = START_STARS;
       lsSet(LS_EDITOR, editorData);
     }
 
+    function renderTagsPreview(){
+      if(!edTagsPreview) return;
+      const raw = (edTags?.value||'').split(',').map(s=>s.trim()).filter(Boolean).slice(0,12);
+      edTagsPreview.innerHTML = raw.map(t=>`<span class="tag blue">${escapeHtml(t)}</span>`).join('');
+    }
+
     function paintEditor(){
-      editorName.textContent = editorData?.first || "Editor";
-      editorFullName.textContent = editorData?.full || "Editor";
+      if(editorName) editorName.textContent = editorData?.first || 'Editor';
+      if(editorFullName) editorFullName.textContent = editorData?.full || 'Editor';
 
-      editorStars.innerHTML = renderStarsHTML(editorData?.stars ?? START_STARS, MAX_STARS);
-      edRatingTxt.textContent = String((editorData?.stars ?? START_STARS).toFixed(1));
-      edStarsRow.innerHTML = renderStarsHTML(editorData?.stars ?? START_STARS, MAX_STARS);
+      if(editorStars) editorStars.innerHTML = renderStarsHTML(editorData?.stars ?? START_STARS, MAX_STARS);
+      if(edRatingTxt) edRatingTxt.textContent = String((editorData?.stars ?? START_STARS).toFixed(1));
+      if(edStarsRow) edStarsRow.innerHTML = renderStarsHTML(editorData?.stars ?? START_STARS, MAX_STARS);
 
-      edDone.textContent = String(editorData?.done || 0);
-      edStatus.textContent = editorData?.status || "Novo";
+      if(edDone) edDone.textContent = String(editorData?.done || 0);
+      if(edStatus) edStatus.textContent = editorData?.status || 'Novo';
 
-      edAvailable.checked = !!editorData?.available;
-      edAvailText.textContent = editorData?.available ? "On" : "Off";
+      if(edAvailable){
+        edAvailable.checked = !!editorData?.available;
+        if(edAvailText) edAvailText.textContent = editorData?.available ? 'On' : 'Off';
+      }
 
-      edXp.value = editorData?.xp || "iniciante";
-      edWhats.value = editorData?.whats || "";
-      edBio.value = editorData?.bio || "";
-      edSoft.value = editorData?.soft || "";
-      edPortfolio.value = editorData?.portfolio || "";
-      edTags.value = (editorData?.tags || []).join(", ");
+      if(edXp) edXp.value = editorData?.xp || 'iniciante';
+      if(edWhats) edWhats.value = editorData?.whats || '';
+      if(edBio) edBio.value = editorData?.bio || '';
+      if(edSoft) edSoft.value = editorData?.soft || '';
+      if(edPortfolio) edPortfolio.value = editorData?.portfolio || '';
+      if(edTags) edTags.value = (editorData?.tags || []).join(', ');
 
-      setAvatar(editorAvatarBox, editorData?.photo, (editorData?.full||"E")[0]);
+      setAvatar(editorAvatarBox, editorData?.photo, (editorData?.full||'E')[0]);
 
       renderTagsPreview();
       renderEditorPackages();
@@ -1705,9 +2130,9 @@
       renderPublicPreview();
     }
 
-    editorPhoto?.addEventListener("change", async (e)=>{
+    editorPhoto?.addEventListener('change', async (e)=>{
       const file = e.target.files?.[0];
-      if(!file) return;
+      if(!file || !editorData) return;
       const data = await readFileAsDataURL(file);
       editorData.photo = data;
       lsSet(LS_EDITOR, editorData);
@@ -1716,121 +2141,114 @@
 
     function removeEditorPhoto(){
       if(!editorData) return;
-      editorData.photo = "";
+      editorData.photo = '';
       lsSet(LS_EDITOR, editorData);
       paintEditor();
     }
 
-    edAvailable?.addEventListener("change", ()=>{
+    edAvailable?.addEventListener('change', ()=>{
+      if(!editorData) return;
       editorData.available = !!edAvailable.checked;
-      edAvailText.textContent = editorData.available ? "On" : "Off";
+      if(edAvailText) edAvailText.textContent = editorData.available ? 'On' : 'Off';
       lsSet(LS_EDITOR, editorData);
       renderPublicPreview();
     });
 
-    function renderTagsPreview(){
-      const raw = (edTags.value||"").split(",").map(s=>s.trim()).filter(Boolean).slice(0,12);
-      edTagsPreview.innerHTML = raw.map(t=>`<span class="tag blue">${escapeHtml(t)}</span>`).join("");
-    }
-    edTags?.addEventListener("input", ()=>{
-      renderTagsPreview();
-    });
+    edTags?.addEventListener('input', renderTagsPreview);
 
     function saveEditorProfile(){
-      editorData.xp = edXp.value || "iniciante";
-      editorData.whats = (edWhats.value||"").trim();
-      editorData.bio = (edBio.value||"").trim();
-      editorData.soft = (edSoft.value||"").trim();
-      editorData.portfolio = (edPortfolio.value||"").trim();
-      editorData.tags = (edTags.value||"").split(",").map(s=>s.trim()).filter(Boolean).slice(0,12);
+      if(!editorData) editorData = {first:'Editor', last:'', full:'Editor', stars:START_STARS, packages:[]};
+      editorData.xp = edXp?.value || 'iniciante';
+      editorData.whats = (edWhats?.value||'').trim();
+      editorData.bio = (edBio?.value||'').trim();
+      editorData.soft = (edSoft?.value||'').trim();
+      editorData.portfolio = (edPortfolio?.value||'').trim();
+      editorData.tags = (edTags?.value||'').split(',').map(s=>s.trim()).filter(Boolean).slice(0,12);
       editorData.stars = START_STARS;
       lsSet(LS_EDITOR, editorData);
       renderPublicPreview();
-      alert("Perfil do editor salvo (demo).");
+      alert('Perfil do editor salvo (demo).');
     }
 
     function resetEditor(){
       localStorage.removeItem(LS_EDITOR);
       editorData = null;
-      alert("Reset feito. Reabra como Editor para criar de novo.");
+      alert('Reset feito. Reabra como Editor para criar de novo.');
       goBackStart();
     }
 
-    // ===== Pacotes do Editor (com: thumbs + só 5 + seta + atalho Áudio + áudio no 9+) =====
+    // ===== Pacotes do Editor (thumbs + só 5 + seta + atalhos) =====
     let showAllPackages = false;
 
     function toggleMorePackages(){
       showAllPackages = !showAllPackages;
-      document.getElementById("toggleMorePkgs").textContent = showAllPackages ? "Mostrar menos ↑" : "Ver mais pacotes ↓";
+      const btn = document.getElementById('toggleMorePkgs');
+      if(btn) btn.textContent = showAllPackages ? 'Mostrar menos ↑' : 'Ver mais pacotes ↓';
       renderEditorPackages();
     }
 
     function updatePkgCount(){
       const count = (editorData?.packages || []).length;
-      edPkgCount.textContent = String(count);
-      edPkgHint.textContent = count ? "Perfeito: você vai aparecer em pedidos compatíveis." : "Dica: selecione pelo menos 1 pacote para aparecer para clientes.";
+      if(edPkgCount) edPkgCount.textContent = String(count);
+      if(edPkgHint) edPkgHint.textContent = count ? 'Perfeito: você vai aparecer em pedidos compatíveis.' : 'Dica: selecione pelo menos 1 pacote para aparecer para clientes.';
     }
 
     function renderEditorPackages(){
-      const wrap = document.getElementById("editorPackages");
+      const wrap = document.getElementById('editorPackages');
       if(!wrap) return;
 
-      const search = (edSearchPkg?.value || "").toLowerCase().trim();
-      const quick = (edQuick?.value || "all");
+      const search = (edSearchPkg?.value || '').toLowerCase().trim();
+      const quick = (edQuick?.value || 'all');
 
-      // se a pessoa começar a filtrar, já abre o restante para facilitar
-      if((search && !showAllPackages) || (quick !== "all" && !showAllPackages)){
+      if((search && !showAllPackages) || (quick !== 'all' && !showAllPackages)){
         showAllPackages = true;
-        const btn = document.getElementById("toggleMorePkgs");
-        if(btn) btn.textContent = "Mostrar menos ↑";
+        const btn = document.getElementById('toggleMorePkgs');
+        if(btn) btn.textContent = 'Mostrar menos ↑';
       }
 
-      wrap.innerHTML = "";
+      wrap.innerHTML = '';
 
       packages.forEach((p, index) => {
-        // ✅ regra: mostra só 5 se não abriu
-        if (!showAllPackages && index >= 5) return;
+        if(!showAllPackages && index >= 5) return;
 
-        const text = `${p.name} ${p.items.join(" ")}`.toLowerCase();
-        if (search && !text.includes(search)) return;
+        const text = `${p.name} ${p.items.join(' ')}`.toLowerCase();
+        if(search && !text.includes(search)) return;
 
-        const isVideo = p.name.toLowerCase().includes("vídeo") || p.name.toLowerCase().includes("short");
-        const isFoto  = p.name.toLowerCase().includes("foto");
-        const isMix   = p.name.toLowerCase().includes("combo") || p.name.toLowerCase().includes("mix") || (isVideo && isFoto);
+        const isVideo = p.name.toLowerCase().includes('vídeo') || p.name.toLowerCase().includes('short');
+        const isFoto  = p.name.toLowerCase().includes('foto');
+        const isMix   = p.name.toLowerCase().includes('combo') || p.name.toLowerCase().includes('mix') || (isVideo && isFoto);
 
-        if (quick === "video" && !isVideo) return;
-        if (quick === "foto" && !isFoto) return;
-        if (quick === "mix" && !isMix) return;
-        if (quick === "audio" && index < 8) return; // ✅ áudio a partir do pacote 9
+        if(quick === 'video' && !isVideo) return;
+        if(quick === 'foto' && !isFoto) return;
+        if(quick === 'mix' && !isMix) return;
+        if(quick === 'audio' && index < 8) return; // áudio a partir do pacote 9
 
         const checked = (editorData?.packages || []).includes(p.id);
-        const audioExtras = (index >= 8)
-          ? `<div class="pkg-meta">🎧 Ajustes de áudio incluídos</div>`
-          : "";
+        const audioExtras = (index >= 8) ? `<div class="pkg-meta">🎧 Ajustes de áudio incluídos</div>` : '';
 
-        const el = document.createElement("label");
-        el.className = "pkg-item";
+        const el = document.createElement('label');
+        el.className = 'pkg-item';
         el.innerHTML = `
           <div class="pkg-thumb"></div>
           <div>
             <div style="display:flex; gap:10px; align-items:flex-start;">
-              <input type="checkbox" data-pkg="${p.id}" ${checked ? "checked" : ""}>
+              <input type="checkbox" data-pkg="${p.id}" ${checked ? 'checked' : ''}>
               <div>
                 <div class="pkg-title">${p.id}. ${escapeHtml(p.name)}</div>
                 <div class="pkg-sub">Entrega: ${escapeHtml(p.eta)} • ${brl(p.price)}</div>
               </div>
             </div>
-            <div class="pkg-meta">${p.items.map(x=>escapeHtml(x)).join(" • ")}</div>
+            <div class="pkg-meta">${p.items.map(x=>escapeHtml(x)).join(' • ')}</div>
             ${audioExtras}
           </div>
         `;
         wrap.appendChild(el);
       });
 
-      // listeners
       wrap.querySelectorAll('input[type="checkbox"][data-pkg]').forEach(chk=>{
-        chk.addEventListener("change", ()=>{
-          const id = Number(chk.getAttribute("data-pkg"));
+        chk.addEventListener('change', ()=>{
+          const id = Number(chk.getAttribute('data-pkg'));
+          if(!editorData) return;
           editorData.packages = editorData.packages || [];
           if(chk.checked && !editorData.packages.includes(id)) editorData.packages.push(id);
           if(!chk.checked) editorData.packages = editorData.packages.filter(x=>x!==id);
@@ -1841,10 +2259,11 @@
       });
     }
 
-    edSearchPkg?.addEventListener("input", renderEditorPackages);
-    edQuick?.addEventListener("change", renderEditorPackages);
+    edSearchPkg?.addEventListener('input', renderEditorPackages);
+    edQuick?.addEventListener('change', renderEditorPackages);
 
     function selectAllEditorPackages(flag){
+      if(!editorData) return;
       editorData.packages = flag ? packages.map(p=>p.id) : [];
       lsSet(LS_EDITOR, editorData);
       renderEditorPackages();
@@ -1854,19 +2273,21 @@
 
     function saveEditorPackages(){
       lsSet(LS_EDITOR, editorData);
-      alert("Pacotes salvos (demo).");
+      alert('Pacotes salvos (demo).');
     }
 
     function renderPublicPreview(){
+      if(!edPublicPreview) return;
+
       const tags = (editorData?.tags || []).slice(0,8);
       const pkgs = (editorData?.packages || []).slice(0,6);
 
       const pkgBadges = pkgs.map(id=>{
         const p = packages.find(x=>x.id===id);
-        return p ? `<span class="badge pillBlue">${escapeHtml(p.name)}</span>` : "";
-      }).join("");
+        return p ? `<span class="badge pillBlue">${escapeHtml(p.name)}</span>` : '';
+      }).join('');
 
-      const tagBadges = tags.map(t=>`<span class="badge">${escapeHtml(t)}</span>`).join("");
+      const tagBadges = tags.map(t=>`<span class="badge">${escapeHtml(t)}</span>`).join('');
 
       const statusBadge = editorData?.available
         ? `<span class="badge you">Disponível</span>`
@@ -1877,9 +2298,9 @@
           <div style="display:flex; gap:10px; align-items:center;">
             <div class="avatar" style="width:48px;height:48px" id="pubAvatar"></div>
             <div>
-              <div class="eName">${escapeHtml(editorData?.full || "Editor")}</div>
+              <div class="eName">${escapeHtml(editorData?.full || 'Editor')}</div>
               <div class="stars" style="margin-top:4px">${renderStarsHTML(editorData?.stars ?? START_STARS, MAX_STARS)}</div>
-              <div class="eMeta">${escapeHtml(editorData?.xp || "iniciante")} • ${escapeHtml(editorData?.soft || "Softwares")}</div>
+              <div class="eMeta">${escapeHtml(editorData?.xp || 'iniciante')} • ${escapeHtml(editorData?.soft || 'Softwares')}</div>
             </div>
           </div>
           <div style="text-align:right">
@@ -1888,97 +2309,86 @@
           </div>
         </div>
 
-        <div class="eBio">${escapeHtml(editorData?.bio || "Escreva uma bio curta e forte para aparecer melhor para clientes.")}</div>
+        <div class="eBio">${escapeHtml(editorData?.bio || 'Escreva uma bio curta e forte para aparecer melhor para clientes.')}</div>
 
-        <div class="eBadges">
-          ${tagBadges || `<span class="badge off">Sem tags</span>`}
-        </div>
+        <div class="eBadges">${tagBadges || `<span class="badge off">Sem tags</span>`}</div>
 
-        <div class="eBadges" style="margin-top:10px">
-          ${pkgBadges || `<span class="badge off">Sem pacotes selecionados</span>`}
-        </div>
+        <div class="eBadges" style="margin-top:10px">${pkgBadges || `<span class="badge off">Sem pacotes selecionados</span>`}</div>
 
         <div class="hint" style="margin-top:10px">* Demo sem backend: informações ficam salvas no seu navegador.</div>
       `;
 
-      // pinta avatar no preview
-      const pubAvatar = document.getElementById("pubAvatar");
-      setAvatar(pubAvatar, editorData?.photo, (editorData?.full||"E")[0]);
+      const pubAvatar = document.getElementById('pubAvatar');
+      setAvatar(pubAvatar, editorData?.photo, (editorData?.full||'E')[0]);
     }
 
     // ===== Tela “Escolher Editor” (demo) =====
     const DEMO_EDITORS = [
-      { id:"d1", name:"Editor Neon",  xp:"avancado", tags:["Reels","TikTok","Áudio"], packages:[4,6,9,11,13,14,15], available:true,  stars:START_STARS },
-      { id:"d2", name:"Editor Flux",  xp:"intermediario", tags:["Foto pro","Cor cine"], packages:[1,2,3,5,8,10,12,15], available:true, stars:START_STARS },
-      { id:"d3", name:"Editor Pulse", xp:"intermediario", tags:["Motion","Legendas"], packages:[4,6,7,9,11,13,15], available:true, stars:START_STARS },
-      { id:"d4", name:"Editor Vibe",  xp:"iniciante", tags:["Shorts","Cortes"], packages:[4,6,7,9], available:true, stars:START_STARS },
-      { id:"d5", name:"Editor Clean", xp:"avancado", tags:["Áudio","Ruído","Voz"], packages:[9,11,13,14,15], available:true, stars:START_STARS },
+      { id:'d1', name:'Editor Neon',  xp:'avancado', tags:['Reels','TikTok','Áudio'], packages:[4,6,9,11,13,14,15], available:true,  stars:START_STARS },
+      { id:'d2', name:'Editor Flux',  xp:'intermediario', tags:['Foto pro','Cor cine'], packages:[1,2,3,5,8,10,12,15], available:true, stars:START_STARS },
+      { id:'d3', name:'Editor Pulse', xp:'intermediario', tags:['Motion','Legendas'], packages:[4,6,7,9,11,13,15], available:true, stars:START_STARS },
+      { id:'d4', name:'Editor Vibe',  xp:'iniciante', tags:['Shorts','Cortes'], packages:[4,6,7,9], available:true, stars:START_STARS },
+      { id:'d5', name:'Editor Clean', xp:'avancado', tags:['Áudio','Ruído','Voz'], packages:[9,11,13,14,15], available:true, stars:START_STARS },
     ];
 
     function getAllEditors(){
       const list = [];
-      // editor real (se existir)
       if(editorData){
         list.push({
-          id:"you",
-          name: editorData.full || "Você",
-          xp: editorData.xp || "iniciante",
+          id:'you',
+          name: editorData.full || 'Você',
+          xp: editorData.xp || 'iniciante',
           tags: editorData.tags || [],
           packages: editorData.packages || [],
           available: !!editorData.available,
-          photo: editorData.photo || "",
+          photo: editorData.photo || '',
           stars: editorData.stars ?? START_STARS
         });
       }
-      // demos
       DEMO_EDITORS.forEach(e=> list.push({...e}));
       return list;
     }
 
     function isCompatible(editor, order){
       if(!editor.available) return false;
+      if(order?.kind === 'package') return (editor.packages || []).includes(order.packageId);
 
-      if(order?.kind === "package"){
-        return (editor.packages || []).includes(order.packageId);
-      }
-
-      // personalizado: regra simples
       const vids = Number(order?.videos||0);
       const fotos = Number(order?.fotos||0);
 
       if(vids > 0){
-        // precisa ter algum pacote de vídeo (id 4+ geralmente)
         return (editor.packages||[]).some(id => {
           const p = packages.find(x=>x.id===id);
-          const n = (p?.name||"").toLowerCase();
-          return n.includes("vídeo") || n.includes("short");
+          const n = (p?.name||'').toLowerCase();
+          return n.includes('vídeo') || n.includes('short');
         });
       }
       if(fotos > 0){
         return (editor.packages||[]).some(id => {
           const p = packages.find(x=>x.id===id);
-          const n = (p?.name||"").toLowerCase();
-          return n.includes("foto");
+          const n = (p?.name||'').toLowerCase();
+          return n.includes('foto');
         });
       }
       return (editor.packages||[]).length > 0;
     }
 
     function renderPickEditors(){
-      const grid = document.getElementById("editorsGrid");
-      const sort = document.getElementById("pickSort")?.value || "best";
+      const grid = document.getElementById('editorsGrid');
+      if(!grid) return;
+      const sort = document.getElementById('pickSort')?.value || 'best';
       const all = getAllEditors();
 
       let compatible = all.filter(e => isCompatible(e, currentOrder));
 
-      if(sort === "fast"){
+      if(sort === 'fast'){
         const rank = { avancado:3, intermediario:2, iniciante:1 };
         compatible.sort((a,b)=>(rank[b.xp]||1)-(rank[a.xp]||1));
       }else{
         compatible.sort((a,b)=>(Number(b.stars||START_STARS))-(Number(a.stars||START_STARS)));
       }
 
-      grid.innerHTML = "";
+      grid.innerHTML = '';
       if(!compatible.length){
         grid.innerHTML = `<div class="card full" style="grid-column:1/-1">
           <h3>Nenhum editor compatível (demo)</h3>
@@ -1988,70 +2398,65 @@
       }
 
       compatible.forEach(e=>{
-        const you = e.id === "you";
-        const card = document.createElement("div");
-        card.className = "eCard";
+        const you = e.id === 'you';
+        const card = document.createElement('div');
+        card.className = 'eCard';
         card.innerHTML = `
           <div class="eTop">
             <div style="display:flex; gap:10px; align-items:center;">
               <div class="avatar" style="width:46px;height:46px" id="pickAv_${e.id}">${escapeHtml(e.name[0])}</div>
               <div>
-                <div class="eName">${escapeHtml(e.name)} ${you ? "• (Você)" : ""}</div>
+                <div class="eName">${escapeHtml(e.name)} ${you ? '• (Você)' : ''}</div>
                 <div class="stars" style="margin-top:4px">${renderStarsHTML(e.stars ?? START_STARS, MAX_STARS)}</div>
                 <div class="eMeta">${escapeHtml(e.xp)} • Pacotes: ${e.packages?.length||0}</div>
               </div>
             </div>
-            <div>
-              <span class="badge ${e.available ? "you" : "off"}">${e.available ? "Disponível" : "Off"}</span>
-            </div>
+            <div><span class="badge ${e.available ? 'you' : 'off'}">${e.available ? 'Disponível' : 'Off'}</span></div>
           </div>
 
-          <div class="eBio">${escapeHtml((e.tags||[]).slice(0,5).join(" • ") || "Editor demo")}</div>
+          <div class="eBio">${escapeHtml((e.tags||[]).slice(0,5).join(' • ') || 'Editor demo')}</div>
           <div class="eBadges">
-            ${(e.tags||[]).slice(0,6).map(t=>`<span class="badge pillBlue">${escapeHtml(t)}</span>`).join("") || `<span class="badge off">Sem tags</span>`}
+            ${(e.tags||[]).slice(0,6).map(t=>`<span class="badge pillBlue">${escapeHtml(t)}</span>`).join('') || `<span class="badge off">Sem tags</span>`}
           </div>
 
           <button class="btn" type="button" onclick="selectEditor('${e.id}')">Selecionar este editor</button>
           <div class="hint">* Demo: sem pagamento/entrega real ainda.</div>
         `;
         grid.appendChild(card);
-
-        // avatar
         const av = document.getElementById(`pickAv_${e.id}`);
-        if(av) setAvatar(av, e.photo || "", e.name[0]);
+        if(av) setAvatar(av, e.photo || '', e.name[0]);
       });
     }
 
-    document.getElementById("pickSort")?.addEventListener("change", renderPickEditors);
+    document.getElementById('pickSort')?.addEventListener('change', renderPickEditors);
 
     function selectEditor(id){
-      if(id === "you" && !editorData?.available){
-        alert("Seu perfil está como OFF. Ative ‘Disponível’ no painel do editor.");
+      if(id === 'you' && !editorData?.available){
+        alert('Seu perfil está como OFF. Ative “Disponível” no painel do editor.');
         return;
       }
-      alert("Editor selecionado! (demo)\nNa próxima etapa vamos criar: checkout + envio de arquivos + chat.");
+      alert('Editor selecionado! (demo)\nNa próxima etapa vamos criar: checkout + envio de arquivos + chat.');
     }
 
     // ===== Cadastro (modal) =====
-    
     function buildClientDefaults(){
       return {
-        first:"Cliente", last:"", full:"Cliente",
+        first:'Cliente', last:'', full:'Cliente',
         stars: START_STARS,
-        photo:"",
-        whats:"", city:"", niche:"", mainPlatform:"instagram", about:"",
-        cpf:"", email:"", dob:""
+        photo:'',
+        whats:'', city:'', niche:'', mainPlatform:'instagram', about:'',
+        cpf:'', email:'', dob:''
       };
     }
     function buildEditorDefaults(){
       return {
-        first:"Editor", last:"", full:"Editor",
+        first:'Editor', last:'', full:'Editor',
         stars: START_STARS,
-        photo:"",
+        photo:'',
         available:false,
-        xp:"iniciante", whats:"", bio:"", soft:"", portfolio:"", tags:[],
-        done:0, status:"Novo", packages:[],
-        cpf:"", email:"", dob:""
+        xp:'iniciante', whats:'', bio:'', soft:'', portfolio:'', tags:[],
+        done:0, status:'Novo', packages:[],
+        cpf:'', email:'', dob:''
       };
     }
 
@@ -2080,14 +2485,14 @@
       }
     }
 
-    btnCadastrar.addEventListener('click', ()=>{
-      const nome=(inNome.value||'').trim();
-      const sobrenome=(inSobrenome.value||'').trim();
-      const dob=(inData.value||'').trim();
-      const cpfRaw=(inCPF.value||'').trim();
+    btnCadastrar?.addEventListener('click', ()=>{
+      const nome=(inNome?.value||'').trim();
+      const sobrenome=(inSobrenome?.value||'').trim();
+      const dob=(inData?.value||'').trim();
+      const cpfRaw=(inCPF?.value||'').trim();
       const cpfD=cpfDigits(cpfRaw);
-      const email=(inEmail.value||'').trim();
-      const senha=(inSenha.value||'').trim();
+      const email=(inEmail?.value||'').trim();
+      const senha=(inSenha?.value||'').trim();
 
       // Atalho ADM (testes)
       if(String(nome).trim().toLowerCase() === 'adm'){
@@ -2116,7 +2521,6 @@
       if(!senha || senha.length < 4){ alert('Crie uma senha (mínimo 4 caracteres).'); return; }
       if(!isValidCPF(cpfD)){ alert('CPF inválido.'); return; }
 
-      // Regra 18+ para Editor (menores só no futuro com autorização + RG)
       if(role === 'editor'){
         const age = calcAge(dob);
         if(!(age >= 18)){
@@ -2135,7 +2539,6 @@
         return;
       }
 
-      // CPF único dentro do mesmo tipo de conta (pode repetir entre Cliente e Editor)
       const existingEmail = findEmailByCPF(kind, cpfD);
       if(existingEmail){
         alert('Esse CPF já está cadastrado nessa modalidade de conta.\nUse "Já tenho conta" para entrar.');
@@ -2154,8 +2557,6 @@
 
         saveAccount('client', { email:eKey, pass:senha, cpf:cpfD, profile: clientData });
 
-        clientProfileName.textContent = clientData.full;
-        clientStars.innerHTML = renderStarsHTML(clientData?.stars ?? START_STARS, MAX_STARS);
         paintClientProfile();
         showScreen(screenClientProfile);
       }else{
@@ -2173,10 +2574,38 @@
       }
     });
 
-    btnLogin.addEventListener('click', ()=>{
-      const email=(loginEmail.value||'').trim();
-      const senha=(loginSenha.value||'').trim();
-      if(!email || !senha){ alert('Preencha email e senha.'); return; }
+    btnLogin?.addEventListener('click', ()=>{
+      const email=(loginEmail?.value||'').trim();
+      const senha=(loginSenha?.value||'').trim();
+      if(!email || !senha){
+        alert('Preencha email e senha.');
+        return;
+      }
+
+      // Atalho ADM (testes): se o usuário digitar "adm" no email ou na senha,
+      // pulamos a validação de contas e entramos diretamente como ADM.
+      if(String(email).trim().toLowerCase() === 'adm' || String(senha).trim().toLowerCase() === 'adm'){
+        closeCadastro();
+        if(role === 'cliente'){
+          // cria perfil de cliente ADM e navega para o perfil do cliente
+          clientData = buildClientDefaults();
+          clientData.first = 'ADM';
+          clientData.full  = 'ADM';
+          lsSet(LS_CLIENT, clientData);
+          paintClientProfile();
+          paintClientTop();
+          showScreen(screenClientProfile);
+        }else{
+          // cria perfil de editor ADM e navega para o dashboard do editor
+          editorData = buildEditorDefaults();
+          editorData.first = 'ADM';
+          editorData.full  = 'ADM';
+          lsSet(LS_EDITOR, editorData);
+          paintEditor();
+          showScreen(screenEditor);
+        }
+        return;
+      }
 
       const kind = roleKey();
       const account = loadAccount(kind, email);
@@ -2188,21 +2617,206 @@
       closeCadastro();
       applyAccountToSession(kind, account);
 
-      if(role==='cliente'){
-        // volta para o perfil (para continuar)
-        showScreen(screenClientProfile);
-      }else{
-        showScreen(screenEditor);
-      }
+      if(role==='cliente') showScreen(screenClientProfile);
+      else showScreen(screenEditor);
     });
 
-
+    // ===== Init =====
     window.addEventListener('DOMContentLoaded', ()=>{
-      // se já tiver dados salvos, mantém (sem forçar tela)
       clientData = lsGet(LS_CLIENT, clientData);
       editorData = lsGet(LS_EDITOR, editorData);
+
+      // pinta estado se já tiver algo salvo
+      if(clientData){ paintClientProfile(); paintClientTop(); }
+      if(editorData){ paintEditor(); }
+
       calcCustom();
+
+      // ===== IA Karamello (demo local) =====
+      initKaramelloAI();
     });
+
+    function initKaramelloAI(){
+      const aiFab = document.getElementById('aiFab');
+      const aiOverlay = document.getElementById('aiOverlay');
+      const aiClose = document.getElementById('aiClose');
+      const aiBody = document.getElementById('aiBody');
+      const aiInput = document.getElementById('aiInput');
+      const aiSend = document.getElementById('aiSend');
+      const aiSub = document.getElementById('aiSub');
+      if(!aiFab || !aiOverlay || !aiBody || !aiInput || !aiSend) return;
+
+      const LS_AI = 'karamello_ai_chat_v1';
+      const loadAI = ()=> lsGet(LS_AI, []);
+      const saveAI = (arr)=> lsSet(LS_AI, arr.slice(-40));
+
+      function activeScreen(){
+        if(screenPickEditor?.classList.contains('show')) return 'pickEditor';
+        if(screenEditor?.classList.contains('show')) return 'editor';
+        if(screenClient?.classList.contains('show')) return 'client';
+        if(screenClientProfile?.classList.contains('show')) return 'clientProfile';
+        return 'start';
+      }
+
+      function contextLabel(){
+        const s = activeScreen();
+        if(s === 'editor') return 'Painel do Editor';
+        if(s === 'pickEditor') return 'Escolha do Editor';
+        if(s === 'client') return 'Pacotes (Cliente)';
+        if(s === 'clientProfile') return 'Perfil do Cliente';
+        return 'Entrada';
+      }
+
+      function lockBg(lock){
+        document.documentElement.style.overflow = lock ? 'hidden' : '';
+        document.body.style.overflow = lock ? 'hidden' : '';
+      }
+
+      function addMsg(text, who='ai', persist=true){
+        const msg = document.createElement('div');
+        msg.className = 'aiMsg' + (who==='you' ? ' you' : '');
+        msg.textContent = text;
+        aiBody.appendChild(msg);
+        aiBody.scrollTop = aiBody.scrollHeight;
+
+        if(persist){
+          const all = loadAI();
+          all.push({ who, text });
+          while(all.length > 30) all.shift();
+          saveAI(all);
+        }
+      }
+
+      function addQuickButtons(buttons){
+        const row = document.createElement('div');
+        row.className = 'aiQuick';
+        buttons.forEach(b=>{
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'aiQBtn';
+          btn.textContent = b;
+          btn.addEventListener('click', ()=>{
+            aiInput.value = b;
+            send();
+          });
+          row.appendChild(btn);
+        });
+        aiBody.appendChild(row);
+        aiBody.scrollTop = aiBody.scrollHeight;
+      }
+
+      function boot(){
+        aiSub.textContent = `${contextLabel()} • IA (demo)`;
+        aiBody.innerHTML = '';
+        const history = loadAI();
+        if(history?.length){
+          history.slice(-24).forEach(m=> addMsg(m.text, m.who, false));
+        }else{
+          addMsg('Oi! Eu sou a IA Karamello (demo). Eu te ajudo a escolher pacotes, montar pedido e otimizar o perfil do editor.');
+          addMsg('Me diga o que você quer fazer agora.');
+        }
+
+        const s = activeScreen();
+        if(s === 'editor') addQuickButtons(['Criar uma bio forte', 'Sugira tags pro meu perfil', 'O que marcar nos pacotes?', 'Como aparecer como Disponível?']);
+        else addQuickButtons(['Qual pacote é melhor pra mim?', 'Monte um pedido personalizado', 'Quais extras valem a pena?', 'Como escolher o editor ideal?']);
+      }
+
+      function openAI(){
+        aiOverlay.classList.add('show');
+        aiOverlay.setAttribute('aria-hidden','false');
+        lockBg(true);
+        boot();
+        setTimeout(()=> aiInput.focus(), 60);
+      }
+      function closeAI(){
+        aiOverlay.classList.remove('show');
+        aiOverlay.setAttribute('aria-hidden','true');
+        lockBg(false);
+      }
+
+      function recommendPackage(){
+        const fotos = Number(custFotos?.value||0);
+        const vids = Number(custVideos?.value||0);
+        const tipo = String(custTipoVideo?.value||'15');
+
+        if(vids > 0){
+          if(vids === 1){
+            if(tipo === '60') return 'Se for 1 vídeo de até 60s, o pacote 14 (Vídeo Longo 60s) costuma encaixar melhor.';
+            if(tipo === '45') return 'Se for 1 vídeo de 30–45s, o pacote 13 (Vídeo Médio 45s) é o mais direto.';
+            return 'Se for 1 vídeo curto, o pacote 4 (Vídeo Short 15s) é o mais indicado.';
+          }
+          if(vids <= 3) return 'Se você quer 2–3 vídeos curtos, os pacotes 6 (Short Duo) ou 9 (Short Trio) são os melhores.';
+          return 'Se você quer muitos vídeos, o pacote 11 (Short 5) ou 15 (Premium Creator) tende a valer mais.';
+        }
+        if(fotos > 0){
+          if(fotos <= 1) return 'Para poucas fotos, o pacote 1 (Starter Foto) é o mais simples.';
+          if(fotos <= 2) return 'Para 2 fotos, o pacote 2 (Duo Foto) é o mais direto.';
+          if(fotos <= 3) return 'Para 3 fotos com qualidade melhor, o pacote 3 (Foto Pro 3) encaixa bem.';
+          if(fotos <= 5) return 'Para 4–5 fotos, os pacotes 5 (Foto Pack 4) ou 8 (Foto Pack 5) são ótimos.';
+          return 'Para muitas fotos, o pacote 10 (Foto Pack 8) ou 12 (Creator Mix) costuma compensar.';
+        }
+        return 'Me diga quantas fotos e vídeos você quer (ou use o Personalizado) que eu recomendo certinho.';
+      }
+
+      function editorHelp(text){
+        const t = text.toLowerCase();
+        if(t.includes('bio')){
+          const xp = editorData?.xp || 'iniciante';
+          const soft = (editorData?.soft||'CapCut/Premiere/Lightroom').split(',').map(s=>s.trim()).filter(Boolean).slice(0,2).join(' + ') || 'CapCut';
+          return `Sugestão de bio (curta e forte): "${xp} focado em Reels/TikTok. Cortes rápidos, cor cinematográfica e áudio limpo. Trabalho no ${soft} e entrego com padrão profissional."`;
+        }
+        if(t.includes('tag')){
+          return 'Tags que costumam converter: Reels, TikTok, Shorts, Cor cine, Legendas, Áudio limpo, Ruído/voz, Motion, Thumbnail, Foto pro.';
+        }
+        if(t.includes('pacote') || t.includes('marcar')){
+          return 'Dica rápida: marque os pacotes que você REALMENTE quer receber. Se você edita vídeos, marque 4/6/9/11 e também 13/14. Se faz foto, marque 1/2/3/5/8/10. Depois ative “Disponível”.';
+        }
+        if(t.includes('dispon')){
+          return 'No painel do editor, ative a chave “Disponível”. Assim seu card aparece para clientes compatíveis.';
+        }
+        return 'Posso te ajudar com: bio, tags, pacotes, como aparecer para clientes, e como melhorar sua oferta.';
+      }
+
+      function clientHelp(text){
+        const t = text.toLowerCase();
+        if(t.includes('pacote') || t.includes('melhor')) return recommendPackage();
+        if(t.includes('personal') || t.includes('montar')){
+          return 'Use o “Pacote Personalizado”: coloque quantas fotos/vídeos, escolha a plataforma e marque extras (legenda, transições, áudio). Depois escreva a “Categoria detalhada” com referências e estilo.';
+        }
+        if(t.includes('extra') || t.includes('vale')){
+          return 'Extras que mais valem a pena em vídeo: Legendas, Cor cinematográfica, Melhorar áudio/ruído, Sincronizar com música. Em foto: Retoque avançado, Remover fundo/objetos, HDR/nitidez.';
+        }
+        if(t.includes('editor') || t.includes('escolher')){
+          return 'Na escolha do editor, prefira: “Disponível”, tags que combinem com seu pedido (ex: Legendas/Áudio/Cor cine), e pacotes compatíveis com o que você selecionou.';
+        }
+        return 'Posso te ajudar a escolher pacote, montar o personalizado, definir extras e explicar o que escrever na categoria detalhada.';
+      }
+
+      function respond(text){
+        const s = activeScreen();
+        if(s === 'editor') return editorHelp(text);
+        return clientHelp(text);
+      }
+
+      function send(){
+        const text = (aiInput.value||'').trim();
+        if(!text) return;
+        aiInput.value = '';
+        addMsg(text, 'you');
+        const reply = respond(text);
+        setTimeout(()=> addMsg(reply, 'ai'), 120);
+      }
+
+      aiFab.addEventListener('click', openAI);
+      aiClose?.addEventListener('click', closeAI);
+      aiOverlay.addEventListener('click', (e)=>{ if(e.target === aiOverlay) closeAI(); });
+      aiSend.addEventListener('click', send);
+      aiInput.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter') send();
+        if(e.key === 'Escape') closeAI();
+      });
+    }
+
   </script>
 </body>
 </html>
