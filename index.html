@@ -2176,10 +2176,111 @@
     </form>
   </section>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     // ===== Util =====
     const MAX_STARS = 10;
-    const START_STARS = 5.0;
+    
+
+    // ===== Supabase (Auth + Banco) =====
+    // IMPORTANTE: anon key é pública. NUNCA coloque a service_role no frontend.
+    const SUPABASE_URL = "https://qnraiayglvluzhuyigje.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_6P7JM9YccqYP2vPXNXOPdw_ogHZWqXF";
+    const supaLib = window.supabase;
+    const supaClient = (supaLib && typeof supaLib.createClient === 'function')
+      ? supaLib.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
+    const SUPABASE_ENABLED = !!supaClient;
+
+    async function sha256Hex(str){
+      const enc = new TextEncoder();
+      const buf = await crypto.subtle.digest('SHA-256', enc.encode(str));
+      const bytes = Array.from(new Uint8Array(buf));
+      return bytes.map(b=>b.toString(16).padStart(2,'0')).join('');
+    }
+
+    async function supaEnsureProfileAndCpf({ userId, displayName, roleValue, cpfDigitsOnly }){
+      // 1) profile
+      const { error: pErr } = await supaClient
+        .from('profiles')
+        .upsert({ user_id: userId, display_name: displayName, role: roleValue }, { onConflict: 'user_id' });
+      if(pErr) throw pErr;
+
+      // 2) cpf (hash + last4). Sem armazenar CPF puro.
+      if(cpfDigitsOnly){
+        const cpfHash = await sha256Hex(String(cpfDigitsOnly));
+        const last4 = String(cpfDigitsOnly).slice(-4);
+        const { error: cErr } = await supaClient
+          .from('user_cpf')
+          .upsert({ user_id: userId, cpf_hash: cpfHash, cpf_last4: last4 }, { onConflict: 'user_id' });
+        if(cErr) throw cErr;
+      }
+    }
+
+    async function supaRegisterFlow({ nome, sobrenome, dob, cpfD, email, senha, roleUi }){
+      if(!SUPABASE_ENABLED) throw new Error('Supabase não inicializou.');
+
+      const displayName = `${nome} ${sobrenome}`.trim();
+      const roleValue = (roleUi === 'cliente') ? 'client' : 'editor';
+
+      const { data, error } = await supaClient.auth.signUp({
+        email,
+        password: senha,
+        options: { data: { display_name: displayName, role: roleValue } }
+      });
+      if(error) throw error;
+
+      // Se confirmação de email estiver ligada, pode não vir sessão.
+      if(!data?.session || !data?.user){
+        alert('Conta criada! Agora confirme o email para ativar e depois faça login.');
+        return { ok:false, needsConfirm:true };
+      }
+
+      // cria profile + cpf
+      await supaEnsureProfileAndCpf({
+        userId: data.user.id,
+        displayName,
+        roleValue,
+        cpfDigitsOnly: cpfD
+      });
+
+      // cria row de editor (opcional) pra aparecer na busca
+      if(roleValue === 'editor'){
+        const { error: eErr } = await supaClient
+          .from('editors')
+          .upsert({ user_id: data.user.id, headline: 'Editor', bio: '', skills: [], is_active: true }, { onConflict: 'user_id' });
+        if(eErr) console.warn('Falha ao criar editor row:', eErr.message);
+      }
+
+      return { ok:true, roleValue };
+    }
+
+    async function supaLoginFlow({ email, senha }){
+      if(!SUPABASE_ENABLED) throw new Error('Supabase não inicializou.');
+
+      const { data, error } = await supaClient.auth.signInWithPassword({ email, password: senha });
+      if(error) throw error;
+
+      const userId = data?.user?.id;
+      if(!userId) throw new Error('Login ok, mas não retornou user.');
+
+      const { data: prof, error: profErr } = await supaClient
+        .from('profiles')
+        .select('user_id, display_name, role')
+        .eq('user_id', userId)
+        .maybeSingle();
+      if(profErr) throw profErr;
+
+      const { data: cpfRow } = await supaClient
+        .from('user_cpf')
+        .select('cpf_last4')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      return { userId, profile: prof || null, cpf_last4: cpfRow?.cpf_last4 || null };
+    }
+
+const START_STARS = 5.0;
 
     function escapeHtml(str){
       return String(str ?? "")
@@ -4733,7 +4834,7 @@ function startPickEditor(){
       }
     }
 
-    btnCadastrar?.addEventListener('click', ()=>{
+    btnCadastrar?.addEventListener('click', async ()=>{
       const nome=(inNome?.value||'').trim();
       const sobrenome=(inSobrenome?.value||'').trim();
       const dob=(inData?.value||'').trim();
@@ -4741,6 +4842,69 @@ function startPickEditor(){
       const cpfD=cpfDigits(cpfRaw);
       const email=(inEmail?.value||'').trim();
       const senha=(inSenha?.value||'').trim();
+
+      // Se Supabase estiver ativo, cadastro real (aparece em Authentication → Users)
+      if(SUPABASE_ENABLED){
+        try{
+          // validações básicas (mantém as mesmas do modo local)
+          if(!nome||!sobrenome){ alert('Preencha Nome e Sobrenome.'); return; }
+          if(!dob){ alert('Preencha a data de nascimento.'); return; }
+          if(!email){ alert('Preencha o email.'); return; }
+          if(!senha || senha.length < 6){ alert('Crie uma senha (mínimo 6 caracteres).'); return; }
+          if(!isValidCPF(cpfD)){ alert('CPF inválido.'); return; }
+          if(role === 'editor'){
+            const age = calcAge(dob);
+            if(!(age >= 18)){
+              alert('Para ser Editor/Vendedor, você precisa ter 18+ (regra do projeto).');
+              return;
+            }
+          }
+
+          const eKey = normEmail(email);
+          const r = await supaRegisterFlow({ nome, sobrenome, dob, cpfD, email: eKey, senha, roleUi: role });
+          if(!r?.ok) return;
+
+          closeCadastro();
+
+          // Mantém sua UI atual (sem reescrever tudo): salva um perfil local para navegar nas telas
+          if(role==='cliente'){
+            ensureClientData(nome, sobrenome);
+            clientData.cpf = cpfD;
+            clientData.email = eKey;
+            clientData.dob = dob;
+            clientData.stars = START_STARS;
+            lsSet(LS_CLIENT, clientData);
+            paintClientProfile();
+            paintClientTop();
+            setActiveSession('cliente');
+            goProcurar(true);
+            setTimeout(runPostLoginIntent, 80);
+          }else{
+            ensureEditorData(nome, sobrenome);
+            editorData.cpf = cpfD;
+            editorData.email = eKey;
+            editorData.dob = dob;
+            editorData.stars = START_STARS;
+            lsSet(LS_EDITOR, editorData);
+            paintEditor();
+            setActiveSession('editor');
+            showScreen(screenEditor);
+          }
+          return;
+        }catch(err){
+          const msg = (err && err.message) ? err.message : String(err);
+          // Mensagens comuns
+          if(/User already registered/i.test(msg) || /already registered/i.test(msg)){
+            alert('Esse email já está cadastrado. Use "Já tenho conta" para entrar.');
+          }else if(/duplicate key value/i.test(msg) || /cpf_hash/i.test(msg)){
+            alert('Esse CPF já está cadastrado.');
+          }else{
+            alert('Erro no cadastro: ' + msg);
+          }
+          return;
+        }
+      }
+
 
       // Atalho ADM (testes)
       if(String(nome).trim().toLowerCase() === 'adm'){
@@ -4828,9 +4992,55 @@ function startPickEditor(){
       }
     });
 
-    btnLogin?.addEventListener('click', ()=>{
+    btnLogin?.addEventListener('click', async ()=>{
       const email=(loginEmail?.value||'').trim();
       const senha=(loginSenha?.value||'').trim();
+
+      // Se Supabase estiver ativo, login real
+      if(SUPABASE_ENABLED){
+        try{
+          const eKey = normEmail(email);
+          const r = await supaLoginFlow({ email: eKey, senha });
+
+          // Se não tiver profile ainda, cria um mínimo com base na tela (cliente/editor)
+          const roleValue = (role === 'cliente') ? 'client' : 'editor';
+          const displayName = r?.profile?.display_name || (eKey.split('@')[0] || 'Usuário');
+          if(!r?.profile){
+            await supaEnsureProfileAndCpf({ userId: r.userId, displayName, roleValue, cpfDigitsOnly: null });
+          }
+
+          closeCadastro();
+
+          // Mantém a navegação atual com perfil local (até a gente integrar tudo com banco)
+          if(role === 'cliente'){
+            const parts = String(displayName).split(' ');
+            ensureClientData(parts[0] || displayName, parts.slice(1).join(' ') || '');
+            clientData.email = eKey;
+            clientData.stars = START_STARS;
+            lsSet(LS_CLIENT, clientData);
+            paintClientProfile();
+            paintClientTop();
+            setActiveSession('cliente');
+            goProcurar(true);
+            setTimeout(runPostLoginIntent, 80);
+          }else{
+            const parts = String(displayName).split(' ');
+            ensureEditorData(parts[0] || displayName, parts.slice(1).join(' ') || '');
+            editorData.email = eKey;
+            editorData.stars = START_STARS;
+            lsSet(LS_EDITOR, editorData);
+            paintEditor();
+            setActiveSession('editor');
+            showScreen(screenEditor);
+          }
+          return;
+        }catch(err){
+          const msg = (err && err.message) ? err.message : String(err);
+          alert('Erro no login: ' + msg);
+          return;
+        }
+      }
+
       if(!email || !senha){
         alert('Preencha email e senha.');
         return;
