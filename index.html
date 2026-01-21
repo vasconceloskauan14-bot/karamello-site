@@ -3,8 +3,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2714%27%20fill%3D%27%23facc15%27/%3E%3Ctext%20x%3D%2732%27%20y%3D%2742%27%20font-size%3D%2732%27%20text-anchor%3D%27middle%27%20font-family%3D%27Arial%27%20fill%3D%27%23111827%27%3EK%3C/text%3E%3C/svg%3E">
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Karameloo | Edição Profissional</title>
 
   <style>
@@ -1237,66 +1236,7 @@
     .aiMsgs{ padding: 4px 14px 12px; overflow:auto; flex:1; display:grid; gap:10px; }
     .aiMsg{ padding:10px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); color: rgba(247,248,251,.92); line-height:1.35; }
     .aiMsg.me{ background: rgba(245,180,0,.10); border-color: rgba(245,180,0,.22); }
-    
-/* ===== Chat (profissional) ===== */
-.chatShell{display:flex; flex-direction:column; height:min(72vh, 640px);}
-.chatHeader{
-  display:flex; align-items:center; gap:12px;
-  padding:10px 12px;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:14px;
-  background: rgba(255,255,255,.03);
-  margin-bottom:10px;
-}
-html[data-theme="light"] .chatHeader{
-  border-color: rgba(2,6,23,.10);
-  background: rgba(2,6,23,.03);
-}
-.chatHeader .chatWho{font-weight:800;}
-.chatHeader .chatSub{font-size:12px; opacity:.8; margin-top:2px;}
-.chatMessages{
-  flex:1; overflow:auto;
-  display:flex; flex-direction:column;
-  gap:10px;
-  padding:10px;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:14px;
-  background: rgba(255,255,255,.03);
-}
-html[data-theme="light"] .chatMessages{
-  border-color: rgba(2,6,23,.10);
-  background: rgba(2,6,23,.02);
-}
-.chatBubble{
-  max-width:min(78%, 520px);
-  padding:10px 12px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.04);
-  line-height:1.35;
-}
-.chatBubble.me{
-  align-self:flex-end;
-  border-color: rgba(245,180,0,.24);
-  background: rgba(245,180,0,.12);
-}
-html[data-theme="light"] .chatBubble{
-  border-color: rgba(2,6,23,.12);
-  background: rgba(255,255,255,.88);
-}
-html[data-theme="light"] .chatBubble.me{
-  border-color: rgba(245,180,0,.34);
-  background: rgba(255,220,90,.30);
-}
-.chatMeta{display:flex; justify-content:space-between; gap:10px; font-size:11px; opacity:.75; margin-top:6px;}
-.chatComposer{
-  display:flex; gap:10px; margin-top:10px;
-}
-.chatComposer input{
-  flex:1;
-}
-
-.aiForm{ display:flex; gap:10px; padding: 12px 14px 14px; border-top:1px solid rgba(255,255,255,.10); }
+    .aiForm{ display:flex; gap:10px; padding: 12px 14px 14px; border-top:1px solid rgba(255,255,255,.10); }
     .aiInput{ flex:1; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.03); }
     .aiSend{ padding:12px 14px; border:none; border-radius:12px; font-weight:1000; cursor:pointer; background: linear-gradient(90deg, var(--accent1), var(--accent2)); color:#0b0e14; }
     @media (max-width: 620px){
@@ -1412,155 +1352,7 @@ html[data-theme="light"] .chatBubble.me{
     .aiPanel.pop{ animation: aiPop .22s ease; }
     @keyframes aiPop{ from{ opacity:0; transform: translateY(10px) scale(.98);} to{ opacity:1; transform: translateY(0) scale(1);} }
 
-  
-
-    /* ===== Global Nav (Back + Theme) ===== */
-    #globalNav{
-      position:fixed;
-      top:14px;
-      left:14px;
-      z-index:9999;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      pointer-events:auto;
-    }
-    #globalNav .iconBtn{backdrop-filter: blur(6px);}
-    #globalNav.hide{display:none;}
-
-    /* ===== Light Theme ===== */
-    html[data-theme="light"]{
-  --bg:#fffdf7;
-  --panel:#ffffff;
-  --text:#111827;
-  --muted:rgba(17,24,39,.64);
-  --border:rgba(15,23,42,.12);
-}
-html[data-theme="light"] body{color:var(--text);}
-html[data-theme="light"] .bg{
-  background:
-    radial-gradient(1200px 820px at 14% 12%, rgba(255,206,74,.28), transparent 62%),
-    radial-gradient(1000px 760px at 86% 18%, rgba(255,231,150,.24), transparent 62%),
-    radial-gradient(1200px 900px at 50% 88%, rgba(255,206,74,.12), transparent 62%),
-    linear-gradient(180deg, #fffdf7 0%, #ffffff 70%, #ffffff 100%);
-}
-html[data-theme="light"] .card,
-html[data-theme="light"] .modal{
-  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96));
-  border-color: rgba(15,23,42,.10);
-  box-shadow: 0 10px 26px rgba(2,6,23,.10);
-}
-html[data-theme="light"] .pill{background: rgba(2,6,23,.04); border-color: rgba(2,6,23,.10); color: rgba(2,6,23,.80);}
-html[data-theme="light"] .badge{background: rgba(2,6,23,.05); border-color: rgba(2,6,23,.14); color: rgba(2,6,23,.78);}
-html[data-theme="light"] .btn.secondary{background: rgba(2,6,23,.04); border-color: rgba(2,6,23,.12); color: rgba(2,6,23,.78);}
-/* ===== Editor cards (client choose + procurar) ===== */
-    .editor-cards{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap:14px;
-      align-items:stretch;
-    }
-    .eCard{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      min-height:520px;
-    }
-    .eBadges{gap:8px}
-
-/* ===== Marketplace grids (4 por linha no desktop) ===== */
-.marketGrid{
-  display:grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap:14px;
-  align-items:start;
-  grid-auto-rows:min-content;
-  margin-top:12px;
-}
-@media (max-width: 1180px){ .marketGrid{ grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 860px){ .marketGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 520px){ .marketGrid{ grid-template-columns: 1fr; } }
-.marketGrid > *{ align-self:start; height:auto; }
-
-/* Evita "vazio gigante" em cards no grid */
-.editor-cards{
-  align-items:start;
-  grid-auto-rows:min-content;
-}
-.eCard{
-  min-height:0;
-  height:auto;
-  align-self:start;
-}
-.eActions{ margin-top:auto; display:flex; gap:10px; flex-wrap:wrap; }
-
-    .eBio{margin-top:6px}
-    .eCard .btn{margin-top:auto}
-
-    /* ===== Custom options: 2 columns (Vídeo esquerda / Foto direita) ===== */
-    #customOptsMain, #customOptsMore{
-      margin-top:4px;
-    }
-    .customSplit{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px 18px;
-      align-items:start;
-    }
-    .optCol{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .optCol .pillMini{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      font-size:.88rem;
-      color: rgba(229,231,235,.86);
-      width: fit-content;
-      margin-bottom:6px;
-    }
-    html[data-theme="light"] .optCol .pillMini{
-      border-color: rgba(2,6,23,.14);
-      background: rgba(2,6,23,.04);
-      color: rgba(2,6,23,.70);
-    }
-
-    /* ===== Smooth expand for "Ver mais opções" ===== */
-    #customOptsMore{
-      display:block !important;
-      overflow:hidden;
-      max-height:0;
-      opacity:0;
-      transform: translateY(-6px);
-      transition: max-height .38s ease, opacity .22s ease, transform .38s ease;
-    }
-    #customOptsMore:not(.collapsed){
-      max-height:1400px;
-      opacity:1;
-      transform:none;
-    }
-    #customOptsMore.collapsed{display:block !important;}
-
-    /* ===== Simple tables (ADM) ===== */
-    .table th, .table td{
-      text-align:left;
-      padding:10px 10px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      white-space:nowrap;
-      font-size:.95rem;
-      color: rgba(229,231,235,.90);
-    }
-    html[data-theme="light"] .table th, html[data-theme="light"] .table td{
-      border-bottom:1px solid rgba(2,6,23,.10);
-      color: rgba(2,6,23,.78);
-    }
-</style>
+  </style>
 </head>
 
 <body>
@@ -1590,7 +1382,7 @@ html[data-theme="light"] .btn.secondary{background: rgba(2,6,23,.04); border-col
               <p class="startDesc">Escolha um pacote pronto ou monte um personalizado. Ideal para Reels, TikTok, Shorts e fotos com acabamento profissional.</p>
 
               <div class="startChips" aria-label="Destaques">
-                <span class="startChip">⚡ Entrega a partir de <strong>40min</strong></span>
+                <span class="startChip">⚡ Entrega a partir de <strong>13h30</strong></span>
                 <span class="startChip">⭐ Avaliação <strong>0–10</strong> (começa em 5)</span>
                 <span class="startChip">🔒 CPF único (demo)</span>
               </div>
@@ -1830,22 +1622,17 @@ html[data-theme="light"] .btn.secondary{background: rgba(2,6,23,.04); border-col
               <button class="x" type="button" onclick="closeChat()">✕</button>
             </div>
             <div class="modalBody">
-              <div class="chatShell">
-  <div class="chatHeader">
-    <div class="avatar" id="chatAvatar" style="width:42px;height:42px">E</div>
-    <div>
-      <div class="chatWho" id="chatWho">Conversar</div>
-      <div class="chatSub" id="chatSub">Demo: mensagens ficam salvas no seu navegador</div>
-    </div>
-  </div>
-
-  <div id="chatMsgs" class="chatMessages"></div>
-
-  <div class="chatComposer">
-    <input id="chatInput" class="aiInput" placeholder="Escreva sua mensagem…" maxlength="280" />
-    <button class="btn" type="button" onclick="sendChat()">Enviar</button>
-  </div>
-</div>
+              <div id="chatIntro" class="pill" style="margin:0 0 10px">* Demo: mensagens ficam salvas no seu navegador.</div>
+              <div id="chatMsgs" style="display:grid; gap:10px; max-height:380px; overflow:auto; padding:10px; border:1px solid rgba(255,255,255,.10); border-radius:14px; background: rgba(255,255,255,.03)"></div>
+              <div style="display:flex; gap:10px; margin-top:12px">
+                <input id="chatInput" class="aiInput" placeholder="Escreva sua mensagem…" maxlength="280" />
+                <button class="btn" type="button" onclick="sendChat()">Enviar</button>
+              </div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px">
+                <button class="btn secondary small" type="button" onclick="openChatWhats()">📱 WhatsApp</button>
+                <button class="btn secondary small" type="button" onclick="closeChat()">Fechar</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -2053,17 +1840,7 @@ html[data-theme="light"] .btn.secondary{background: rgba(2,6,23,.04); border-col
                   <label class="chk"><input data-custom-opt id="optThumbnail" type="checkbox" /> Thumbnail (capa) (1 unidade)</label>
                   <label class="chk"><input data-custom-opt id="optUrgente" type="checkbox" /> Prioridade (entrega mais rápida)</label>
                 </div>
-              
-                  <label class="chk"><input data-custom-opt id="optReenquadrar" type="checkbox" /> Reenquadrar (auto) / 9:16 → 1:1 (vídeos)</label>
-                  <label class="chk"><input data-custom-opt id="optDenoiseVideo" type="checkbox" /> Reduzir ruído + nitidez pro (vídeos)</label>
-                  <label class="chk"><input data-custom-opt id="optJumpCuts" type="checkbox" /> Ritmo dinâmico (jump cuts) (vídeos)</label>
-                  <label class="chk"><input data-custom-opt id="optLUTPro" type="checkbox" /> Correção de cor avançada (LUT pro) (vídeos)</label>
-
-                  <label class="chk"><input data-custom-opt id="optRestaurarFoto" type="checkbox" /> Restaurar foto antiga (fotos)</label>
-                  <label class="chk"><input data-custom-opt id="optManchas" type="checkbox" /> Remover manchas/espinhas (fotos)</label>
-                  <label class="chk"><input data-custom-opt id="optOlhosDentes" type="checkbox" /> Realçar olhos/dentes (fotos)</label>
-                  <label class="chk"><input data-custom-opt id="optDesfoqueFundo" type="checkbox" /> Desfocar fundo (bokeh) (fotos)</label>
-</div>
+              </div>
 
               <div class="moreRow">
                 <button class="btn secondary small" id="toggleCustomOpts" type="button" onclick="toggleCustomOptions()">Ver mais opções ↓</button>
@@ -2076,7 +1853,7 @@ html[data-theme="light"] .btn.secondary{background: rgba(2,6,23,.04); border-col
 
               <div class="total-box">
                 <div class="total-line"><span>Valor total</span><strong id="custTotal">R$ 0</strong></div>
-                <div class="total-sub">Entrega estimada: <strong id="custEntrega">40min</strong> (mínimo)</div>
+                <div class="total-sub">Entrega estimada: <strong id="custEntrega">13h30</strong> (mínimo)</div>
               </div>
 
               <button class="btn" type="button" onclick="confirmCustom()">Continuar com o personalizado</button>
@@ -2126,21 +1903,7 @@ html[data-theme="light"] .btn.secondary{background: rgba(2,6,23,.04); border-col
             </div>
           </div>
 
-          <div class="toolbar" style="margin-top:12px">
-            <div class="left">
-              <span class="chip">Painel</span>
-              <span class="chip" id="editorTabLabel">Perfil</span>
-            </div>
-            <div class="right">
-              <button class="btn secondary small" type="button" onclick="switchEditorTab('profile')">Perfil</button>
-              <button class="btn secondary small" type="button" onclick="switchEditorTab('chats')">Chats</button>
-              <button class="btn secondary small" type="button" onclick="switchEditorTab('orders')">Pedidos</button>
-              <button class="btn secondary small" type="button" onclick="switchEditorTab('done')">Entregues</button>
-            </div>
-          </div>
-
-          <div id="editorTabProfile">
-          <div class="editor-grid"><div class="editor-grid">
+          <div class="editor-grid">
             <!-- Perfil -->
             <div class="card">
               <div class="profileCover" id="editorCover"></div>
@@ -2333,79 +2096,7 @@ html[data-theme="light"] .btn.secondary{background: rgba(2,6,23,.04); border-col
               <div class="hint">* Sem backend: isso é salvo no seu navegador (LocalStorage).</div>
             </div>
           </div>
-        
-          </div><!-- /editorTabProfile -->
-
-          <div id="editorTabChats" class="card" style="margin-top:14px; display:none">
-            <h3 style="margin:0 0 10px;color:#c7d2fe">Chats</h3>
-            <div class="pill" style="margin:0 0 10px">Conversas (demo) salvas no navegador.</div>
-            <div id="editorChatsList" class="menuList"></div>
-          </div>
-
-          <div id="editorTabOrders" class="card" style="margin-top:14px; display:none">
-            <h3 style="margin:0 0 10px;color:#c7d2fe">Pedidos</h3>
-            <div class="pill" style="margin:0 0 10px">Sem backend ainda: aqui vai listar pedidos quando a gente integrar com o banco.</div>
-            <div class="hint">Por enquanto, você pode ver os pedidos no ADM (demo) ou testar o fluxo Cliente.</div>
-          </div>
-
-          <div id="editorTabDone" class="card" style="margin-top:14px; display:none">
-            <h3 style="margin:0 0 10px;color:#c7d2fe">Entregues</h3>
-            <div class="pill" style="margin:0 0 10px">Sem backend ainda: entregas reais entram depois.</div>
-            <div class="hint">Quando tiver backend, cada pedido terá status: pendente → em andamento → entregue.</div>
-          </div>
-</section>
-
-        <!-- ✅ ADMIN DASHBOARD (frontend-only) -->
-        <section id="screenAdmin" class="screen">
-          <div class="section-title">Painel ADM 🔐</div>
-          <div class="pill">Acesso exclusivo: <strong>karameloo.superadmin</strong>. (Sem backend ainda: dados vêm do LocalStorage.)</div>
-
-          <div class="toolbar" style="margin-top:14px">
-            <div class="left">
-              <span class="chip">📊 Visão geral</span>
-              <span class="chip" id="admUpdated">Atualizado: —</span>
-            </div>
-            <div class="right">
-              <button class="iconBtn" type="button" onclick="goBackGlobal()" title="Voltar">←</button>
-              <button class="iconBtn" type="button" onclick="toggleTheme()" title="Alternar tema">🌓</button>
-              <button class="btn secondary" type="button" onclick="logoutAndGoStart()">Sair</button>
-            </div>
-          </div>
-
-          <div class="editor-grid" style="margin-top:14px">
-            <div class="card">
-              <div class="kpi">
-                <div class="k"><div class="t">Usuários (contas)</div><div class="v" id="admUsers">0</div></div>
-                <div class="k"><div class="t">Pedidos salvos</div><div class="v" id="admOrders">0</div></div>
-                <div class="k"><div class="t">Faturamento (demo)</div><div class="v" id="admRevenue">R$ 0</div></div>
-              </div>
-              <div class="hint">* “Faturamento” soma os pedidos salvos localmente. No backend isso vira real.</div>
-            </div>
-
-            <div class="card">
-              <h3 style="margin:0 0 10px;color:#c7d2fe">Denúncias</h3>
-              <div id="admReports" class="pill" style="margin:0">Nenhuma denúncia ainda.</div>
-              <div class="hint" style="margin-top:10px">* Você pode denunciar um editor no perfil (botão “Denunciar”).</div>
-            </div>
-          </div>
-
-          <div class="section-title" style="margin-top:18px">Usuários</div>
-          <div class="pill" style="margin:0 0 10px">Lista (demo) baseada nas contas salvas no navegador.</div>
-          <div class="card">
-            <div style="overflow:auto">
-              <table class="table" id="admUsersTable" style="width:100%; border-collapse:collapse"></table>
-            </div>
-          </div>
-
-          <div class="section-title" style="margin-top:18px">Pedidos</div>
-          <div class="pill" style="margin:0 0 10px">Pedidos (demo) baseados no LocalStorage.</div>
-          <div class="card">
-            <div style="overflow:auto">
-              <table class="table" id="admOrdersTable" style="width:100%; border-collapse:collapse"></table>
-            </div>
-          </div>
         </section>
-
 
       </div>
     </main>
@@ -2489,24 +2180,6 @@ html[data-theme="light"] .btn.secondary{background: rgba(2,6,23,.04); border-col
   <script>
     // ===== Util =====
     const MAX_STARS = 10;
-
-    // ===== A11y: evitar warning aria-hidden (blur + restore focus) =====
-    const __returnFocus = { auth:null, menu:null, profile:null, chat:null, ai:null };
-    function __storeFocus(key){ try{ __returnFocus[key] = document.activeElement; }catch(e){} }
-    function __blurIfInside(container){
-      try{
-        const a = document.activeElement;
-        if(container && a && container !== document.body && container.contains(a)) a.blur();
-      }catch(e){}
-    }
-    function __restoreFocus(key){
-      try{
-        const el = __returnFocus[key];
-        if(el && document.contains(el)) el.focus({ preventScroll:true });
-        __returnFocus[key] = null;
-      }catch(e){}
-    }
-
     
 
     // ===== Supabase (Auth + Banco) =====
@@ -2694,7 +2367,6 @@ const START_STARS = 5.0;
       const s = getSession();
       if(kind==='cliente'){ s.active='cliente'; s.clientEmail = clientData?.email || s.clientEmail || ''; }
       if(kind==='editor'){ s.active='editor'; s.editorEmail = editorData?.email || s.editorEmail || ''; }
-      if(kind==='admin'){ s.active='admin'; s.adminUser = ADMIN_USER; }
       setSession(s);
     }
     function logoutSession(){
@@ -2713,25 +2385,7 @@ const START_STARS = 5.0;
       return s.active==='editor' && !!(s.editorEmail);
     }
 
-    
-function ensureDemoClient(){
-  // cria uma sessão cliente demo para permitir navegar sem login (frontend-only)
-  if(!clientData) clientData = lsGet(LS_CLIENT, null);
-  if(!clientData){
-    clientData = { first:'Cliente', last:'', full:'Cliente (demo)', email:'demo@karameloo.local', stars:START_STARS, mainPlatform:'instagram', niche:'Pedido', about:'' };
-    lsSet(LS_CLIENT, clientData);
-  }else{
-    if(!clientData.email) clientData.email = 'demo@karameloo.local';
-    if(!clientData.full) clientData.full = 'Cliente (demo)';
-    lsSet(LS_CLIENT, clientData);
-  }
-  const s = getSession();
-  s.active = 'cliente';
-  s.clientEmail = clientData.email || 'demo@karameloo.local';
-  setSession(s);
-  paintClientTop?.();
-}
-// ===== Moderação (frontend básico + ganchos para backend) =====
+    // ===== Moderação (frontend básico + ganchos para backend) =====
     async function moderateText(text){
       const t = String(text||'').trim();
       if(!t) return { ok:true };
@@ -2933,7 +2587,6 @@ function ensureDemoClient(){
     let menuCtxRole = 'cliente';
 
     function openUserMenu(r){
-      __storeFocus('menu');
       menuCtxRole = (r==='editor') ? 'editor' : 'cliente';
       renderUserMenuHome();
       if(menuOverlay){
@@ -2945,14 +2598,12 @@ function ensureDemoClient(){
     }
     function closeUserMenu(){
       if(!menuOverlay) return;
-      __blurIfInside(menuOverlay);
       menuOverlay.classList.add('closing');
       menuModal?.classList.add('closing');
       setTimeout(()=>{
         menuOverlay.classList.remove('show','closing');
         menuModal?.classList.remove('closing');
         menuOverlay.setAttribute('aria-hidden','true');
-        __restoreFocus('menu');
       }, 220);
     }
     menuOverlay?.addEventListener('click', (e)=>{ if(e.target===menuOverlay) closeUserMenu(); });
@@ -3270,7 +2921,6 @@ function ensureDemoClient(){
 
 
     function openCadastro(tipo){
-      __storeFocus('auth');
       role = tipo;
       resetAuthUI();
 
@@ -3292,14 +2942,12 @@ function ensureDemoClient(){
       requestAnimationFrame(syncAuthWrapHeight);
     }
     function closeCadastro(){
-      __blurIfInside(overlay);
       overlay.classList.add('closing');
       modal.classList.add('closing');
       setTimeout(() => {
         overlay.classList.remove('show','closing');
         modal.classList.remove('closing');
         overlay.setAttribute('aria-hidden','true');
-        __restoreFocus('auth');
       }, 220);
     }
     overlay.addEventListener('click', (e) => { if(e.target === overlay) closeCadastro(); });
@@ -3308,9 +2956,6 @@ function ensureDemoClient(){
     });
 
     function showScreen(which, instant=false){
-      const cur = document.querySelector('.screen.show');
-      if(cur && cur !== which && !__navBack){ __navStack.push(cur.id); }
-      __navBack = false;
       [screenStart, screenProcurar, screenProcurarEditor, screenClientProfile, screenClient, screenPickEditor, screenEditor].forEach(s => s.classList.remove('show'));
 
       // Header grande só na tela inicial (tira a "marca gigantesca" depois que entra)
@@ -3353,16 +2998,16 @@ function ensureDemoClient(){
 
     // ===== Pacotes =====
     const packages = [
-      {id:1,  name:'Starter Foto',     price:27.40, eta:'40min', items:['1 Foto (básica)','Cor + nitidez']},
-      {id:2,  name:'Duo Foto',         price:41.80, eta:'1h10', items:['2 Fotos (básicas)','Cor + nitidez']},
-      {id:3,  name:'Foto Pro 3',       price:53.60, eta:'1h40', items:['3 Fotos (pro)','Ajustes finos + cor']},
-      {id:4,  name:'Vídeo Short 15s',  price:63.90, eta:'2h00', items:['1 Vídeo curto (até 15s)','Cortes + ritmo']},
-      {id:5,  name:'Foto Pack 4',      price:73.50, eta:'2h30', items:['4 Fotos (pro)','Cor + detalhes']},
-      {id:6,  name:'Short Duo',        price:86.40, eta:'3h00', items:['2 Vídeos curtos (até 15s)','Cortes + transições simples']},
-      {id:7,  name:'Combo Social',     price:96.80, eta:'3h30', items:['1 Foto + 1 Vídeo curto','Look cinematográfico leve']},
-      {id:8,  name:'Foto Pack 5',      price:108.90,eta:'4h00', items:['5 Fotos (pro)','Padronização de cor']},
-      {id:9,  name:'Short Trio',       price:132.70,eta:'5h00', items:['3 Vídeos curtos (até 15s)','Cor + ritmo']},
-      {id:10, name:'Foto Pack 8',      price:151.40,eta:'6h00',   items:['8 Fotos (pro)','Cor + retoques leves']},
+      {id:1,  name:'Starter Foto',     price:27.40, eta:'13h30', items:['1 Foto (básica)','Cor + nitidez']},
+      {id:2,  name:'Duo Foto',         price:41.80, eta:'13h30', items:['2 Fotos (básicas)','Cor + nitidez']},
+      {id:3,  name:'Foto Pro 3',       price:53.60, eta:'14h30', items:['3 Fotos (pro)','Ajustes finos + cor']},
+      {id:4,  name:'Vídeo Short 15s',  price:63.90, eta:'14h30', items:['1 Vídeo curto (até 15s)','Cortes + ritmo']},
+      {id:5,  name:'Foto Pack 4',      price:73.50, eta:'15h00', items:['4 Fotos (pro)','Cor + detalhes']},
+      {id:6,  name:'Short Duo',        price:86.40, eta:'15h30', items:['2 Vídeos curtos (até 15s)','Cortes + transições simples']},
+      {id:7,  name:'Combo Social',     price:96.80, eta:'16h00', items:['1 Foto + 1 Vídeo curto','Look cinematográfico leve']},
+      {id:8,  name:'Foto Pack 5',      price:108.90,eta:'18h00', items:['5 Fotos (pro)','Padronização de cor']},
+      {id:9,  name:'Short Trio',       price:132.70,eta:'18h00', items:['3 Vídeos curtos (até 15s)','Cor + ritmo']},
+      {id:10, name:'Foto Pack 8',      price:151.40,eta:'24h',   items:['8 Fotos (pro)','Cor + retoques leves']},
       {id:11, name:'Short 5',          price:176.90,eta:'24h',   items:['5 Vídeos curtos','Cortes + cor']},
       {id:12, name:'Creator Mix',      price:197.80,eta:'24h',   items:['10 Fotos + 1 Vídeo curto','Padronização completa']},
       {id:13, name:'Vídeo Médio 45s',  price:221.60,eta:'24h',   items:['1 Vídeo médio (30–45s)','Cor + transições']},
@@ -3399,7 +3044,7 @@ function ensureDemoClient(){
         card.innerHTML = `
           <div class="pkgThumb"></div>
           <h3>${p.id}. ${escapeHtml(p.name)}</h3>
-          <p>Entrega a partir de <strong>${escapeHtml(p.eta)}</strong> (mínimo 40min)</p>
+          <p>Entrega a partir de <strong>${escapeHtml(p.eta)}</strong> (mínimo 13h30)</p>
           <div class="price">${brl(p.price)}</div>
           <ul>${p.items.map(i=>`<li>${escapeHtml(i)}</li>`).join('')}</ul>
           <button class="btn" type="button" onclick="choosePackage(${p.id})">Escolher pacote</button>
@@ -3544,7 +3189,6 @@ function ensureDemoClient(){
         return n.includes('vídeo') || n.includes('video') || n.includes('short');
       });
     }
-        updateGlobalNav();
 
     function hasAnyFotoPkg(editor){
       return (editor.packages||[]).some(pid=>{
@@ -3749,7 +3393,7 @@ function ensureDemoClient(){
         <div class="eBadges">
           ${tags.map(t=>`<span class="badge pillBlue">${escapeHtml(t)}</span>`).join('') || `<span class="badge off">Sem tags</span>`}
         </div>
-        <div class="eActions">
+        <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap">
           ${btnProfile}
           ${btnPrimary}
           ${btnSecondary}
@@ -4010,7 +3654,7 @@ function ensureDemoClient(){
         <div class="eSub">${escapeHtml(meta || 'Cliente (demo)')}</div>
         <div class="eBadges" style="margin-top:10px">${badges}</div>
         <div class="hint" style="margin-top:10px">${escapeHtml((c.about||'').slice(0,120) + ((c.about||'').length>120?'…':''))}</div>
-        <div class="eActions">
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
           <button class="btn" type="button" onclick="openClientBriefing('${escapeHtml(c.id)}')">Ver briefing</button>
           <button class="btn secondary" type="button" onclick="toggleProcurarClientFav('${escapeHtml(c.id)}')">${isFav ? '★ Salvo' : '☆ Salvar'}</button>
         </div>
@@ -4125,7 +3769,6 @@ function toggleProcurarFav(id){
     }
 
     function openEditorProfile(id){
-      __storeFocus('profile');
       const e = exploreEditorsById?.[id];
       if(!e) return;
       addRecentEditor(e.id);
@@ -4187,14 +3830,12 @@ function toggleProcurarFav(id){
 
     function closeEditorProfile(){
       if(!profileOverlay) return;
-      __blurIfInside(profileOverlay);
       profileOverlay.classList.add('closing');
       profileModal?.classList.add('closing');
       setTimeout(()=>{
         profileOverlay.classList.remove('show','closing');
         profileModal?.classList.remove('closing');
         profileOverlay.setAttribute('aria-hidden','true');
-        __restoreFocus('profile');
       }, 220);
     }
 
@@ -4209,35 +3850,21 @@ function toggleProcurarFav(id){
       return `karamelo_chat_${clientChatId()}_${String(peerId||'peer').replace(/[^a-z0-9_\-]+/gi,'_').slice(0,72)}`;
     }
     function renderChat(){
-  if(!chatMsgs || !chatCtx) return;
-  const arr = lsGet(chatCtx.key, []);
-  const msgs = Array.isArray(arr) ? arr : [];
-  chatMsgs.innerHTML = '';
-
-  const fmtTime = (ts)=>{
-    try{
-      const d = new Date(ts||Date.now());
-      return d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
-    }catch(e){ return ''; }
-  };
-
-  msgs.forEach(m=>{
-    const wrap = document.createElement('div');
-    wrap.className = 'chatBubble' + (m.from==='me' ? ' me' : '');
-    wrap.innerHTML = `
-      <div>${escapeHtml(m.text||'')}</div>
-      <div class="chatMeta">
-        <span>${m.from==='me' ? 'Você' : (chatCtx?.label || 'Editor')}</span>
-        <span>${fmtTime(m.ts)}</span>
-      </div>
-    `;
-    chatMsgs.appendChild(wrap);
-  });
-  chatMsgs.scrollTop = chatMsgs.scrollHeight;
-}
-function openChatWithEditorOrSignup(editorId){
-  requestChatWithEditor(editorId);
-
+      if(!chatMsgs || !chatCtx) return;
+      const arr = lsGet(chatCtx.key, []);
+      const msgs = Array.isArray(arr) ? arr : [];
+      chatMsgs.innerHTML = '';
+      msgs.forEach(m=>{
+        const div = document.createElement('div');
+        div.className = 'aiMsg' + (m.from==='me' ? ' me' : '');
+        div.textContent = m.text;
+        chatMsgs.appendChild(div);
+      });
+      chatMsgs.scrollTop = chatMsgs.scrollHeight;
+    }
+    function openChatWithEditorOrSignup(editorId){
+      requestChatWithEditor(editorId);
+    }
 
     function openChatWithEditor(editorId){
       if(!isClientLogged()){
@@ -4254,16 +3881,6 @@ function openChatWithEditorOrSignup(editorId){
         key: chatKeyFor(e.id)
       };
       if(chatTitle) chatTitle.textContent = `Falar com ${e.name}`;
-
-// header bonito
-const whoEl = document.getElementById('chatWho');
-const subEl = document.getElementById('chatSub');
-const avEl  = document.getElementById('chatAvatar');
-const targetName = (e && e.name) ? e.name : (chatCtx?.label || 'Editor');
-if(whoEl) whoEl.textContent = `Chat • ${targetName}`;
-if(subEl) subEl.textContent = 'Demo: mensagens ficam salvas no seu navegador';
-if(avEl) avEl.textContent = (targetName||'E')[0];
-
       closeEditorProfile();
       renderChat();
       if(chatOverlay){
@@ -4276,14 +3893,12 @@ if(avEl) avEl.textContent = (targetName||'E')[0];
     }
     function closeChat(){
       if(!chatOverlay) return;
-      __blurIfInside(chatOverlay);
       chatOverlay.classList.add('closing');
       chatModal?.classList.add('closing');
       setTimeout(()=>{
         chatOverlay.classList.remove('show','closing');
         chatModal?.classList.remove('closing');
         chatOverlay.setAttribute('aria-hidden','true');
-        __restoreFocus('chat');
       }, 220);
     }
     chatOverlay?.addEventListener('click', (e)=>{ if(e.target === chatOverlay) closeChat(); });
@@ -4527,35 +4142,23 @@ if(avEl) avEl.textContent = (targetName||'E')[0];
       { id:'optObjeto',     kind:'photo', price:11.60 },
       { id:'optTexto',      kind:'photo', price:9.40  },
 
-      { id:'optReenquadrar', kind:'video', price:9.90 },
-      { id:'optDenoiseVideo',kind:'video', price:11.90 },
-      { id:'optJumpCuts',   kind:'video', price:9.40 },
-      { id:'optLUTPro',      kind:'video', price:11.60 },
-
-      { id:'optRestaurarFoto', kind:'photo', price:11.60 },
-      { id:'optManchas',      kind:'photo', price:9.40  },
-      { id:'optOlhosDentes',  kind:'photo', price:9.40  },
-      { id:'optDesfoqueFundo',kind:'photo', price:11.60 },
-
       { id:'optThumbnail',  kind:'order', price:19.90 },
       { id:'optUrgente',    kind:'order', price:29.90 },
     ];
 
     function calcEntrega(total, urgent){
-      // mínimo agora é 40 minutos
-      let eta = '40min';
-      if(total <= 120) eta = '40min';
-      else if(total <= 250) eta = '1h20';
-      else if(total <= 400) eta = '2h30';
-      else if(total <= 700) eta = '5h';
-      else eta = '12h';
+      let eta = '13h30';
+      if(total <= 120) eta = '13h30';
+      else if(total <= 250) eta = '14h30';
+      else if(total <= 400) eta = '18h00';
+      else if(total <= 700) eta = '24h';
+      else eta = '48h';
 
       if(urgent){
-        // puxa 1 nível pra cima, respeitando o mínimo
-        if(eta === '12h') eta = '5h';
-        else if(eta === '5h') eta = '2h30';
-        else if(eta === '2h30') eta = '1h20';
-        else eta = '40min';
+        if(eta === '48h') eta = '24h';
+        else if(eta === '24h') eta = '18h00';
+        else if(eta === '18h00') eta = '14h30';
+        else eta = '13h30';
       }
       return eta;
     }
@@ -4610,16 +4213,16 @@ if(avEl) avEl.textContent = (targetName||'E')[0];
       const btn  = document.getElementById('toggleCustomOpts');
       if(more) more.classList.toggle('collapsed', !showAllCustomOptions);
       if(btn) btn.textContent = showAllCustomOptions ? 'Mostrar menos ↑' : 'Ver mais opções ↓';
-      splitCustomOptions();
     }
 
     // ===== Pedido -> Escolher Editor =====
-    
-function choosePackage(id){
-  if(!isClientLogged()){
-    ensureDemoClient();
-  }
-  const p = packages.find(x => x.id === id);
+    function choosePackage(id){
+      if(!isClientLogged()){
+        setPostLoginIntent({ type:'package', packageId:id });
+        openCadastro('cliente');
+        return;
+      }
+      const p = packages.find(x => x.id === id);
       if(!p) return;
       currentOrder = {
         kind: 'package',
@@ -4635,16 +4238,17 @@ function choosePackage(id){
       }
     }
 
-    
-function confirmCustom(){
-  if(!isClientLogged()){
-    ensureDemoClient();
-  }
-  currentOrder = {
+    function confirmCustom(){
+      if(!isClientLogged()){
+        setPostLoginIntent({ type:'package' });
+        openCadastro('cliente');
+        return;
+      }
+      currentOrder = {
         kind: 'custom',
         title: 'Pacote Personalizado',
         totalText: custTotal?.textContent || brl(0),
-        eta: custEntrega?.textContent || '40min',
+        eta: custEntrega?.textContent || '13h30',
         fotos: parseInt(custFotos?.value||'0',10),
         videos: parseInt(custVideos?.value||'0',10)
       };
@@ -4658,10 +4262,6 @@ function confirmCustom(){
     
     // ===== Finalização simples (demo) =====
     const LS_ORDERS = 'karamelo_orders_v1';
-
-    const LS_REPORTS = 'karamelo_reports_v1';
-    const ADMIN_USER = 'karameloo.superadmin';
-    const ADMIN_PASS = 'KrmLoo#2026!V7$zQp@N4xT9^m';
 
     async function createOrderAndFinish(){
       const order = {
@@ -5203,10 +4803,7 @@ function startPickEditor(){
             ${(e.tags||[]).slice(0,6).map(t=>`<span class="badge pillBlue">${escapeHtml(t)}</span>`).join('') || `<span class="badge off">Sem tags</span>`}
           </div>
 
-          <div class="mini-grid" style="margin-top:12px">
-            <button class="btn secondary" type="button" onclick="openEditorProfile('${e.id}')">Ver perfil</button>
-            <button class="btn" type="button" onclick="selectEditor('${e.id}')">Selecionar</button>
-          </div>
+          <button class="btn" type="button" onclick="selectEditor('${e.id}')">Selecionar este editor</button>
           <div class="hint">* Demo: sem pagamento/entrega real ainda.</div>
         `;
         grid.appendChild(card);
@@ -5238,12 +4835,7 @@ function startPickEditor(){
           tags: (editorData?.tags || [])
         };
       } else {
-        const found = getAllEditors().find(x => x.id === id);
-        if(found){
-          e = { id: found.id, name: found.name, rating: (found.stars ?? START_STARS), tags: (found.tags || []), photo: (found.photo || '') };
-        }else{
-          e = { id, name:'Editor', rating:START_STARS, tags:[] };
-        }
+        e = (EDITORS_DB || []).find(x => x.id === id) || { id, name:'Editor', rating:5, tags:[] };
       }
 
       selectedEditorFromProcurar = e;
@@ -5377,6 +4969,31 @@ function startPickEditor(){
         }
       }
 
+
+      // Atalho ADM (testes)
+      if(String(nome).trim().toLowerCase() === 'adm'){
+        closeCadastro();
+        if(role==='cliente'){
+          clientData = buildClientDefaults();
+          clientData.first = 'ADM';
+          clientData.full = 'ADM';
+          lsSet(LS_CLIENT, clientData);
+          paintClientProfile();
+          setActiveSession('cliente');
+        goProcurar(true);
+        setTimeout(runPostLoginIntent, 80);
+        }else{
+          editorData = buildEditorDefaults();
+          editorData.first = 'ADM';
+          editorData.full = 'ADM';
+          lsSet(LS_EDITOR, editorData);
+          paintEditor();
+          setActiveSession('editor');
+          showScreen(screenEditor);
+        }
+        return;
+      }
+
       if(!nome||!sobrenome){ alert('Preencha Nome e Sobrenome.'); return; }
       if(!dob){ alert('Preencha a data de nascimento.'); return; }
       if(!email){ alert('Preencha o email.'); return; }
@@ -5436,26 +5053,13 @@ function startPickEditor(){
         paintEditor();
         setActiveSession('editor');
         showScreen(screenEditor);
-      
-      // Theme + UI
-      applyTheme(getTheme());
-      splitCustomOptions();
-      updateGlobalNav();
-}
+      }
     });
 
     btnLogin?.addEventListener('click', async ()=>{
       const email=(loginEmail?.value||'').trim();
       const senha=(loginSenha?.value||'').trim();
 
-
-      // ✅ Login ADM (frontend-only)
-      if(email === ADMIN_USER && senha === ADMIN_PASS){
-        closeCadastro();
-        setActiveSession('admin');
-        goAdmin();
-        return;
-      }
       // Se Supabase estiver ativo, login real
       if(SUPABASE_ENABLED){
         try{
@@ -5503,6 +5107,32 @@ function startPickEditor(){
 
       if(!email || !senha){
         alert('Preencha email e senha.');
+        return;
+      }
+
+      // Atalho ADM (testes): se o usuário digitar "adm" no email ou na senha,
+      // pulamos a validação de contas e entramos diretamente como ADM.
+      if(String(email).trim().toLowerCase() === 'adm' || String(senha).trim().toLowerCase() === 'adm'){
+        closeCadastro();
+        if(role === 'cliente'){
+          // cria perfil de cliente ADM e navega para o perfil do cliente
+          clientData = buildClientDefaults();
+          clientData.first = 'ADM';
+          clientData.full  = 'ADM';
+          lsSet(LS_CLIENT, clientData);
+          paintClientProfile();
+          paintClientTop();
+          goProcurar(true);
+        }else{
+          // cria perfil de editor ADM e navega para o dashboard do editor
+          editorData = buildEditorDefaults();
+          editorData.first = 'ADM';
+          editorData.full  = 'ADM';
+          lsSet(LS_EDITOR, editorData);
+          paintEditor();
+          setActiveSession('editor');
+          showScreen(screenEditor);
+        }
         return;
       }
 
@@ -5639,277 +5269,9 @@ function startPickEditor(){
       setTimeout(()=> aiReply(msg), 120);
     });
 
-    
-
-    // ===== Navigation stack (global back) =====
-    let __navStack = [];
-    let __navBack = false;
-
-    function goBackGlobal(){
-      const prevId = __navStack.pop();
-      if(!prevId){ goStartInstant(); return; }
-      const el = document.getElementById(prevId);
-      if(!el){ goStartInstant(); return; }
-      __navBack = true;
-      showScreen(el, true);
-    }
-
-    function updateGlobalNav(){
-      const back = document.getElementById('globalNav');
-      const cur = document.querySelector('.screen.show');
-      if(!back) return;
-      if(!cur || cur.id === 'screenStart'){ back.classList.add('hide'); }
-      else back.classList.remove('hide');
-    }
-
-    // ===== Theme (Dark / Light) =====
-    function getTheme(){
-      try{ return localStorage.getItem('karamelo_theme') || 'dark'; }catch(e){ return 'dark'; }
-    }
-    function applyTheme(t){
-      const theme = (t === 'light') ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', theme);
-      try{ localStorage.setItem('karamelo_theme', theme); }catch(e){}
-    }
-    function toggleTheme(){
-      const cur = document.documentElement.getAttribute('data-theme') || getTheme();
-      applyTheme(cur === 'light' ? 'dark' : 'light');
-    }
-
-    // ===== Custom options: split Video/Foto into 2 columns =====
-    function splitCustomOptions(){
-      const containers = [document.getElementById('customOptsMain'), document.getElementById('customOptsMore')].filter(Boolean);
-      containers.forEach(c=>{
-        const labels = Array.from(c.querySelectorAll('label.chk'));
-        if(!labels.length) return;
-
-        const wrap = document.createElement('div');
-        wrap.className = 'customSplit';
-
-        const colV = document.createElement('div');
-        colV.className = 'optCol';
-        colV.innerHTML = '<div class="pillMini">🎬 Vídeos</div>';
-
-        const colF = document.createElement('div');
-        colF.className = 'optCol';
-        colF.innerHTML = '<div class="pillMini">📷 Fotos</div>';
-
-        labels.forEach(l=>{
-          const t = (l.textContent || '').toLowerCase();
-          if(t.includes('(fotos)')) colF.appendChild(l);
-          else colV.appendChild(l);
-        });
-
-        wrap.appendChild(colV);
-        wrap.appendChild(colF);
-        c.innerHTML = '';
-        c.appendChild(wrap);
-      });
-    }
-
-    // ===== Reports (Denúncias) =====
-    function addReport({ targetId, targetName }){
-      const reason = prompt('Descreva o motivo da denúncia (ex: conteúdo impróprio, golpe, spam):');
-      if(!reason) return;
-      const arr = lsGet(LS_REPORTS, []);
-      const list = Array.isArray(arr) ? arr : [];
-      list.push({
-        ts: Date.now(),
-        reporter: (getSession()?.active || 'anon'),
-        targetId: String(targetId||''),
-        targetName: String(targetName||''),
-        reason: String(reason).slice(0,400)
-      });
-      lsSet(LS_REPORTS, list);
-      alert('Denúncia enviada (demo).');
-    }
-
-    // ===== Admin =====
-    function goAdmin(){
-      renderAdmin();
-      showScreen(document.getElementById('screenAdmin'));
-    }
-
-    function renderAdmin(){
-      const upd = document.getElementById('admUpdated');
-      if(upd) upd.textContent = 'Atualizado: ' + new Date().toLocaleString();
-
-      // accounts
-      const acc = getAccounts();
-      const clients = acc?.client || {};
-      const editors = acc?.editor || {};
-      const usersCount = Object.keys(clients).length + Object.keys(editors).length;
-
-      // orders
-      const orders = lsGet(LS_ORDERS, []);
-      const oArr = Array.isArray(orders) ? orders : [];
-      const revenue = oArr.reduce((s,o)=>{
-        const v = parseBRL(o?.totalText || '') || 0;
-        return s+v;
-      },0);
-
-      const elU = document.getElementById('admUsers');
-      const elO = document.getElementById('admOrders');
-      const elR = document.getElementById('admRevenue');
-      if(elU) elU.textContent = String(usersCount);
-      if(elO) elO.textContent = String(oArr.length);
-      if(elR) elR.textContent = brl(revenue);
-
-      // reports
-      const rep = lsGet(LS_REPORTS, []);
-      const repArr = Array.isArray(rep) ? rep : [];
-      const repBox = document.getElementById('admReports');
-      if(repBox){
-        if(!repArr.length){
-          repBox.textContent = 'Nenhuma denúncia ainda.';
-        }else{
-          repBox.innerHTML = repArr.slice().reverse().slice(0,12).map(r=>{
-            const dt = new Date(r.ts||Date.now()).toLocaleString();
-            return `<div style="margin:0 0 10px">
-              <strong>${escapeHtml(r.targetName||r.targetId||'Alvo')}</strong>
-              <div class="hint" style="margin:4px 0 0">${escapeHtml(r.reason||'')}</div>
-              <div class="hint" style="margin:4px 0 0;opacity:.8">${dt}</div>
-            </div>`;
-          }).join('') || '—';
-        }
-      }
-
-      // users table
-      const ut = document.getElementById('admUsersTable');
-      if(ut){
-        const rows = [];
-        for(const [email, data] of Object.entries(clients)){
-          rows.push({role:'client', email, cpf:data?.cpf||'', name:data?.display_name||''});
-        }
-        for(const [email, data] of Object.entries(editors)){
-          rows.push({role:'editor', email, cpf:data?.cpf||'', name:data?.display_name||''});
-        }
-        ut.innerHTML = `
-          <tr>
-            <th>Tipo</th><th>Nome</th><th>Email</th><th>CPF</th>
-          </tr>
-          ${rows.map(r=>`<tr>
-            <td>${escapeHtml(r.role)}</td>
-            <td>${escapeHtml(r.name)}</td>
-            <td>${escapeHtml(r.email)}</td>
-            <td>${escapeHtml(r.cpf)}</td>
-          </tr>`).join('') || ''}
-        `;
-      }
-
-      // orders table
-      const ot = document.getElementById('admOrdersTable');
-      if(ot){
-        ot.innerHTML = `
-          <tr>
-            <th>Data</th><th>Tipo</th><th>Total</th><th>Entrega</th><th>Editor</th>
-          </tr>
-          ${oArr.slice().reverse().slice(0,40).map(o=>{
-            const dt = new Date(o.createdAt||Date.now()).toLocaleString();
-            const kind = o.kind || '-';
-            const total = o.totalText || brl(0);
-            const eta = o.eta || '-';
-            const ed = o.editor?.name || o.editor?.id || '-';
-            return `<tr>
-              <td>${escapeHtml(dt)}</td>
-              <td>${escapeHtml(kind)}</td>
-              <td>${escapeHtml(total)}</td>
-              <td>${escapeHtml(eta)}</td>
-              <td>${escapeHtml(ed)}</td>
-            </tr>`;
-          }).join('')}
-        `;
-      }
-    }
-
-    function switchEditorTab(tab){
-      const lab = document.getElementById('editorTabLabel');
-      const p = document.getElementById('editorTabProfile');
-      const c = document.getElementById('editorTabChats');
-      const o = document.getElementById('editorTabOrders');
-      const d = document.getElementById('editorTabDone');
-
-      if(p) p.style.display = (tab==='profile') ? '' : 'none';
-      if(c) c.style.display = (tab==='chats') ? '' : 'none';
-      if(o) o.style.display = (tab==='orders') ? '' : 'none';
-      if(d) d.style.display = (tab==='done') ? '' : 'none';
-      if(lab) lab.textContent = (tab==='profile'?'Perfil':tab==='chats'?'Chats':tab==='orders'?'Pedidos':'Entregues');
-
-      if(tab==='chats'){ renderEditorChatList(); }
-      window.scrollTo({top:0, behavior:'smooth'});
-    }
-
-    // ===== Editor Chats (demo local) =====
-    function editorIdNorm(){
-      const id = (currentSession?.user?.id || editorData?.id || 'you');
-      return String(id).trim().toLowerCase().replace(/[^a-z0-9_\-]+/g,'_').slice(0,72);
-    }
-
-    function listEditorChats(){
-      const id = editorIdNorm();
-      const keys = [];
-      try{
-        for(let i=0;i<localStorage.length;i++){
-          const k = localStorage.key(i);
-          if(!k) continue;
-          if(k.startsWith('karamelo_chat_') && k.endsWith('_'+id)) keys.push(k);
-        }
-      }catch(e){}
-      return keys.sort();
-    }
-
-    function openChatByKey(k, title){
-      if(!k) return;
-      chatCtx = { peerId:'', peerName: title || 'Chat', peerWhats:'', key:k };
-      if(chatTitle) chatTitle.textContent = title || 'Chat';
-      renderChat();
-      if(chatOverlay){
-        chatOverlay.classList.remove('closing');
-        chatModal?.classList.remove('closing');
-        chatOverlay.classList.add('show');
-        chatOverlay.setAttribute('aria-hidden','false');
-      }
-    }
-
-    function renderEditorChatList(){
-      const box = document.getElementById('editorChatsList');
-      if(!box) return;
-      const keys = listEditorChats();
-      if(!keys.length){
-        box.innerHTML = '<div class="pill" style="margin:0">Nenhuma conversa ainda.</div>';
-        return;
-      }
-      box.innerHTML = keys.slice().reverse().slice(0,20).map(k=>{
-        const parts = k.split('karamelo_chat_')[1] || '';
-        const bits = parts.split('_');
-        const clientId = bits.slice(0, -1).join('_') || 'cliente';
-        const msgs = lsGet(k, []);
-        const arr = Array.isArray(msgs) ? msgs : [];
-        const last = arr[arr.length-1];
-        const preview = last ? String(last.text||'').slice(0,40) : '';
-        return `
-          <button class="menuBtn" type="button" onclick="openChatByKey('${k.replace(/'/g,"\'")}', 'Cliente: ${clientId}')">
-            <span>Cliente: ${clientId}</span>
-            <small>${escapeHtml(preview || 'Abrir conversa')}</small>
-          </button>
-        `;
-      }).join('');
-    }
-
-// ===== Init =====
+    // ===== Init =====
     window.addEventListener('DOMContentLoaded', ()=>{
-      // Safety: mantém ao menos a tela inicial visível mesmo se alguma rotina falhar
-      try{
-        window.addEventListener('error', ()=>{
-          try{
-            if(!document.querySelector('.screen.show')){
-              const fb = document.getElementById('screenStart');
-              if(fb) fb.classList.add('show');
-            }
-          }catch(e){}
-        });
-      }catch(e){}
-// Portfolio inputs
+      // Portfolio inputs
       const edWorkPhotos = document.getElementById('edWorkPhotos');
       const edWorkVideos = document.getElementById('edWorkVideos');
       edWorkPhotos?.addEventListener('change', (e)=>{ addFilesToWork('photo', e.target.files); });
@@ -5953,12 +5315,5 @@ function startPickEditor(){
     });
 
   </script>
-
-  <!-- Global Back + Theme -->
-  <div id="globalNav">
-    <button class="iconBtn" type="button" id="globalBackBtn" onclick="goBackGlobal()" title="Voltar">←</button>
-    <button class="iconBtn" type="button" id="globalThemeBtn" onclick="toggleTheme()" title="Modo claro/escuro">🌓</button>
-  </div>
-
 </body>
 </html>
