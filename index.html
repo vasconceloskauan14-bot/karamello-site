@@ -2280,6 +2280,39 @@
       return { userId, profile: prof || null, cpf_last4: cpfRow?.cpf_last4 || null };
     }
 
+    // Cria pedido no Supabase (MVP): salva como DRAFT e SEM total_cents (o total real será calculado no backend depois)
+    async function supaCreateOrderFlow(order){
+      if(!SUPABASE_ENABLED) throw new Error('Supabase não inicializou.');
+
+      const { data: uData, error: uErr } = await supaClient.auth.getUser();
+      if(uErr) throw uErr;
+      const user = uData?.user;
+      if(!user) throw new Error('Você precisa estar logado para criar pedido.');
+
+      const packageCode = (order?.kind === 'package')
+        ? `PACOTE_${order.packageId}`
+        : 'CUSTOM';
+
+      // payload guarda tudo (inclusive o total estimado do frontend), mas NÃO é usado como fonte de verdade para pagamento
+      const payload = { ...order };
+
+      const { data, error } = await supaClient
+        .from('orders')
+        .insert({
+          client_id: user.id,
+          package_code: packageCode,
+          payload,
+          total_cents: null,
+          status: 'DRAFT'
+        })
+        .select('id, created_at')
+        .single();
+
+      if(error) throw error;
+      return data; // {id, created_at}
+    }
+
+
 const START_STARS = 5.0;
 
     function escapeHtml(str){
@@ -4242,6 +4275,9 @@ function toggleProcurarFav(id){
       try{
         if(typeof apiBase === 'function' && apiBase()){
           await apiFetch('/api/orders', { method:'POST', body: JSON.stringify({ order }) });
+        }else if(typeof SUPABASE_ENABLED !== 'undefined' && SUPABASE_ENABLED){
+          const created = await supaCreateOrderFlow(order);
+          order._supa = { id: created?.id || null, created_at: created?.created_at || null };
         }else{
           const arr = lsGet(LS_ORDERS, []);
           const list = Array.isArray(arr) ? arr : [];
@@ -4256,14 +4292,15 @@ function toggleProcurarFav(id){
         lsSet(LS_ORDERS, list.slice(0, 50));
       }
 
-      alert(`Pedido criado! (demo)
+      alert(`Pedido criado!
 
 • ${order.title}
-• Total: ${order.totalText || brl(order.total || 0)}
+• ID: ${order._supa?.id || 'LOCAL'}
+• Total (estimado): ${order.totalText || brl(order.total || 0)}
 • Entrega: ${order.eta}
 • Editor: ${order.editor?.name || '—'}
 
-Próximo passo: checkout + upload de arquivos + chat.`);
+Próximo passo: checkout (PIX) + upload de arquivos + chat.`);
       backToProcurarFromPackages();
     }
 
@@ -4778,11 +4815,38 @@ function startPickEditor(){
     document.getElementById('pickSort')?.addEventListener('change', renderPickEditors);
 
     function selectEditor(id){
-      if(id === 'you' && !editorData?.available){
-        alert('Seu perfil está como OFF. Ative “Disponível” no painel do editor.');
+      // Quando o cliente escolhe um editor, a gente FINALIZA o pedido e salva no Supabase.
+      if(!currentOrder){
+        alert('Antes de escolher o editor, selecione um pacote/pedido primeiro.');
         return;
       }
-      alert('Editor selecionado! (demo)\nNa próxima etapa vamos criar: checkout + envio de arquivos + chat.');
+
+      let e = null;
+
+      if(id === 'you'){
+        if(!editorData?.available){
+          alert('Seu perfil está como OFF. Ative “Disponível” no painel do editor.');
+          return;
+        }
+        e = {
+          id: (currentSession?.user?.id || 'you'),
+          name: (editorData?.displayName || 'Você'),
+          rating: (editorData?.rating || 5),
+          tags: (editorData?.tags || [])
+        };
+      } else {
+        e = (EDITORS_DB || []).find(x => x.id === id) || { id, name:'Editor', rating:5, tags:[] };
+      }
+
+      selectedEditorFromProcurar = e;
+      currentOrder.editor = { id: e.id, name: e.name, rating: e.rating, tags: e.tags };
+
+      // Cria o pedido (e salva no Supabase quando SUPABASE_ENABLED=true)
+      Promise.resolve(createOrderAndFinish())
+        .catch(err => {
+          console.error(err);
+          alert('Erro ao criar o pedido. Abra o console (F12) para ver detalhes.');
+        });
     }
 
     // ===== Cadastro (modal) =====
