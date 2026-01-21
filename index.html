@@ -1352,7 +1352,122 @@
     .aiPanel.pop{ animation: aiPop .22s ease; }
     @keyframes aiPop{ from{ opacity:0; transform: translateY(10px) scale(.98);} to{ opacity:1; transform: translateY(0) scale(1);} }
 
-  </style>
+  
+
+    /* ===== Global Nav (Back + Theme) ===== */
+    #globalNav{
+      position:fixed;
+      top:14px;
+      left:14px;
+      z-index:9999;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      pointer-events:auto;
+    }
+    #globalNav .iconBtn{backdrop-filter: blur(6px);}
+    #globalNav.hide{display:none;}
+
+    /* ===== Light Theme ===== */
+    html[data-theme="light"]{
+      --bg:#f6f7ff;
+      --panel:#ffffff;
+      --text:#0b1226;
+      --muted:rgba(17,24,39,.72);
+      --border:rgba(15,23,42,.14);
+    }
+    html[data-theme="light"] body{color:var(--text);}
+    html[data-theme="light"] .card,
+    html[data-theme="light"] .modal{
+      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.92));
+      border-color: rgba(15,23,42,.12);
+      box-shadow: 0 10px 26px rgba(2,6,23,.10);
+    }
+    html[data-theme="light"] .pill{background: rgba(2,6,23,.04); border-color: rgba(2,6,23,.10); color: rgba(2,6,23,.80);}
+    html[data-theme="light"] .badge{background: rgba(2,6,23,.05); border-color: rgba(2,6,23,.14); color: rgba(2,6,23,.78);}
+    html[data-theme="light"] .btn.secondary{background: rgba(2,6,23,.04); border-color: rgba(2,6,23,.12); color: rgba(2,6,23,.78);}
+
+    /* ===== Editor cards (client choose + procurar) ===== */
+    .editor-cards{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap:14px;
+      align-items:stretch;
+    }
+    .eCard{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height:520px;
+    }
+    .eBadges{gap:8px}
+    .eBio{margin-top:6px}
+    .eCard .btn{margin-top:auto}
+
+    /* ===== Custom options: 2 columns (Vídeo esquerda / Foto direita) ===== */
+    #customOptsMain, #customOptsMore{
+      margin-top:4px;
+    }
+    .customSplit{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px 18px;
+      align-items:start;
+    }
+    .optCol{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .optCol .pillMini{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      font-size:.88rem;
+      color: rgba(229,231,235,.86);
+      width: fit-content;
+      margin-bottom:6px;
+    }
+    html[data-theme="light"] .optCol .pillMini{
+      border-color: rgba(2,6,23,.14);
+      background: rgba(2,6,23,.04);
+      color: rgba(2,6,23,.70);
+    }
+
+    /* ===== Smooth expand for "Ver mais opções" ===== */
+    #customOptsMore{
+      display:block !important;
+      overflow:hidden;
+      max-height:0;
+      opacity:0;
+      transform: translateY(-6px);
+      transition: max-height .38s ease, opacity .22s ease, transform .38s ease;
+    }
+    #customOptsMore:not(.collapsed){
+      max-height:1400px;
+      opacity:1;
+      transform:none;
+    }
+    #customOptsMore.collapsed{display:block !important;}
+
+    /* ===== Simple tables (ADM) ===== */
+    .table th, .table td{
+      text-align:left;
+      padding:10px 10px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      white-space:nowrap;
+      font-size:.95rem;
+      color: rgba(229,231,235,.90);
+    }
+    html[data-theme="light"] .table th, html[data-theme="light"] .table td{
+      border-bottom:1px solid rgba(2,6,23,.10);
+      color: rgba(2,6,23,.78);
+    }
+</style>
 </head>
 
 <body>
@@ -1382,7 +1497,7 @@
               <p class="startDesc">Escolha um pacote pronto ou monte um personalizado. Ideal para Reels, TikTok, Shorts e fotos com acabamento profissional.</p>
 
               <div class="startChips" aria-label="Destaques">
-                <span class="startChip">⚡ Entrega a partir de <strong>13h30</strong></span>
+                <span class="startChip">⚡ Entrega a partir de <strong>40min</strong></span>
                 <span class="startChip">⭐ Avaliação <strong>0–10</strong> (começa em 5)</span>
                 <span class="startChip">🔒 CPF único (demo)</span>
               </div>
@@ -1840,7 +1955,17 @@
                   <label class="chk"><input data-custom-opt id="optThumbnail" type="checkbox" /> Thumbnail (capa) (1 unidade)</label>
                   <label class="chk"><input data-custom-opt id="optUrgente" type="checkbox" /> Prioridade (entrega mais rápida)</label>
                 </div>
-              </div>
+              
+                  <label class="chk"><input data-custom-opt id="optReenquadrar" type="checkbox" /> Reenquadrar (auto) / 9:16 → 1:1 (vídeos)</label>
+                  <label class="chk"><input data-custom-opt id="optDenoiseVideo" type="checkbox" /> Reduzir ruído + nitidez pro (vídeos)</label>
+                  <label class="chk"><input data-custom-opt id="optJumpCuts" type="checkbox" /> Ritmo dinâmico (jump cuts) (vídeos)</label>
+                  <label class="chk"><input data-custom-opt id="optLUTPro" type="checkbox" /> Correção de cor avançada (LUT pro) (vídeos)</label>
+
+                  <label class="chk"><input data-custom-opt id="optRestaurarFoto" type="checkbox" /> Restaurar foto antiga (fotos)</label>
+                  <label class="chk"><input data-custom-opt id="optManchas" type="checkbox" /> Remover manchas/espinhas (fotos)</label>
+                  <label class="chk"><input data-custom-opt id="optOlhosDentes" type="checkbox" /> Realçar olhos/dentes (fotos)</label>
+                  <label class="chk"><input data-custom-opt id="optDesfoqueFundo" type="checkbox" /> Desfocar fundo (bokeh) (fotos)</label>
+</div>
 
               <div class="moreRow">
                 <button class="btn secondary small" id="toggleCustomOpts" type="button" onclick="toggleCustomOptions()">Ver mais opções ↓</button>
@@ -1853,7 +1978,7 @@
 
               <div class="total-box">
                 <div class="total-line"><span>Valor total</span><strong id="custTotal">R$ 0</strong></div>
-                <div class="total-sub">Entrega estimada: <strong id="custEntrega">13h30</strong> (mínimo)</div>
+                <div class="total-sub">Entrega estimada: <strong id="custEntrega">40min</strong> (mínimo)</div>
               </div>
 
               <button class="btn" type="button" onclick="confirmCustom()">Continuar com o personalizado</button>
@@ -1903,7 +2028,21 @@
             </div>
           </div>
 
-          <div class="editor-grid">
+          <div class="toolbar" style="margin-top:12px">
+            <div class="left">
+              <span class="chip">Painel</span>
+              <span class="chip" id="editorTabLabel">Perfil</span>
+            </div>
+            <div class="right">
+              <button class="btn secondary small" type="button" onclick="switchEditorTab('profile')">Perfil</button>
+              <button class="btn secondary small" type="button" onclick="switchEditorTab('chats')">Chats</button>
+              <button class="btn secondary small" type="button" onclick="switchEditorTab('orders')">Pedidos</button>
+              <button class="btn secondary small" type="button" onclick="switchEditorTab('done')">Entregues</button>
+            </div>
+          </div>
+
+          <div id="editorTabProfile">
+          <div class="editor-grid"><div class="editor-grid">
             <!-- Perfil -->
             <div class="card">
               <div class="profileCover" id="editorCover"></div>
@@ -2096,7 +2235,79 @@
               <div class="hint">* Sem backend: isso é salvo no seu navegador (LocalStorage).</div>
             </div>
           </div>
+        
+          </div><!-- /editorTabProfile -->
+
+          <div id="editorTabChats" class="card" style="margin-top:14px; display:none">
+            <h3 style="margin:0 0 10px;color:#c7d2fe">Chats</h3>
+            <div class="pill" style="margin:0 0 10px">Conversas (demo) salvas no navegador.</div>
+            <div id="editorChatsList" class="menuList"></div>
+          </div>
+
+          <div id="editorTabOrders" class="card" style="margin-top:14px; display:none">
+            <h3 style="margin:0 0 10px;color:#c7d2fe">Pedidos</h3>
+            <div class="pill" style="margin:0 0 10px">Sem backend ainda: aqui vai listar pedidos quando a gente integrar com o banco.</div>
+            <div class="hint">Por enquanto, você pode ver os pedidos no ADM (demo) ou testar o fluxo Cliente.</div>
+          </div>
+
+          <div id="editorTabDone" class="card" style="margin-top:14px; display:none">
+            <h3 style="margin:0 0 10px;color:#c7d2fe">Entregues</h3>
+            <div class="pill" style="margin:0 0 10px">Sem backend ainda: entregas reais entram depois.</div>
+            <div class="hint">Quando tiver backend, cada pedido terá status: pendente → em andamento → entregue.</div>
+          </div>
+</section>
+
+        <!-- ✅ ADMIN DASHBOARD (frontend-only) -->
+        <section id="screenAdmin" class="screen">
+          <div class="section-title">Painel ADM 🔐</div>
+          <div class="pill">Acesso exclusivo: <strong>karameloo.superadmin</strong>. (Sem backend ainda: dados vêm do LocalStorage.)</div>
+
+          <div class="toolbar" style="margin-top:14px">
+            <div class="left">
+              <span class="chip">📊 Visão geral</span>
+              <span class="chip" id="admUpdated">Atualizado: —</span>
+            </div>
+            <div class="right">
+              <button class="iconBtn" type="button" onclick="goBackGlobal()" title="Voltar">←</button>
+              <button class="iconBtn" type="button" onclick="toggleTheme()" title="Alternar tema">🌓</button>
+              <button class="btn secondary" type="button" onclick="logoutAndGoStart()">Sair</button>
+            </div>
+          </div>
+
+          <div class="editor-grid" style="margin-top:14px">
+            <div class="card">
+              <div class="kpi">
+                <div class="k"><div class="t">Usuários (contas)</div><div class="v" id="admUsers">0</div></div>
+                <div class="k"><div class="t">Pedidos salvos</div><div class="v" id="admOrders">0</div></div>
+                <div class="k"><div class="t">Faturamento (demo)</div><div class="v" id="admRevenue">R$ 0</div></div>
+              </div>
+              <div class="hint">* “Faturamento” soma os pedidos salvos localmente. No backend isso vira real.</div>
+            </div>
+
+            <div class="card">
+              <h3 style="margin:0 0 10px;color:#c7d2fe">Denúncias</h3>
+              <div id="admReports" class="pill" style="margin:0">Nenhuma denúncia ainda.</div>
+              <div class="hint" style="margin-top:10px">* Você pode denunciar um editor no perfil (botão “Denunciar”).</div>
+            </div>
+          </div>
+
+          <div class="section-title" style="margin-top:18px">Usuários</div>
+          <div class="pill" style="margin:0 0 10px">Lista (demo) baseada nas contas salvas no navegador.</div>
+          <div class="card">
+            <div style="overflow:auto">
+              <table class="table" id="admUsersTable" style="width:100%; border-collapse:collapse"></table>
+            </div>
+          </div>
+
+          <div class="section-title" style="margin-top:18px">Pedidos</div>
+          <div class="pill" style="margin:0 0 10px">Pedidos (demo) baseados no LocalStorage.</div>
+          <div class="card">
+            <div style="overflow:auto">
+              <table class="table" id="admOrdersTable" style="width:100%; border-collapse:collapse"></table>
+            </div>
+          </div>
         </section>
+
 
       </div>
     </main>
@@ -2180,6 +2391,24 @@
   <script>
     // ===== Util =====
     const MAX_STARS = 10;
+
+    // ===== A11y: evitar warning aria-hidden (blur + restore focus) =====
+    const __returnFocus = { auth:null, menu:null, profile:null, chat:null, ai:null };
+    function __storeFocus(key){ try{ __returnFocus[key] = document.activeElement; }catch(e){} }
+    function __blurIfInside(container){
+      try{
+        const a = document.activeElement;
+        if(container && a && container !== document.body && container.contains(a)) a.blur();
+      }catch(e){}
+    }
+    function __restoreFocus(key){
+      try{
+        const el = __returnFocus[key];
+        if(el && document.contains(el)) el.focus({ preventScroll:true });
+        __returnFocus[key] = null;
+      }catch(e){}
+    }
+
     
 
     // ===== Supabase (Auth + Banco) =====
@@ -2367,6 +2596,7 @@ const START_STARS = 5.0;
       const s = getSession();
       if(kind==='cliente'){ s.active='cliente'; s.clientEmail = clientData?.email || s.clientEmail || ''; }
       if(kind==='editor'){ s.active='editor'; s.editorEmail = editorData?.email || s.editorEmail || ''; }
+      if(kind==='admin'){ s.active='admin'; s.adminUser = ADMIN_USER; }
       setSession(s);
     }
     function logoutSession(){
@@ -2587,6 +2817,7 @@ const START_STARS = 5.0;
     let menuCtxRole = 'cliente';
 
     function openUserMenu(r){
+      __storeFocus('menu');
       menuCtxRole = (r==='editor') ? 'editor' : 'cliente';
       renderUserMenuHome();
       if(menuOverlay){
@@ -2598,12 +2829,14 @@ const START_STARS = 5.0;
     }
     function closeUserMenu(){
       if(!menuOverlay) return;
+      __blurIfInside(menuOverlay);
       menuOverlay.classList.add('closing');
       menuModal?.classList.add('closing');
       setTimeout(()=>{
         menuOverlay.classList.remove('show','closing');
         menuModal?.classList.remove('closing');
         menuOverlay.setAttribute('aria-hidden','true');
+        __restoreFocus('menu');
       }, 220);
     }
     menuOverlay?.addEventListener('click', (e)=>{ if(e.target===menuOverlay) closeUserMenu(); });
@@ -2921,6 +3154,7 @@ const START_STARS = 5.0;
 
 
     function openCadastro(tipo){
+      __storeFocus('auth');
       role = tipo;
       resetAuthUI();
 
@@ -2942,12 +3176,14 @@ const START_STARS = 5.0;
       requestAnimationFrame(syncAuthWrapHeight);
     }
     function closeCadastro(){
+      __blurIfInside(overlay);
       overlay.classList.add('closing');
       modal.classList.add('closing');
       setTimeout(() => {
         overlay.classList.remove('show','closing');
         modal.classList.remove('closing');
         overlay.setAttribute('aria-hidden','true');
+        __restoreFocus('auth');
       }, 220);
     }
     overlay.addEventListener('click', (e) => { if(e.target === overlay) closeCadastro(); });
@@ -2956,6 +3192,9 @@ const START_STARS = 5.0;
     });
 
     function showScreen(which, instant=false){
+      const cur = document.querySelector('.screen.show');
+      if(cur && cur !== which && !__navBack){ __navStack.push(cur.id); }
+      __navBack = false;
       [screenStart, screenProcurar, screenProcurarEditor, screenClientProfile, screenClient, screenPickEditor, screenEditor].forEach(s => s.classList.remove('show'));
 
       // Header grande só na tela inicial (tira a "marca gigantesca" depois que entra)
@@ -3189,6 +3428,7 @@ const START_STARS = 5.0;
         return n.includes('vídeo') || n.includes('video') || n.includes('short');
       });
     }
+        updateGlobalNav();
 
     function hasAnyFotoPkg(editor){
       return (editor.packages||[]).some(pid=>{
@@ -3769,6 +4009,7 @@ function toggleProcurarFav(id){
     }
 
     function openEditorProfile(id){
+      __storeFocus('profile');
       const e = exploreEditorsById?.[id];
       if(!e) return;
       addRecentEditor(e.id);
@@ -3830,12 +4071,14 @@ function toggleProcurarFav(id){
 
     function closeEditorProfile(){
       if(!profileOverlay) return;
+      __blurIfInside(profileOverlay);
       profileOverlay.classList.add('closing');
       profileModal?.classList.add('closing');
       setTimeout(()=>{
         profileOverlay.classList.remove('show','closing');
         profileModal?.classList.remove('closing');
         profileOverlay.setAttribute('aria-hidden','true');
+        __restoreFocus('profile');
       }, 220);
     }
 
@@ -3893,12 +4136,14 @@ function toggleProcurarFav(id){
     }
     function closeChat(){
       if(!chatOverlay) return;
+      __blurIfInside(chatOverlay);
       chatOverlay.classList.add('closing');
       chatModal?.classList.add('closing');
       setTimeout(()=>{
         chatOverlay.classList.remove('show','closing');
         chatModal?.classList.remove('closing');
         chatOverlay.setAttribute('aria-hidden','true');
+        __restoreFocus('chat');
       }, 220);
     }
     chatOverlay?.addEventListener('click', (e)=>{ if(e.target === chatOverlay) closeChat(); });
@@ -4142,23 +4387,35 @@ function toggleProcurarFav(id){
       { id:'optObjeto',     kind:'photo', price:11.60 },
       { id:'optTexto',      kind:'photo', price:9.40  },
 
+      { id:'optReenquadrar', kind:'video', price:9.90 },
+      { id:'optDenoiseVideo',kind:'video', price:11.90 },
+      { id:'optJumpCuts',   kind:'video', price:9.40 },
+      { id:'optLUTPro',      kind:'video', price:11.60 },
+
+      { id:'optRestaurarFoto', kind:'photo', price:11.60 },
+      { id:'optManchas',      kind:'photo', price:9.40  },
+      { id:'optOlhosDentes',  kind:'photo', price:9.40  },
+      { id:'optDesfoqueFundo',kind:'photo', price:11.60 },
+
       { id:'optThumbnail',  kind:'order', price:19.90 },
       { id:'optUrgente',    kind:'order', price:29.90 },
     ];
 
     function calcEntrega(total, urgent){
-      let eta = '13h30';
-      if(total <= 120) eta = '13h30';
-      else if(total <= 250) eta = '14h30';
-      else if(total <= 400) eta = '18h00';
-      else if(total <= 700) eta = '24h';
-      else eta = '48h';
+      // mínimo agora é 40 minutos
+      let eta = '40min';
+      if(total <= 120) eta = '40min';
+      else if(total <= 250) eta = '1h20';
+      else if(total <= 400) eta = '2h30';
+      else if(total <= 700) eta = '5h';
+      else eta = '12h';
 
       if(urgent){
-        if(eta === '48h') eta = '24h';
-        else if(eta === '24h') eta = '18h00';
-        else if(eta === '18h00') eta = '14h30';
-        else eta = '13h30';
+        // puxa 1 nível pra cima, respeitando o mínimo
+        if(eta === '12h') eta = '5h';
+        else if(eta === '5h') eta = '2h30';
+        else if(eta === '2h30') eta = '1h20';
+        else eta = '40min';
       }
       return eta;
     }
@@ -4248,7 +4505,7 @@ function toggleProcurarFav(id){
         kind: 'custom',
         title: 'Pacote Personalizado',
         totalText: custTotal?.textContent || brl(0),
-        eta: custEntrega?.textContent || '13h30',
+        eta: custEntrega?.textContent || '40min',
         fotos: parseInt(custFotos?.value||'0',10),
         videos: parseInt(custVideos?.value||'0',10)
       };
@@ -4262,6 +4519,10 @@ function toggleProcurarFav(id){
     
     // ===== Finalização simples (demo) =====
     const LS_ORDERS = 'karamelo_orders_v1';
+
+    const LS_REPORTS = 'karamelo_reports_v1';
+    const ADMIN_USER = 'karameloo.superadmin';
+    const ADMIN_PASS = 'KrmLoo#2026!V7$zQp@N4xT9^m';
 
     async function createOrderAndFinish(){
       const order = {
@@ -4803,7 +5064,10 @@ function startPickEditor(){
             ${(e.tags||[]).slice(0,6).map(t=>`<span class="badge pillBlue">${escapeHtml(t)}</span>`).join('') || `<span class="badge off">Sem tags</span>`}
           </div>
 
-          <button class="btn" type="button" onclick="selectEditor('${e.id}')">Selecionar este editor</button>
+          <div class="mini-grid" style="margin-top:12px">
+            <button class="btn secondary" type="button" onclick="openEditorProfile('${e.id}')">Ver perfil</button>
+            <button class="btn" type="button" onclick="selectEditor('${e.id}')">Selecionar</button>
+          </div>
           <div class="hint">* Demo: sem pagamento/entrega real ainda.</div>
         `;
         grid.appendChild(card);
@@ -4835,7 +5099,12 @@ function startPickEditor(){
           tags: (editorData?.tags || [])
         };
       } else {
-        e = (EDITORS_DB || []).find(x => x.id === id) || { id, name:'Editor', rating:5, tags:[] };
+        const found = getAllEditors().find(x => x.id === id);
+        if(found){
+          e = { id: found.id, name: found.name, rating: (found.stars ?? START_STARS), tags: (found.tags || []), photo: (found.photo || '') };
+        }else{
+          e = { id, name:'Editor', rating:START_STARS, tags:[] };
+        }
       }
 
       selectedEditorFromProcurar = e;
@@ -4969,31 +5238,6 @@ function startPickEditor(){
         }
       }
 
-
-      // Atalho ADM (testes)
-      if(String(nome).trim().toLowerCase() === 'adm'){
-        closeCadastro();
-        if(role==='cliente'){
-          clientData = buildClientDefaults();
-          clientData.first = 'ADM';
-          clientData.full = 'ADM';
-          lsSet(LS_CLIENT, clientData);
-          paintClientProfile();
-          setActiveSession('cliente');
-        goProcurar(true);
-        setTimeout(runPostLoginIntent, 80);
-        }else{
-          editorData = buildEditorDefaults();
-          editorData.first = 'ADM';
-          editorData.full = 'ADM';
-          lsSet(LS_EDITOR, editorData);
-          paintEditor();
-          setActiveSession('editor');
-          showScreen(screenEditor);
-        }
-        return;
-      }
-
       if(!nome||!sobrenome){ alert('Preencha Nome e Sobrenome.'); return; }
       if(!dob){ alert('Preencha a data de nascimento.'); return; }
       if(!email){ alert('Preencha o email.'); return; }
@@ -5053,13 +5297,26 @@ function startPickEditor(){
         paintEditor();
         setActiveSession('editor');
         showScreen(screenEditor);
-      }
+      
+      // Theme + UI
+      applyTheme(getTheme());
+      splitCustomOptions();
+      updateGlobalNav();
+}
     });
 
     btnLogin?.addEventListener('click', async ()=>{
       const email=(loginEmail?.value||'').trim();
       const senha=(loginSenha?.value||'').trim();
 
+
+      // ✅ Login ADM (frontend-only)
+      if(email === ADMIN_USER && senha === ADMIN_PASS){
+        closeCadastro();
+        setActiveSession('admin');
+        goAdmin();
+        return;
+      }
       // Se Supabase estiver ativo, login real
       if(SUPABASE_ENABLED){
         try{
@@ -5107,32 +5364,6 @@ function startPickEditor(){
 
       if(!email || !senha){
         alert('Preencha email e senha.');
-        return;
-      }
-
-      // Atalho ADM (testes): se o usuário digitar "adm" no email ou na senha,
-      // pulamos a validação de contas e entramos diretamente como ADM.
-      if(String(email).trim().toLowerCase() === 'adm' || String(senha).trim().toLowerCase() === 'adm'){
-        closeCadastro();
-        if(role === 'cliente'){
-          // cria perfil de cliente ADM e navega para o perfil do cliente
-          clientData = buildClientDefaults();
-          clientData.first = 'ADM';
-          clientData.full  = 'ADM';
-          lsSet(LS_CLIENT, clientData);
-          paintClientProfile();
-          paintClientTop();
-          goProcurar(true);
-        }else{
-          // cria perfil de editor ADM e navega para o dashboard do editor
-          editorData = buildEditorDefaults();
-          editorData.first = 'ADM';
-          editorData.full  = 'ADM';
-          lsSet(LS_EDITOR, editorData);
-          paintEditor();
-          setActiveSession('editor');
-          showScreen(screenEditor);
-        }
         return;
       }
 
@@ -5269,7 +5500,264 @@ function startPickEditor(){
       setTimeout(()=> aiReply(msg), 120);
     });
 
-    // ===== Init =====
+    
+
+    // ===== Navigation stack (global back) =====
+    let __navStack = [];
+    let __navBack = false;
+
+    function goBackGlobal(){
+      const prevId = __navStack.pop();
+      if(!prevId){ goStartInstant(); return; }
+      const el = document.getElementById(prevId);
+      if(!el){ goStartInstant(); return; }
+      __navBack = true;
+      showScreen(el, true);
+    }
+
+    function updateGlobalNav(){
+      const back = document.getElementById('globalNav');
+      const cur = document.querySelector('.screen.show');
+      if(!back) return;
+      if(!cur || cur.id === 'screenStart'){ back.classList.add('hide'); }
+      else back.classList.remove('hide');
+    }
+
+    // ===== Theme (Dark / Light) =====
+    function getTheme(){
+      try{ return localStorage.getItem('karamelo_theme') || 'dark'; }catch(e){ return 'dark'; }
+    }
+    function applyTheme(t){
+      const theme = (t === 'light') ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      try{ localStorage.setItem('karamelo_theme', theme); }catch(e){}
+    }
+    function toggleTheme(){
+      const cur = document.documentElement.getAttribute('data-theme') || getTheme();
+      applyTheme(cur === 'light' ? 'dark' : 'light');
+    }
+
+    // ===== Custom options: split Video/Foto into 2 columns =====
+    function splitCustomOptions(){
+      const containers = [document.getElementById('customOptsMain'), document.getElementById('customOptsMore')].filter(Boolean);
+      containers.forEach(c=>{
+        const labels = Array.from(c.querySelectorAll('label.chk'));
+        if(!labels.length) return;
+
+        const wrap = document.createElement('div');
+        wrap.className = 'customSplit';
+
+        const colV = document.createElement('div');
+        colV.className = 'optCol';
+        colV.innerHTML = '<div class="pillMini">🎬 Vídeos</div>';
+
+        const colF = document.createElement('div');
+        colF.className = 'optCol';
+        colF.innerHTML = '<div class="pillMini">📷 Fotos</div>';
+
+        labels.forEach(l=>{
+          const t = (l.textContent || '').toLowerCase();
+          if(t.includes('(fotos)')) colF.appendChild(l);
+          else colV.appendChild(l);
+        });
+
+        wrap.appendChild(colV);
+        wrap.appendChild(colF);
+        c.innerHTML = '';
+        c.appendChild(wrap);
+      });
+    }
+
+    // ===== Reports (Denúncias) =====
+    function addReport({ targetId, targetName }){
+      const reason = prompt('Descreva o motivo da denúncia (ex: conteúdo impróprio, golpe, spam):');
+      if(!reason) return;
+      const arr = lsGet(LS_REPORTS, []);
+      const list = Array.isArray(arr) ? arr : [];
+      list.push({
+        ts: Date.now(),
+        reporter: (getSession()?.active || 'anon'),
+        targetId: String(targetId||''),
+        targetName: String(targetName||''),
+        reason: String(reason).slice(0,400)
+      });
+      lsSet(LS_REPORTS, list);
+      alert('Denúncia enviada (demo).');
+    }
+
+    // ===== Admin =====
+    function goAdmin(){
+      renderAdmin();
+      showScreen(document.getElementById('screenAdmin'));
+    }
+
+    function renderAdmin(){
+      const upd = document.getElementById('admUpdated');
+      if(upd) upd.textContent = 'Atualizado: ' + new Date().toLocaleString();
+
+      // accounts
+      const acc = getAccounts();
+      const clients = acc?.client || {};
+      const editors = acc?.editor || {};
+      const usersCount = Object.keys(clients).length + Object.keys(editors).length;
+
+      // orders
+      const orders = lsGet(LS_ORDERS, []);
+      const oArr = Array.isArray(orders) ? orders : [];
+      const revenue = oArr.reduce((s,o)=>{
+        const v = parseBRL(o?.totalText || '') || 0;
+        return s+v;
+      },0);
+
+      const elU = document.getElementById('admUsers');
+      const elO = document.getElementById('admOrders');
+      const elR = document.getElementById('admRevenue');
+      if(elU) elU.textContent = String(usersCount);
+      if(elO) elO.textContent = String(oArr.length);
+      if(elR) elR.textContent = brl(revenue);
+
+      // reports
+      const rep = lsGet(LS_REPORTS, []);
+      const repArr = Array.isArray(rep) ? rep : [];
+      const repBox = document.getElementById('admReports');
+      if(repBox){
+        if(!repArr.length){
+          repBox.textContent = 'Nenhuma denúncia ainda.';
+        }else{
+          repBox.innerHTML = repArr.slice().reverse().slice(0,12).map(r=>{
+            const dt = new Date(r.ts||Date.now()).toLocaleString();
+            return `<div style="margin:0 0 10px">
+              <strong>${escapeHtml(r.targetName||r.targetId||'Alvo')}</strong>
+              <div class="hint" style="margin:4px 0 0">${escapeHtml(r.reason||'')}</div>
+              <div class="hint" style="margin:4px 0 0;opacity:.8">${dt}</div>
+            </div>`;
+          }).join('') || '—';
+        }
+      }
+
+      // users table
+      const ut = document.getElementById('admUsersTable');
+      if(ut){
+        const rows = [];
+        for(const [email, data] of Object.entries(clients)){
+          rows.push({role:'client', email, cpf:data?.cpf||'', name:data?.display_name||''});
+        }
+        for(const [email, data] of Object.entries(editors)){
+          rows.push({role:'editor', email, cpf:data?.cpf||'', name:data?.display_name||''});
+        }
+        ut.innerHTML = `
+          <tr>
+            <th>Tipo</th><th>Nome</th><th>Email</th><th>CPF</th>
+          </tr>
+          ${rows.map(r=>`<tr>
+            <td>${escapeHtml(r.role)}</td>
+            <td>${escapeHtml(r.name)}</td>
+            <td>${escapeHtml(r.email)}</td>
+            <td>${escapeHtml(r.cpf)}</td>
+          </tr>`).join('') || ''}
+        `;
+      }
+
+      // orders table
+      const ot = document.getElementById('admOrdersTable');
+      if(ot){
+        ot.innerHTML = `
+          <tr>
+            <th>Data</th><th>Tipo</th><th>Total</th><th>Entrega</th><th>Editor</th>
+          </tr>
+          ${oArr.slice().reverse().slice(0,40).map(o=>{
+            const dt = new Date(o.createdAt||Date.now()).toLocaleString();
+            const kind = o.kind || '-';
+            const total = o.totalText || brl(0);
+            const eta = o.eta || '-';
+            const ed = o.editor?.name || o.editor?.id || '-';
+            return `<tr>
+              <td>${escapeHtml(dt)}</td>
+              <td>${escapeHtml(kind)}</td>
+              <td>${escapeHtml(total)}</td>
+              <td>${escapeHtml(eta)}</td>
+              <td>${escapeHtml(ed)}</td>
+            </tr>`;
+          }).join('')}
+        `;
+      }
+    }
+
+    function switchEditorTab(tab){
+      const lab = document.getElementById('editorTabLabel');
+      const p = document.getElementById('editorTabProfile');
+      const c = document.getElementById('editorTabChats');
+      const o = document.getElementById('editorTabOrders');
+      const d = document.getElementById('editorTabDone');
+
+      if(p) p.style.display = (tab==='profile') ? '' : 'none';
+      if(c) c.style.display = (tab==='chats') ? '' : 'none';
+      if(o) o.style.display = (tab==='orders') ? '' : 'none';
+      if(d) d.style.display = (tab==='done') ? '' : 'none';
+      if(lab) lab.textContent = (tab==='profile'?'Perfil':tab==='chats'?'Chats':tab==='orders'?'Pedidos':'Entregues');
+
+      if(tab==='chats'){ renderEditorChatList(); }
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    // ===== Editor Chats (demo local) =====
+    function editorIdNorm(){
+      const id = (currentSession?.user?.id || editorData?.id || 'you');
+      return String(id).trim().toLowerCase().replace(/[^a-z0-9_\-]+/g,'_').slice(0,72);
+    }
+
+    function listEditorChats(){
+      const id = editorIdNorm();
+      const keys = [];
+      try{
+        for(let i=0;i<localStorage.length;i++){
+          const k = localStorage.key(i);
+          if(!k) continue;
+          if(k.startsWith('karamelo_chat_') && k.endsWith('_'+id)) keys.push(k);
+        }
+      }catch(e){}
+      return keys.sort();
+    }
+
+    function openChatByKey(k, title){
+      if(!k) return;
+      chatCtx = { peerId:'', peerName: title || 'Chat', peerWhats:'', key:k };
+      if(chatTitle) chatTitle.textContent = title || 'Chat';
+      renderChat();
+      if(chatOverlay){
+        chatOverlay.classList.remove('closing');
+        chatModal?.classList.remove('closing');
+        chatOverlay.classList.add('show');
+        chatOverlay.setAttribute('aria-hidden','false');
+      }
+    }
+
+    function renderEditorChatList(){
+      const box = document.getElementById('editorChatsList');
+      if(!box) return;
+      const keys = listEditorChats();
+      if(!keys.length){
+        box.innerHTML = '<div class="pill" style="margin:0">Nenhuma conversa ainda.</div>';
+        return;
+      }
+      box.innerHTML = keys.slice().reverse().slice(0,20).map(k=>{
+        const parts = k.split('karamelo_chat_')[1] || '';
+        const bits = parts.split('_');
+        const clientId = bits.slice(0, -1).join('_') || 'cliente';
+        const msgs = lsGet(k, []);
+        const arr = Array.isArray(msgs) ? msgs : [];
+        const last = arr[arr.length-1];
+        const preview = last ? String(last.text||'').slice(0,40) : '';
+        return `
+          <button class="menuBtn" type="button" onclick="openChatByKey('${k.replace(/'/g,"\'")}', 'Cliente: ${clientId}')">
+            <span>Cliente: ${clientId}</span>
+            <small>${escapeHtml(preview || 'Abrir conversa')}</small>
+          </button>
+        `;
+      }).join('');
+    }
+
+// ===== Init =====
     window.addEventListener('DOMContentLoaded', ()=>{
       // Portfolio inputs
       const edWorkPhotos = document.getElementById('edWorkPhotos');
@@ -5315,5 +5803,12 @@ function startPickEditor(){
     });
 
   </script>
+
+  <!-- Global Back + Theme -->
+  <div id="globalNav">
+    <button class="iconBtn" type="button" id="globalBackBtn" onclick="goBackGlobal()" title="Voltar">←</button>
+    <button class="iconBtn" type="button" id="globalThemeBtn" onclick="toggleTheme()" title="Modo claro/escuro">🌓</button>
+  </div>
+
 </body>
 </html>
