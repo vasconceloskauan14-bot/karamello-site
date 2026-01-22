@@ -2,7 +2,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
+    <!-- Favicon (ícone da aba/barra do navegador) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon.png">
+<meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Karameloo | Edição Profissional</title>
 
@@ -1633,181 +1638,9 @@ header, .topBarHero, .brandBar, .heroBand{
   .admNote{font-size:12px;color:rgba(229,231,235,.65);margin-top:10px;line-height:1.4}
 </style>
 
-
-<style id="introSplashStyles">
-  /* ===== Intro Splash (logo K + "arameloo") ===== */
-  body.intro-active{ overflow:hidden; }
-  body.intro-active .page{ animation: none !important; opacity:0 !important; transform: translateY(8px) !important; }
-
-  .introSplash{
-    position: fixed;
-    inset: 0;
-    z-index: 5000;
-    display: grid;
-    place-items: center;
-    padding: 22px;
-    background:
-      radial-gradient(900px 420px at 20% 10%, rgba(255,204,51,.10), transparent 60%),
-      radial-gradient(900px 420px at 80% 0%, rgba(245,180,0,.08), transparent 60%),
-      rgba(7,7,10,.92);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    transition: opacity .38s ease, transform .38s ease;
-  }
-  .introSplash.fade{
-    opacity: 0;
-    transform: translateY(8px);
-    pointer-events: none;
-  }
-
-  .introBox{
-    width: min(560px, 92vw);
-    border-radius: 26px;
-    border: 1px solid rgba(255,255,255,.10);
-    background: linear-gradient(180deg, rgba(13,16,22,.88), rgba(10,12,18,.80));
-    box-shadow: 0 30px 110px rgba(0,0,0,.60);
-    padding: 26px 22px 20px;
-    position: relative;
-    overflow: hidden;
-  }
-  .introBox::before{
-    content:"";
-    position:absolute; inset:-2px;
-    background:
-      radial-gradient(600px 220px at 20% 0%, rgba(255,204,0,.16), transparent 55%),
-      radial-gradient(520px 220px at 80% 0%, rgba(255,153,0,.12), transparent 55%);
-    pointer-events:none;
-    opacity:.92;
-  }
-  .introBox > *{ position:relative; z-index:1; }
-
-  .introRow{ display:flex; align-items:center; gap:14px; }
-  .introMark{
-    width: 74px; height: 74px;
-    border-radius: 22px;
-    display:grid; place-items:center;
-    font-weight: 1000;
-    letter-spacing: .5px;
-    color: #0b0e14;
-    background: linear-gradient(135deg, rgba(255,204,0,1), rgba(255,153,0,1));
-    box-shadow: 0 18px 44px rgba(255,204,0,.18);
-    transform: translateX(-54px) scale(.86);
-    opacity: 0;
-    animation: introMarkIn .58s cubic-bezier(.16,1,.2,1) forwards;
-  }
-  @keyframes introMarkIn{
-    0%{ transform: translateX(-54px) scale(.86); opacity:0; }
-    60%{ transform: translateX(8px) scale(1.03); opacity:1; }
-    100%{ transform: translateX(0) scale(1); opacity:1; }
-  }
-
-  .introWord{
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-    min-width: 0;
-  }
-  .introName{
-    display:flex;
-    align-items:baseline;
-    flex-wrap:wrap;
-    line-height: 1.05;
-  }
-  .introName .kGhost{
-    width: 0;
-    overflow: hidden;
-  }
-  .introName .letters{
-    font-size: clamp(2.1rem, 5.3vw, 2.85rem);
-    font-weight: 1000;
-    letter-spacing: .2px;
-    color: rgba(247,248,251,.98);
-  }
-  .introName .ch{
-    display:inline-block;
-    opacity:0;
-    transform: translateY(10px);
-    filter: blur(10px);
-    animation: introChar .48s cubic-bezier(.16,1,.2,1) forwards;
-    animation-delay: var(--d, .65s);
-    will-change: transform, opacity, filter;
-  }
-  @keyframes introChar{
-    to{ opacity:1; transform: translateY(0); filter: blur(0); }
-  }
-
-  .introSub{
-    margin-top: 6px;
-    font-size: 14px;
-    color: rgba(229,231,235,.72);
-    opacity:0;
-    transform: translateY(8px);
-    animation: introSub .45s cubic-bezier(.16,1,.2,1) forwards;
-    animation-delay: 1.05s;
-  }
-  @keyframes introSub{ to{ opacity:1; transform: translateY(0);} }
-
-  .introLine{
-    margin-top: 16px;
-    height: 4px;
-    border-radius: 999px;
-    background: rgba(255,255,255,.06);
-    overflow:hidden;
-  }
-  .introLine > i{
-    display:block;
-    height: 100%;
-    width: 40%;
-    border-radius: 999px;
-    background: linear-gradient(90deg, rgba(255,204,51,.95), rgba(255,153,0,.90));
-    transform: translateX(-120%);
-    animation: introBar 1.25s cubic-bezier(.16,1,.2,1) forwards;
-    animation-delay: .85s;
-  }
-  @keyframes introBar{
-    0%{ transform: translateX(-120%); opacity:.0; }
-    20%{ opacity:1; }
-    100%{ transform: translateX(180%); opacity:1; }
-  }
-
-  .introHint{
-    margin-top: 10px;
-    font-size: 12px;
-    color: rgba(229,231,235,.55);
-    opacity:0;
-    animation: introHint .35s ease forwards;
-    animation-delay: 1.25s;
-  }
-  @keyframes introHint{ to{ opacity:1; } }
-
-  @media (prefers-reduced-motion: reduce){
-    .introSplash{ transition:none; }
-    .introMark, .introName .ch, .introSub, .introLine > i, .introHint{ animation:none !important; opacity:1 !important; transform:none !important; filter:none !important; }
-    body.intro-active .page{ animation: pageIn .01s linear forwards !important; opacity:1 !important; transform:none !important; }
-  }
-</style>
-
 </head>
 
 <body>
-  <!-- ===== Intro Splash ===== -->
-  <div id="introSplash" class="introSplash" aria-hidden="true">
-    <div class="introBox">
-      <div class="introRow">
-        <div class="introMark">K</div>
-        <div class="introWord">
-          <div class="introName">
-            <span class="kGhost">K</span>
-            <span class="letters"><span class="ch" style="--d:0.620s">a</span><span class="ch" style="--d:0.675s">r</span><span class="ch" style="--d:0.730s">a</span><span class="ch" style="--d:0.785s">m</span><span class="ch" style="--d:0.840s">e</span><span class="ch" style="--d:0.895s">l</span><span class="ch" style="--d:0.950s">o</span><span class="ch" style="--d:1.005s">o</span></span>
-          </div>
-          <div class="introSub">Edição Profissional</div>
-        </div>
-      </div>
-      <div class="introLine"><i></i></div>
-      <div class="introHint">Carregando…</div>
-    </div>
-  </div>
-
   <div class="bg"></div>
   <div class="orb one"></div>
   <div class="orb two"></div>
@@ -5907,38 +5740,6 @@ function startPickEditor(){
   </div>
 </section>
 
-
-
-<script id="introSplashScript">
-(function(){
-  try{
-    const prefersReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isAdminForced = (sessionStorage.getItem('karameloo_force_admin') === '1');
-    if(prefersReduce || isAdminForced){ 
-      const el = document.getElementById('introSplash');
-      if(el) el.remove();
-      return;
-    }
-
-    document.body.classList.add('intro-active');
-
-    const el = document.getElementById('introSplash');
-    if(!el) return;
-
-    // duração total da intro (ajusta aqui se quiser mais rápida)
-    const TOTAL = 2200;
-
-    setTimeout(()=>{
-      el.classList.add('fade');
-      setTimeout(()=>{
-        try{ el.remove(); }catch(e){}
-        document.body.classList.remove('intro-active');
-      }, 420);
-    }, TOTAL);
-
-  }catch(e){}
-})();
-</script>
 
 <script id="admDashLogic">
 (function(){
