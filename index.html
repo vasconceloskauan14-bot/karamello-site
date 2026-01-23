@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -374,6 +372,15 @@
     .checks{display:grid;gap:8px}
     .chk{display:flex;gap:10px;align-items:center;color:#cbd5e1;font-size:.95rem}
     .chk input{width:auto;margin:0}
+
+    /* --- Personalizado: separar Vídeo / Foto (sem mostrar preços) --- */
+    .customGroup{padding:8px 10px;border-radius:14px;border:1px solid rgba(255,215,0,.10);background:rgba(255,215,0,.03)}
+    .customGroupTitle{font-weight:800;letter-spacing:.2px;color:#f8fafc;font-size:.95rem;margin:2px 0 8px;opacity:.95}
+    .customGroupGrid{display:grid;gap:8px}
+    @media (min-width: 860px){
+      .customGroupGrid{grid-template-columns:1fr 1fr}
+    }
+
 
     .total-box{
       margin-top:12px;
@@ -1458,6 +1465,98 @@
 
 
 body.adm-open{ overflow:auto; }
+
+
+    /* ===== Role picker (Cliente / Editor) - estilo do site ===== */
+    .rolePicker{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:8px;
+      margin:10px 0 14px;
+      width: fit-content;
+      border-radius:16px;
+      background: rgba(255,255,255,.045);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 18px 40px rgba(0,0,0,.25);
+    }
+    .rolePicker .roleBtn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: rgba(247,248,251,.92);
+      font-weight:800;
+      letter-spacing:.2px;
+      padding:10px 14px;
+      border-radius:14px;
+      cursor:pointer;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease, color .18s ease;
+      user-select:none;
+    }
+    .rolePicker .roleBtn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,224,138,.28);
+      box-shadow: 0 16px 34px rgba(0,0,0,.35);
+    }
+    .rolePicker .roleBtn:active{
+      transform: translateY(0px) scale(.985);
+    }
+    .rolePicker .roleBtn.active{
+      background: linear-gradient(180deg, rgba(245,180,0,.88), rgba(255,204,51,.68), rgba(255,224,138,.52));
+      border-color: rgba(255,224,138,.55);
+      color: rgba(10,12,18,.95);
+      box-shadow: 0 18px 42px rgba(0,0,0,.35), 0 14px 40px rgba(245,180,0,.12);
+    }
+
+    @media (max-width: 520px){
+      .rolePicker{ width:100%; justify-content:space-between; }
+      .rolePicker .roleBtn{ flex:1; text-align:center; }
+    }
+
+/* ===== Global Loader (Karameloo) ===== */
+.globalLoader{
+  position:fixed; inset:0;
+  display:none;
+  align-items:center; justify-content:center;
+  z-index:99999;
+  background: radial-gradient(900px 500px at 20% 10%, rgba(245,180,0,.12), transparent 60%),
+              radial-gradient(900px 500px at 80% 90%, rgba(245,180,0,.10), transparent 60%),
+              rgba(0,0,0,.62);
+}
+.globalLoader.show{ display:flex; }
+.globalLoader .glCard{
+  width:min(420px, calc(100vw - 48px));
+  padding:18px 18px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(10,14,28,.72);
+  box-shadow: 0 18px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(245,180,0,.08);
+  display:flex; align-items:center; gap:14px;
+}
+.globalLoader .glSpinner{
+  width:34px; height:34px; border-radius:999px;
+  border:3px solid rgba(255,255,255,.18);
+  border-top-color: rgba(245,180,0,.95);
+  border-right-color: rgba(245,180,0,.55);
+  animation: glSpin .9s linear infinite;
+  flex:0 0 auto;
+}
+@keyframes glSpin{ to{ transform: rotate(360deg); } }
+.globalLoader .glText{
+  font-weight:800;
+  letter-spacing:.2px;
+  color: rgba(255,255,255,.92);
+}
+.globalLoader .glSub{
+  margin-top:2px;
+  font-size:12px;
+  color: rgba(255,255,255,.62);
+  font-weight:600;
+}
+@media (prefers-reduced-motion: reduce){
+  .globalLoader .glSpinner{ animation:none; }
+}
+body.no-scroll{ overflow:hidden !important; }
 </style>
 
 
@@ -1797,6 +1896,18 @@ header, .topBarHero, .brandBar, .heroBand{
 </head>
 
 <body>
+
+  <!-- Global Loader -->
+  <div id="globalLoader" class="globalLoader" aria-hidden="true">
+    <div class="glCard">
+      <div class="glSpinner" aria-hidden="true"></div>
+      <div>
+        <div class="glText" id="globalLoaderText">Carregando…</div>
+        <div class="glSub" id="globalLoaderSub">Aguarde só um instante</div>
+      </div>
+    </div>
+  </div>
+
   <div class="bg"></div>
   <div class="orb one"></div>
   <div class="orb two"></div>
@@ -2043,7 +2154,7 @@ header, .topBarHero, .brandBar, .heroBand{
           <div class="toolbar" style="margin-top:12px">
             <div class="left"><span class="chip">👤 Perfil</span></div>
             <div class="right">
-              <button class="iconBtn" type="button" onclick="openUserMenu('cliente')" title="Menu">☰</button>
+              <button class="iconBtn" type="button" onclick="openUserMenu('cliente')" title="Menu">⋮</button>
             </div>
           </div>
 
@@ -2141,6 +2252,9 @@ header, .topBarHero, .brandBar, .heroBand{
               <div class="stars" id="clientStarsTop"></div>
             </div>
           </div>
+          <div class="mini-grid" style="margin-top:12px">
+            <button class="btn secondary" type="button" onclick="backToClientProfileFromPackages()">← Voltar</button>
+          </div>
 
           <div class="pill" style="margin-top:10px">Escolha um pacote pronto ou monte um pacote personalizado.</div>
 
@@ -2195,34 +2309,72 @@ header, .topBarHero, .brandBar, .heroBand{
 
               <div class="checks" style="margin-top:10px" id="customChecks">
                 <!-- principais (5) -->
-                <div id="customOptsMain">
-                  <label class="chk"><input data-custom-opt id="optCorCine" type="checkbox" /> Cor cinematográfica (vídeos)</label>
-                  <label class="chk"><input data-custom-opt id="optLegenda" type="checkbox" /> Legendas (vídeos)</label>
-                  <label class="chk"><input data-custom-opt id="optTransicoes" type="checkbox" /> Transições premium (vídeos)</label>
-                  <label class="chk"><input data-custom-opt id="optAudio" type="checkbox" /> Melhorar áudio + reduzir ruído (vídeos)</label>
-                  <label class="chk"><input data-custom-opt id="optRetoquePro" type="checkbox" /> Retoque avançado (fotos)</label>
+                                <div id="customOptsMain">
+                  <div class="customGroup">
+                    <div class="customGroupTitle">🎬 Extras para Vídeo</div>
+                    <div class="customGroupGrid">
+                      <label class="chk"><input data-custom-opt id="optCorCine" type="checkbox" /> Cor cinematográfica (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optLegenda" type="checkbox" /> Legendas (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optTransicoes" type="checkbox" /> Transições premium (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optAudio" type="checkbox" /> Melhorar áudio + reduzir ruído (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optMusicSync" type="checkbox" /> Sincronizar cortes com música (vídeos)</label>
+                    </div>
+                  </div>
+
+                  <div class="customGroup">
+                    <div class="customGroupTitle">📷 Extras para Foto</div>
+                    <div class="customGroupGrid">
+                      <label class="chk"><input data-custom-opt id="optRetoquePro" type="checkbox" /> Retoque avançado (fotos)</label>
+                      <label class="chk"><input data-custom-opt id="optHDR" type="checkbox" /> HDR / nitidez premium (fotos)</label>
+                      <label class="chk"><input data-custom-opt id="optFundo" type="checkbox" /> Remover/alterar fundo (fotos)</label>
+                      <label class="chk"><input data-custom-opt id="optObjeto" type="checkbox" /> Remover objetos (fotos)</label>
+                      <label class="chk"><input data-custom-opt id="optPele" type="checkbox" /> Suavizar pele (fotos)</label>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- mais opções (colapsado) -->
-                <div id="customOptsMore" class="collapsed">
-                  <label class="chk"><input data-custom-opt id="optMotion" type="checkbox" /> Motion graphics (títulos) (vídeos)</label>
-                  <label class="chk"><input data-custom-opt id="optIntroOutro" type="checkbox" /> Intro/Outro + CTA (vídeos)</label>
-                  <label class="chk"><input data-custom-opt id="optEstabilizar" type="checkbox" /> Estabilização (vídeos)</label>
-                  <label class="chk"><input data-custom-opt id="optSpeedRamp" type="checkbox" /> Speed ramp / slow motion (vídeos)</label>
+                                <div id="customOptsMore" class="collapsed">
+                  <div class="customGroup">
+                    <div class="customGroupTitle">🎬 Mais extras de Vídeo</div>
+                    <div class="customGroupGrid">
+                      <label class="chk"><input data-custom-opt id="optMotion" type="checkbox" /> Motion graphics (títulos) (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optIntroOutro" type="checkbox" /> Intro/Outro + CTA (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optEstabilizar" type="checkbox" /> Estabilização (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optSpeedRamp" type="checkbox" /> Speed ramp / slow motion (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optSFX" type="checkbox" /> Efeitos sonoros (SFX) (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optVoiceClean" type="checkbox" /> Limpeza de voz / clareza (vídeos)</label>
 
-                  <label class="chk"><input data-custom-opt id="optSFX" type="checkbox" /> Efeitos sonoros (SFX) (vídeos)</label>
-                  <label class="chk"><input data-custom-opt id="optMusicSync" type="checkbox" /> Sincronizar cortes com música (vídeos)</label>
-                  <label class="chk"><input data-custom-opt id="optVoiceClean" type="checkbox" /> Limpeza de voz / clareza (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optHook" type="checkbox" /> Hook inicial (0–3s) mais forte (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optCutsPro" type="checkbox" /> Cortes avançados + ritmo (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optColorMatch" type="checkbox" /> Match de cor entre cenas (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optVfxLite" type="checkbox" /> VFX leve (glow, shake, zoom) (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optReframe" type="checkbox" /> Reenquadrar para 9:16/1:1 (vídeos)</label>
+                      <label class="chk"><input data-custom-opt id="optCapStyle" type="checkbox" /> Estilo premium de legenda (vídeos)</label>
+                    </div>
+                  </div>
 
-                  <label class="chk"><input data-custom-opt id="optPele" type="checkbox" /> Suavizar pele (fotos)</label>
-                  <label class="chk"><input data-custom-opt id="optFundo" type="checkbox" /> Remover/alterar fundo (fotos)</label>
-                  <label class="chk"><input data-custom-opt id="optCoresFoto" type="checkbox" /> Cor cinematográfica (fotos)</label>
-                  <label class="chk"><input data-custom-opt id="optHDR" type="checkbox" /> HDR / nitidez premium (fotos)</label>
-                  <label class="chk"><input data-custom-opt id="optObjeto" type="checkbox" /> Remover objetos (fotos)</label>
-                  <label class="chk"><input data-custom-opt id="optTexto" type="checkbox" /> Texto/arte simples (fotos)</label>
+                  <div class="customGroup">
+                    <div class="customGroupTitle">📷 Mais extras de Foto</div>
+                    <div class="customGroupGrid">
+                      <label class="chk"><input data-custom-opt id="optCoresFoto" type="checkbox" /> Cor cinematográfica (fotos)</label>
+                      <label class="chk"><input data-custom-opt id="optTexto" type="checkbox" /> Texto/arte simples (fotos)</label>
 
-                  <label class="chk"><input data-custom-opt id="optThumbnail" type="checkbox" /> Thumbnail (capa) (1 unidade)</label>
-                  <label class="chk"><input data-custom-opt id="optUrgente" type="checkbox" /> Prioridade (entrega mais rápida)</label>
+                      <label class="chk"><input data-custom-opt id="optDodgeBurn" type="checkbox" /> Luz &amp; sombra (Dodge &amp; Burn) (fotos)</label>
+                      <label class="chk"><input data-custom-opt id="optNoisePhoto" type="checkbox" /> Redução de ruído + textura (fotos)</label>
+                      <label class="chk"><input data-custom-opt id="optBatchPreset" type="checkbox" /> Preset em lote (consistência) (fotos)</label>
+                      <label class="chk"><input data-custom-opt id="optBlurBG" type="checkbox" /> Desfoque/Profundidade no fundo (fotos)</label>
+                      <label class="chk"><input data-custom-opt id="optLensFix" type="checkbox" /> Correções de lente + perspectiva (fotos)</label>
+                    </div>
+                  </div>
+
+                  <div class="customGroup">
+                    <div class="customGroupTitle">📌 Extras do Pedido</div>
+                    <div class="customGroupGrid">
+                      <label class="chk"><input data-custom-opt id="optThumbnail" type="checkbox" /> Thumbnail (capa) (1 unidade)</label>
+                      <label class="chk"><input data-custom-opt id="optUrgente" type="checkbox" /> Prioridade (entrega mais rápida)</label>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -2280,11 +2432,11 @@ header, .topBarHero, .brandBar, .heroBand{
               <span class="chip">Você também pode explorar clientes (demo)</span>
             </div>
             <div class="right">
-              <button class="iconBtn" type="button" onclick="goStartInstant()" title="Voltar ao início">↩</button>
-              <button class="iconBtn" type="button" onclick="openUserMenu('editor')" title="Menu">☰</button>
+<button class="iconBtn" type="button" onclick="openUserMenu('editor')" title="Menu">⋮</button>
+<button class="iconBtn" type="button" onclick="openEditorOrders()" title="Pedidos">📦</button>
+<button class="iconBtn" type="button" onclick="openEditorMessages()" title="Mensagens">💬</button>
               <button class="btn secondary" type="button" onclick="goProcurarEditor()">Procurar clientes</button>
-              <button class="btn secondary" type="button" onclick="goProcurar()">Procurar editores</button>
-            </div>
+</div>
           </div>
 
           <div class="editor-grid">
@@ -2496,6 +2648,10 @@ header, .topBarHero, .brandBar, .heroBand{
         <button class="close" type="button" onclick="closeCadastro()">×</button>
       </div>
       <div class="modalBody">
+        <div class="rolePicker" id="rolePicker" aria-label="Tipo de conta">
+          <button class="roleBtn" type="button" data-role="cliente">Cliente</button>
+          <button class="roleBtn" type="button" data-role="editor">Editor</button>
+        </div>
         <div class="authWrap" id="authWrap">
           <!-- Cadastro -->
           <div class="authView active" data-view="register" id="viewRegister">
@@ -2970,14 +3126,44 @@ const START_STARS = 5.0;
     const menuBody = document.getElementById('menuBody');
     let menuCtxRole = 'cliente';
 
-    function openUserMenu(r){
+    
+    // ✅ Atalhos do Editor (fora do menu): Pedidos / Mensagens
+    function openEditorOrders(){
+      try{
+        openUserMenu('editor');
+        setTimeout(()=>{ if(typeof renderUserMenuOrders==='function') renderUserMenuOrders(); }, 30);
+      }catch(e){}
+    }
+    function openEditorMessages(){
+      try{
+        openUserMenu('editor');
+        setTimeout(()=>{ if(typeof renderUserMenuMessages==='function') renderUserMenuMessages(); }, 30);
+      }catch(e){}
+    }
+
+function openUserMenu(r){
       menuCtxRole = (r==='editor') ? 'editor' : 'cliente';
       renderUserMenuHome();
+      // garante que o menu fique preso na viewport (fora de containers com transform)
+      try{
+        if(menuOverlay && menuOverlay.parentElement !== document.body){
+          document.body.appendChild(menuOverlay);
+        }
+      }catch(e){}
       if(menuOverlay){
         menuOverlay.classList.remove('closing');
-        menuModal?.classList.remove('closing');
         menuOverlay.classList.add('show');
         menuOverlay.setAttribute('aria-hidden','false');
+      }
+      // trava o scroll do fundo enquanto o menu estiver aberto
+      document.body.style.overflow = 'hidden';
+      // Re-dispara animação do modal (evita bug de só escurecer após fechar 1x)
+      if(menuModal){
+        menuModal.classList.remove('closing');
+        menuModal.style.animation = 'none';
+        // força reflow
+        void menuModal.offsetHeight;
+        menuModal.style.animation = '';
       }
     }
     function closeUserMenu(){
@@ -2988,6 +3174,8 @@ const START_STARS = 5.0;
         menuOverlay.classList.remove('show','closing');
         menuModal?.classList.remove('closing');
         menuOverlay.setAttribute('aria-hidden','true');
+        // destrava scroll
+        document.body.style.overflow = '';
       }, 220);
     }
     menuOverlay?.addEventListener('click', (e)=>{ if(e.target===menuOverlay) closeUserMenu(); });
@@ -3013,11 +3201,38 @@ const START_STARS = 5.0;
       const otherEmail = cpf ? (isClient ? findEmailByCPF('editor', cpf) : findEmailByCPF('client', cpf)) : null;
       const canSwitch = !!otherEmail;
 
-      const switchBtn = canSwitch ? `
-        <button class="menuBtn" type="button" onclick="${isClient ? 'switchToEditorFromClient()' : 'switchToClientFromEditor()'}">
-          <span>${isClient ? 'Entrar como Editor/Vendedor' : 'Entrar como Cliente'}</span>
-          <small>Trocar modo</small>
-        </button>` : '';
+      // Sempre mostra a opção de mudar de modo:
+      // - Se já existir conta do outro tipo (mesmo CPF neste navegador), troca direto.
+      // - Se não existir, abre o cadastro já no modo correto.
+      const switchBtn = (()=>{
+        if(isClient){
+          if(canSwitch){
+            return `
+              <button class="menuBtn" type="button" onclick="becomeEditorFromClient()">
+                <span>Entrar como Editor/Vendedor</span>
+                <small>Trocar modo</small>
+              </button>`;
+          }
+          return `
+            <button class="menuBtn" type="button" onclick="becomeEditorFromClient();">
+              <span>Trocar para Editor</span>
+              <small>Sem relogar</small>
+            </button>`;
+        } else {
+          if(canSwitch){
+            return `
+              <button class="menuBtn" type="button" onclick="switchToClientFromEditor()">
+                <span>Trocar para Cliente</span>
+                <small>Sem relogar</small>
+              </button>`;
+          }
+          return `
+            <button class="menuBtn" type="button" onclick="switchToClientFromEditor()">
+              <span>Trocar para Cliente</span>
+              <small>Sem relogar</small>
+            </button>`;
+        }
+      })();
 
       setMenuHTML(`
         <div class="menuList">
@@ -3031,9 +3246,17 @@ const START_STARS = 5.0;
           <button class="menuBtn" type="button" onclick="renderUserMenuTerms()">
             <span>Termos de uso</span><small>Regras do app</small>
           </button>
+          ${isClient ? `
           <button class="menuBtn menuDanger" type="button" onclick="logoutAndGoStart()">
-            <span>Sair</span><small>Encerrar sessão</small>
+            <span>Sair</span>
+            <small>Encerrar sessão</small>
           </button>
+          ` : `
+          <button class="menuBtn menuDanger" type="button" onclick="logoutAndGoStart()">
+            <span>Sair</span>
+            <small>Encerrar sessão</small>
+          </button>
+          `}
           <div class="noteWarn">
             <strong>Importante:</strong> o filtro de mensagens/imagens aqui é <em>demo</em>.
             Para ficar forte de verdade, a moderação com IA deve rodar no <strong>backend</strong>.
@@ -3084,6 +3307,142 @@ const START_STARS = 5.0;
         </div>`);
     }
 
+
+    function renderUserMenuOrders(){
+      if(!menuBody) return;
+      if(menuTitle) menuTitle.textContent = 'Pedidos';
+      const all = lsGet(LS_ORDERS, []);
+      const list = Array.isArray(all) ? all : [];
+      const isEditor = menuCtxRole === 'editor';
+      const meName = String(editorData?.full || editorData?.first || editorData?.name || 'Editor').trim().toLowerCase();
+
+      let use = list;
+      if(isEditor && meName){
+        const mine = list.filter(o => String(o?.editor?.name || '').trim().toLowerCase() === meName);
+        // Se não achou pedidos “meus” (porque é demo), mostra todos mesmo
+        use = mine.length ? mine : list;
+      }
+
+      const rows = use.slice(0, 30).map((o, i)=>{
+        const title = escapeHtml(o?.title || 'Pedido');
+        const client = escapeHtml(o?.client?.name || 'Cliente');
+        const total = escapeHtml(o?.totalText || brl(o?.total || 0));
+        const eta = escapeHtml(o?.eta || '—');
+        const when = new Date(o?.createdAt || Date.now());
+        const stamp = escapeHtml(when.toLocaleString('pt-BR'));
+        const badge = o?.editor?.name ? `<span class="chip">Editor: ${escapeHtml(o.editor.name)}</span>` : `<span class="chip">Sem editor</span>`;
+        return `
+          <div class="card" style="margin:0 0 10px">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap">
+              <div style="font-weight:900">${title}</div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center">
+                ${badge}
+                <span class="chip">${stamp}</span>
+              </div>
+            </div>
+            <div class="pill" style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap">
+              <span><b>Cliente:</b> ${client}</span>
+              <span><b>Total:</b> ${total}</span>
+              <span><b>Entrega:</b> ${eta}</span>
+            </div>
+          </div>`;
+      }).join('');
+
+      setMenuHTML(`
+        ${menuBackBtn('Pedidos', 'renderUserMenuHome()')}
+        <div class="card" style="margin:0">
+          <h3 style="margin-top:0">Pedidos (demo/local)</h3>
+          <p style="opacity:.9; margin:8px 0 0">
+            Aqui aparecem os pedidos salvos no seu navegador. No backend (Supabase), isso vem do banco.
+          </p>
+        </div>
+        <div style="margin-top:12px">
+          ${rows || `<div class="card"><div class="hint">Nenhum pedido por enquanto.</div></div>`}
+        </div>
+      `);
+    }
+
+    function listChatThreads(){
+      const out = [];
+      try{
+        for(let i=0;i<localStorage.length;i++){
+          const k = localStorage.key(i);
+          if(!k || !String(k).startsWith('karamelo_chat_')) continue;
+          const arr = lsGet(k, []);
+          const msgs = Array.isArray(arr) ? arr : [];
+          const last = msgs.length ? msgs[msgs.length-1] : null;
+          out.push({
+            key: k,
+            ts: last?.ts || 0,
+            lastText: String(last?.text || '').slice(0, 80),
+            lastFrom: last?.from || ''
+          });
+        }
+      }catch(e){}
+      out.sort((a,b)=>(b.ts||0)-(a.ts||0));
+      return out;
+    }
+    function prettyChatTitleFromKey(k){
+      // karamelo_chat_<clientId>_<peerId>
+      const parts = String(k||'').split('_');
+      const peer = parts.slice(3).join('_') || 'conversa';
+      return peer.replace(/_/g,' ').slice(0, 28);
+    }
+
+    function renderUserMenuMessages(){
+      if(!menuBody) return;
+      if(menuTitle) menuTitle.textContent = 'Mensagens';
+      const threads = listChatThreads();
+      const items = threads.slice(0, 25).map(t=>{
+        const title = escapeHtml(prettyChatTitleFromKey(t.key));
+        const hint = escapeHtml((t.lastFrom==='me' ? 'Você: ' : '') + (t.lastText || 'Abrir conversa'));
+        const enc = encodeURIComponent(t.key);
+        return `
+          <button class="menuBtn" type="button" onclick="renderUserMenuMessageThread('${enc}')">
+            <span>${title}</span><small>${hint}</small>
+          </button>`;
+      }).join('');
+
+      setMenuHTML(`
+        ${menuBackBtn('Mensagens', 'renderUserMenuHome()')}
+        <div class="card" style="margin:0">
+          <h3 style="margin-top:0">Mensagens (demo/local)</h3>
+          <p style="opacity:.9; margin:8px 0 0">
+            As conversas ficam salvas no seu navegador. No backend, isso vira chat real (com moderação e histórico).
+          </p>
+        </div>
+        <div class="menuList" style="margin-top:12px">
+          ${items || `<div class="card"><div class="hint">Nenhuma conversa ainda.</div></div>`}
+        </div>
+      `);
+    }
+
+    function renderUserMenuMessageThread(encKey){
+      const key = decodeURIComponent(String(encKey||''));
+      if(menuTitle) menuTitle.textContent = 'Mensagens';
+      const arr = lsGet(key, []);
+      const msgs = Array.isArray(arr) ? arr : [];
+      const bubbles = msgs.slice(-50).map(m=>{
+        const div = document.createElement('div');
+        div.className = 'aiMsg' + (m.from==='me' ? ' me' : '');
+        div.textContent = String(m.text || '');
+        return div.outerHTML;
+      }).join('');
+
+      setMenuHTML(`
+        ${menuBackBtn('Mensagens', 'renderUserMenuMessages()')}
+        <div class="card" style="margin:0">
+          <h3 style="margin-top:0">${escapeHtml(prettyChatTitleFromKey(key))}</h3>
+          <div class="hint">Leitura (demo). Envio completo e lista de chats entram no backend.</div>
+        </div>
+        <div class="card" style="margin-top:12px; padding:0">
+          <div style="display:grid; gap:10px; max-height:420px; overflow:auto; padding:12px; border-radius:18px">
+            ${bubbles || `<div class="hint">Sem mensagens.</div>`}
+          </div>
+        </div>
+      `);
+    }
+
     function logoutAndGoStart(){
       logoutSession();
       try{ closeEditorProfile(); }catch(e){}
@@ -3095,30 +3454,168 @@ const START_STARS = 5.0;
       showScreen(screenStart, true);
     }
 
+    function becomeEditorFromClient(){
+      showLoading('Trocando para Editor…','Carregando modo vendedor');
+      // Troca para Editor SEM pedir email/senha novamente.
+      // No modo demo/local, copiamos a conta do Cliente (se existir) para Editor automaticamente.
+      try{
+        // Garante que temos um perfil de cliente carregado
+        const storedClient = lsGet(LS_CLIENT) || null;
+        const baseClientProfile = (clientData && Object.keys(clientData||{}).length ? clientData : storedClient) || {};
+
+        const cpf = (baseClientProfile?.cpf || '').toString();
+        let email = (baseClientProfile?.email || '').toString();
+        if(!email && cpf){ email = (findEmailByCPF('client', cpf) || '').toString(); }
+        email = normEmail(email);
+
+        // Recupera (ou reconstrói) a conta de Cliente
+        let clientAcc = null;
+        if(email){
+          clientAcc = loadAccount('client', email);
+        }
+        if(!clientAcc){
+          // fallback: cria um "account" a partir do perfil salvo (sem bloquear o usuário)
+          const fallbackEmail = email || (cpf ? `cliente_${cpf}@local` : 'cliente@local');
+          clientAcc = {
+            email: normEmail(fallbackEmail),
+            pass: '',
+            cpf: cpf || '',
+            profile: Object.assign({}, baseClientProfile, { email: normEmail(fallbackEmail), cpf: cpf || baseClientProfile?.cpf || '' })
+          };
+          // salva para manter consistência nas próximas trocas
+          saveAccount('client', clientAcc);
+        }
+
+        // Se já existe conta editor com o mesmo CPF, usa ela; senão, cria.
+        let editorEmail = cpf ? (findEmailByCPF('editor', cpf) || '') : '';
+        editorEmail = normEmail(editorEmail || clientAcc.email);
+
+        if(!loadAccount('editor', editorEmail)){
+          const editorProfile = Object.assign({}, clientAcc.profile || {});
+          editorProfile.cpf = cpf || editorProfile.cpf || '';
+          editorProfile.email = editorEmail;
+          editorProfile.kind = 'editor';
+
+          saveAccount('editor', {
+            email: editorEmail,
+            pass: clientAcc.pass || '',
+            cpf: (cpf || editorProfile.cpf || ''),
+            profile: editorProfile
+          });
+        }
+
+        const acc = loadAccount('editor', editorEmail);
+        if(!acc){
+          // última tentativa: não trava — só muda o modo visual
+          role = 'editor';
+          editorData = Object.assign({}, baseClientProfile, { kind:'editor' });
+          lsSet(LS_EDITOR, editorData);
+          setActiveSession('editor');
+          closeUserMenu();
+          showScreen(screenEditor);
+          return;
+        }
+
+        role = 'editor';
+        applyAccountToSession('editor', acc);
+        setActiveSession('editor');
+        closeUserMenu();
+        showScreen(screenEditor);
+      hideLoading();
+      }catch(e){
+        console.error(e);
+        // Não trava a navegação por causa de localStorage inconsistente
+        try{
+          role = 'editor';
+          setActiveSession('editor');
+          closeUserMenu();
+          showScreen(screenEditor);
+        }catch(_){}
+      }
+      hideLoading();
+    }
+
+    // Compat: se algum lugar ainda chamar isso, mantém funcionando
     function switchToEditorFromClient(){
-      const cpf = clientData?.cpf || '';
-      const email = cpf ? findEmailByCPF('editor', cpf) : null;
-      if(!email){ alert('Você ainda não tem conta de Editor neste navegador.'); return; }
-      const acc = loadAccount('editor', email);
-      if(!acc){ alert('Conta de Editor não encontrada.'); return; }
-      role = 'editor';
-      applyAccountToSession('editor', acc);
-      setActiveSession('editor');
-      closeUserMenu();
-      showScreen(screenEditor);
+      becomeEditorFromClient();
     }
     function switchToClientFromEditor(){
-      const cpf = editorData?.cpf || '';
-      const email = cpf ? findEmailByCPF('client', cpf) : null;
-      if(!email){ alert('Você ainda não tem conta de Cliente neste navegador.'); return; }
-      const acc = loadAccount('client', email);
-      if(!acc){ alert('Conta de Cliente não encontrada.'); return; }
-      role = 'cliente';
-      applyAccountToSession('client', acc);
-      setActiveSession('cliente');
-      closeUserMenu();
-      goProcurar(true);
+      showLoading('Trocando para Cliente…','Carregando modo cliente');
+      // Troca para Cliente SEM pedir email/senha novamente.
+      // No modo demo/local, copiamos a conta do Editor (se existir) para Cliente automaticamente.
+      try{
+        const storedEditor = lsGet(LS_EDITOR) || null;
+        const baseEditorProfile = (editorData && Object.keys(editorData||{}).length ? editorData : storedEditor) || {};
+
+        const cpf = (baseEditorProfile?.cpf || '').toString();
+        let email = (baseEditorProfile?.email || '').toString();
+        if(!email && cpf){ email = (findEmailByCPF('editor', cpf) || '').toString(); }
+        email = normEmail(email);
+
+        // Recupera (ou reconstrói) a conta de Editor
+        let editorAcc = null;
+        if(email){
+          editorAcc = loadAccount('editor', email);
+        }
+        if(!editorAcc){
+          const fallbackEmail = email || (cpf ? `editor_${cpf}@local` : 'editor@local');
+          editorAcc = {
+            email: normEmail(fallbackEmail),
+            pass: '',
+            cpf: cpf || '',
+            profile: Object.assign({}, baseEditorProfile, { email: normEmail(fallbackEmail), cpf: cpf || baseEditorProfile?.cpf || '' })
+          };
+          saveAccount('editor', editorAcc);
+        }
+
+        // Se já existe conta cliente com o mesmo CPF, usa ela; senão, cria.
+        let clientEmail = cpf ? (findEmailByCPF('client', cpf) || '') : '';
+        clientEmail = normEmail(clientEmail || editorAcc.email);
+
+        if(!loadAccount('client', clientEmail)){
+          const clientProfile = Object.assign({}, editorAcc.profile || {});
+          clientProfile.cpf = cpf || clientProfile.cpf || '';
+          clientProfile.email = clientEmail;
+          clientProfile.kind = 'client';
+
+          saveAccount('client', {
+            email: clientEmail,
+            pass: editorAcc.pass || '',
+            cpf: (cpf || clientProfile.cpf || ''),
+            profile: clientProfile
+          });
+        }
+
+        const acc = loadAccount('client', clientEmail);
+        if(!acc){
+          // última tentativa: não trava — só muda o modo visual
+          role = 'client';
+          clientData = Object.assign({}, baseEditorProfile, { kind:'client' });
+          lsSet(LS_CLIENT, clientData);
+          setActiveSession('client');
+          closeUserMenu();
+          showScreen(screenClientProfile, true);
+          hideLoading();
+          return;
+        }
+
+        role = 'client';
+        applyAccountToSession('client', acc);
+        setActiveSession('client');
+        closeUserMenu();
+        showScreen(screenClientProfile, true);
+      }catch(e){
+        console.error(e);
+        try{
+          role = 'client';
+          setActiveSession('client');
+          closeUserMenu();
+          showScreen(screenClientProfile, true);
+        }catch(_){}
+      }
+      hideLoading();
     }
+
 
 
     function lsGet(key, fallback){
@@ -3148,6 +3645,39 @@ const START_STARS = 5.0;
 
     const siteHeader = document.getElementById('siteHeader');
 
+    // ===== Global Loader =====
+    const globalLoader = document.getElementById('globalLoader');
+    const globalLoaderText = document.getElementById('globalLoaderText');
+    const globalLoaderSub = document.getElementById('globalLoaderSub');
+    let __loaderStart = 0;
+    let __loaderHideTimer = null;
+
+    function __nextPaint(){
+      return new Promise(r => requestAnimationFrame(()=>requestAnimationFrame(r)));
+    }
+    function showLoading(msg, sub){
+      if(!globalLoader) return;
+      if(__loaderHideTimer){ clearTimeout(__loaderHideTimer); __loaderHideTimer = null; }
+      __loaderStart = Date.now();
+      if(globalLoaderText) globalLoaderText.textContent = msg || 'Carregando…';
+      if(globalLoaderSub) globalLoaderSub.textContent = sub || 'Aguarde só um instante';
+      globalLoader.classList.add('show');
+      globalLoader.setAttribute('aria-hidden','false');
+      try{ document.body.classList.add('no-scroll'); }catch(e){}
+    }
+    function hideLoading(){
+      if(!globalLoader) return;
+      const minMs = 520;
+      const elapsed = Date.now() - (__loaderStart||0);
+      const wait = Math.max(0, minMs - elapsed);
+      if(__loaderHideTimer) clearTimeout(__loaderHideTimer);
+      __loaderHideTimer = setTimeout(()=>{
+        globalLoader.classList.remove('show');
+        globalLoader.setAttribute('aria-hidden','true');
+        try{ document.body.classList.remove('no-scroll'); }catch(e){}
+      }, wait);
+    }
+
     const inNome = document.getElementById('inNome');
     const inSobrenome = document.getElementById('inSobrenome');
 
@@ -3165,6 +3695,26 @@ const START_STARS = 5.0;
     const toRegister = document.getElementById('toRegister');
     const btnLogin = document.getElementById('btnLogin');
 
+    // Seletor de tipo de conta (Cliente / Editor) dentro do modal
+    const rolePicker = document.getElementById('rolePicker');
+    const roleBtns = rolePicker ? Array.from(rolePicker.querySelectorAll('.roleBtn')) : [];
+
+    function syncRolePickerVisibility(){
+      if(!rolePicker) return;
+      // só aparece no cadastro (não muda nada no login)
+      rolePicker.style.display = 'flex';
+    }
+
+    function setRole(newRole){
+      if(!newRole) return;
+      role = newRole;
+      roleBtns.forEach(b=> b.classList.toggle('active', (b.dataset.role === role)));
+      updateAuthTitle();
+    }
+
+    roleBtns.forEach(b=> b.addEventListener('click', ()=> setRole(b.dataset.role)));
+
+
     const inData = document.getElementById('inData');
     const inCPF = document.getElementById('inCPF');
     const inEmail = document.getElementById('inEmail');
@@ -3176,9 +3726,8 @@ const START_STARS = 5.0;
     let authMode = 'register';
 
     function updateAuthTitle(){
-      titleCadastro.textContent = (authMode === 'register')
-        ? ((role === 'cliente') ? 'Criar conta como Cliente' : 'Criar conta como Editor')
-        : ((role === 'cliente') ? 'Entrar como Cliente' : 'Entrar como Editor');
+      // título simples (sem "como Cliente/Editor")
+      titleCadastro.textContent = (authMode === 'register') ? 'Criar conta' : 'Fazer login';
     }
 
     // garante que o conteúdo do cadastro/login não fique “cortado” (PC e celular)
@@ -3233,6 +3782,7 @@ const START_STARS = 5.0;
 
       authMode = mode;
       updateAuthTitle();
+      syncRolePickerVisibility();
 
       setTimeout(()=>{
         from.classList.remove('active','leaveLeft','leaveRight');
@@ -3258,6 +3808,9 @@ const START_STARS = 5.0;
       });
 
       updateAuthTitle();
+      syncRolePickerVisibility();
+      // garante destaque correto no seletor
+      if(role){ roleBtns?.forEach(b=> b.classList.toggle('active', (b.dataset.role === role))); }
       syncAuthWrapHeight();
     }
 
@@ -3305,7 +3858,8 @@ const START_STARS = 5.0;
 
 
     function openCadastro(tipo){
-      role = tipo;
+      // permite escolher Cliente/Editor dentro do modal
+      if(typeof setRole === 'function') setRole(tipo || 'cliente'); else role = (tipo || 'cliente');
       resetAuthUI();
 
       // limpa campos (para nao misturar cadastros)
@@ -4526,6 +5080,19 @@ function toggleProcurarFav(id){
       { id:'optObjeto',     kind:'photo', price:11.60 },
       { id:'optTexto',      kind:'photo', price:9.40  },
 
+      { id:'optHook',       kind:'video', price:7.90  },
+      { id:'optCutsPro',    kind:'video', price:11.40 },
+      { id:'optColorMatch', kind:'video', price:12.90 },
+      { id:'optVfxLite',    kind:'video', price:9.80  },
+      { id:'optReframe',    kind:'video', price:8.90  },
+      { id:'optCapStyle',   kind:'video', price:9.70  },
+
+      { id:'optDodgeBurn',  kind:'photo', price:12.40 },
+      { id:'optNoisePhoto', kind:'photo', price:8.90  },
+      { id:'optBatchPreset',kind:'photo', price:9.40  },
+      { id:'optBlurBG',     kind:'photo', price:11.60 },
+      { id:'optLensFix',    kind:'photo', price:9.90  },
+
       { id:'optThumbnail',  kind:'order', price:19.90 },
       { id:'optUrgente',    kind:'order', price:29.90 },
     ];
@@ -4692,6 +5259,11 @@ Próximo passo: checkout (PIX) + upload de arquivos + chat.`);
       selectedEditorFromProcurar = null;
       currentOrder = null;
       goProcurar(true);
+    }
+
+    function backToClientProfileFromPackages(){
+      try{ paintClientProfile && paintClientProfile(); }catch(e){}
+      showScreen(screenClientProfile, true);
     }
 
 function startPickEditor(){
@@ -5294,6 +5866,7 @@ function startPickEditor(){
       // QUICK ADMIN (demo): digite apenas "adm" em Nome OU Sobrenome para entrar no painel ADM
       const __admQuick = (/^adm$/i.test(nome) || /^adm$/i.test(sobrenome) || /^admin$/i.test(nome) || /^admin$/i.test(sobrenome));
       if(__admQuick){
+        showLoading('Abrindo painel ADM…','Entrando como administrador');
         try{
           localStorage.setItem("karameloo_user_name","ADM");
           localStorage.setItem("karameloo_user_role","admin");
@@ -5314,6 +5887,7 @@ function startPickEditor(){
       // Se Supabase estiver ativo, cadastro real (aparece em Authentication → Users)
       if(SUPABASE_ENABLED){
         try{
+          showLoading('Entrando…','Verificando sua conta');
           // validações básicas (mantém as mesmas do modo local)
           if(!nome||!sobrenome){ alert('Preencha Nome e Sobrenome.'); return; }
           if(!dob){ alert('Preencha a data de nascimento.'); return; }
@@ -5328,9 +5902,14 @@ function startPickEditor(){
             }
           }
 
+          showLoading('Criando conta…','Validando e salvando');
+
+
           const eKey = normEmail(email);
+
+
           const r = await supaRegisterFlow({ nome, sobrenome, dob, cpfD, email: eKey, senha, roleUi: role });
-          if(!r?.ok) return;
+          if(!r?.ok){ hideLoading(); return; }
 
           closeCadastro();
 
@@ -5347,7 +5926,8 @@ function startPickEditor(){
             setActiveSession('cliente');
             goProcurar(true);
             setTimeout(runPostLoginIntent, 80);
-          }else{
+          hideLoading();
+      }else{
             ensureEditorData(nome, sobrenome);
             editorData.cpf = cpfD;
             editorData.email = eKey;
@@ -5357,9 +5937,14 @@ function startPickEditor(){
             paintEditor();
             setActiveSession('editor');
             showScreen(screenEditor);
-          }
+        hideLoading();
+      }
+          hideLoading();
+          hideLoading();
+
           return;
         }catch(err){
+          hideLoading();
           const msg = (err && err.message) ? err.message : String(err);
           // Mensagens comuns
           if(/User already registered/i.test(msg) || /already registered/i.test(msg)){
@@ -5386,7 +5971,8 @@ function startPickEditor(){
           setActiveSession('cliente');
         goProcurar(true);
         setTimeout(runPostLoginIntent, 80);
-        }else{
+        hideLoading();
+      }else{
           editorData = buildEditorDefaults();
           editorData.first = 'ADM';
           editorData.full = 'ADM';
@@ -5395,6 +5981,7 @@ function startPickEditor(){
           setActiveSession('editor');
           showScreen(screenEditor);
         }
+        hideLoading();
         return;
       }
 
@@ -5427,7 +6014,7 @@ function startPickEditor(){
         alert('Esse CPF já está cadastrado nessa modalidade de conta.\nUse "Já tenho conta" para entrar.');
         return;
       }
-
+      showLoading('Criando conta…','Preparando seu perfil');
       closeCadastro();
 
       if(role==='cliente'){
@@ -5444,6 +6031,7 @@ function startPickEditor(){
         setActiveSession('cliente');
         goProcurar(true);
         setTimeout(runPostLoginIntent, 80);
+        hideLoading();
       }else{
         ensureEditorData(nome, sobrenome);
         editorData.cpf = cpfD;
@@ -5457,6 +6045,7 @@ function startPickEditor(){
         paintEditor();
         setActiveSession('editor');
         showScreen(screenEditor);
+        hideLoading();
       }
     });
 
@@ -5501,8 +6090,10 @@ function startPickEditor(){
             setActiveSession('editor');
             showScreen(screenEditor);
           }
-          return;
+        hideLoading();
+        return;
         }catch(err){
+          hideLoading();
           const msg = (err && err.message) ? err.message : String(err);
           alert('Erro no login: ' + msg);
           return;
@@ -5513,6 +6104,8 @@ function startPickEditor(){
         alert('Preencha email e senha.');
         return;
       }
+
+      showLoading('Entrando…','Carregando sua área');
 
       // Atalho ADM (testes): se o usuário digitar "adm" no email ou na senha,
       // pulamos a validação de contas e entramos diretamente como ADM.
@@ -5543,6 +6136,7 @@ function startPickEditor(){
       const kind = roleKey();
       const account = loadAccount(kind, email);
       if(!account || account.pass !== senha){
+        hideLoading();
         alert('Email ou senha incorretos (demo).');
         return;
       }
@@ -5554,6 +6148,7 @@ function startPickEditor(){
 
       if(role==='cliente') goProcurar(true);
       else showScreen(screenEditor);
+    hideLoading();
     });
 
     // ===== IA Karameloo (demo local — Cliente + Editor + novos usuários) =====
@@ -6593,15 +7188,19 @@ function startPickEditor(){
 
   // expose manual open for debugging
   window.openAdminDashboard = function(){
+    showLoading('Abrindo painel ADM…','Carregando dashboard');
     sessionStorage.setItem('karameloo_force_admin','1');
     boot();
+    setTimeout(hideLoading, 650);
   };
 
   window.closeAdminDashboard = function(){
+    showLoading('Saindo do ADM…','Voltando para o site');
     sessionStorage.removeItem('karameloo_force_admin');
     boot();
     // volta para o topo/entrada
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    setTimeout(hideLoading, 450);
   };
 
   // run boot now and on hash change
