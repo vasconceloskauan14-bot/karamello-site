@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1321,7 +1322,10 @@
       color: var(--text);
       font-weight:900;
       cursor:pointer;
-    }
+    transition: transform .18s cubic-bezier(.16,1,.2,1), background .18s ease, border-color .18s ease, box-shadow .18s ease, filter .18s ease;
+    will-change: transform;
+  
+  }
     .menuBtn:hover{ filter: brightness(1.05); }
     .menuBtn small{ opacity:.75; font-weight:800; }
     .menuDanger{ border-color: rgba(255,120,120,.32); background: rgba(255,120,120,.08); }
@@ -1513,19 +1517,60 @@ header, .topBarHero, .brandBar, .heroBand{
     background:rgba(255,255,255,.04);
     color:#e5e7eb;font-weight:800;
     cursor:pointer;
+    transition: transform .18s cubic-bezier(.16,1,.2,1), background .18s ease, border-color .18s ease, box-shadow .18s ease, filter .18s ease;
+    will-change: transform;
   }
   .admNav .item .ic{
     width:34px;height:34px;border-radius:12px;
     background:rgba(255,255,255,.06);
     border:1px solid rgba(255,255,255,.08);
     display:grid;place-items:center;
+    transition: transform .18s cubic-bezier(.16,1,.2,1), background .18s ease, border-color .18s ease, box-shadow .18s ease, filter .18s ease;
+    will-change: transform;
     color:rgba(246,196,0,.95);
   }
   .admNav .item.active{
     background:rgba(246,196,0,.16);
     border-color:rgba(246,196,0,.45);
   }
-  .admSide .mini{
+  
+  /* Hover interaction (não altera layout — só sensação premium) */
+  .admNav .item:hover{
+    transform: translateX(4px);
+    background: rgba(255,255,255,.06);
+    border-color: rgba(246,196,0,.22);
+    box-shadow: 0 14px 30px rgba(0,0,0,.35);
+    filter: brightness(1.02);
+  }
+  .admNav .item:hover .ic{
+    transform: translateY(-1px) scale(1.03);
+    background: rgba(246,196,0,.12);
+    border-color: rgba(246,196,0,.30);
+    box-shadow: 0 12px 22px rgba(246,196,0,.12);
+  }
+  .admNav .item:active{
+    transform: translateX(2px) scale(.99);
+    filter: brightness(.98);
+  }
+  .admNav .item.active:hover{
+    background: rgba(246,196,0,.18);
+    border-color: rgba(246,196,0,.55);
+  }
+
+  /* Charts (Analytics tab) */
+  .admChartGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:10px}
+  @media (max-width: 980px){.admChartGrid{grid-template-columns:1fr}}
+  .admChartCard{
+    padding:12px;border-radius:18px;
+    border:1px solid rgba(255,255,255,.10);
+    background:rgba(0,0,0,.18);
+    box-shadow: 0 18px 40px rgba(0,0,0,.28);
+  }
+  .admChartHead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:8px}
+  .admChartMeta{color:rgba(229,231,235,.55);font-size:12px}
+  .admChartCard canvas{width:100%;height:auto;display:block}
+
+.admSide .mini{
     margin-top:14px;
     border-radius:16px;
     padding:12px;
@@ -1562,6 +1607,16 @@ header, .topBarHero, .brandBar, .heroBand{
   .admBtn.primary{
     border-color:rgba(246,196,0,.45);
     background:rgba(246,196,0,.18);
+  }
+
+  .admBtn.danger{
+    border-color: rgba(255,95,95,.40);
+    background: rgba(255,95,95,.12);
+  }
+  .admBtn.danger:hover{
+    filter: brightness(1.05);
+    box-shadow: 0 14px 30px rgba(255,95,95,.14);
+    border-color: rgba(255,95,95,.55);
   }
 
   .admCards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
@@ -1634,6 +1689,109 @@ header, .topBarHero, .brandBar, .heroBand{
   .admAct .danger{border-color:rgba(255,80,80,.35);background:rgba(255,80,80,.10)}
   .admAct .ok{border-color:rgba(64,210,120,.35);background:rgba(64,210,120,.10)}
   .admNote{font-size:12px;color:rgba(229,231,235,.65);margin-top:10px;line-height:1.4}
+
+  /* === Micro-interações (ADM) — pedido do Kauan: animar cards/tabela/botões sem mexer nas animações existentes === */
+  .admPanel, .admCard, .admKpi, .admTable tbody tr, .admAct button{
+    will-change: transform;
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease, filter .22s ease;
+  }
+
+  /* Painéis e cards (Overview / Sales Analytics) */
+  .admPanel:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 18px 55px rgba(0,0,0,.55);
+    border-color: rgba(246,196,0,.18);
+  }
+  .admCard:hover, .admKpi:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 14px 40px rgba(0,0,0,.50);
+    border-color: rgba(246,196,0,.18);
+  }
+
+  /* Linhas da tabela (Recent Orders) */
+  .admTable tbody tr:hover{
+    transform: translateY(-2px);
+    filter: brightness(1.02);
+  }
+  .admTable tbody tr:hover td{
+    background: rgba(255,255,255,.055);
+    border-top-color: rgba(246,196,0,.18);
+    border-bottom-color: rgba(246,196,0,.18);
+  }
+
+  /* Botões (ações) */
+  .admAct button:hover{
+    transform: translateY(-1px);
+    border-color: rgba(246,196,0,.22);
+    box-shadow: 0 10px 24px rgba(0,0,0,.45);
+  }
+  .admAct button:active{
+    transform: translateY(0px) scale(.98);
+    filter: brightness(.98);
+  }
+
+
+  /* Ações de Usuários (Banir/Desbanir/Verificar etc) — micro animações premium */
+  .admAct button{
+    position:relative;
+    overflow:hidden;
+    transform: translateZ(0);
+  }
+  .admAct button::after{
+    content:"";
+    position:absolute;
+    inset:-60%;
+    background: radial-gradient(circle at 30% 30%, rgba(246,196,0,.18), transparent 60%);
+    opacity:0;
+    transform: scale(.85);
+    transition: opacity .22s ease, transform .22s ease;
+    pointer-events:none;
+  }
+  .admAct button:hover::after{opacity:1; transform:scale(1);}
+
+  .admAct .danger:hover{
+    border-color:rgba(255,80,80,.55) !important;
+    background:rgba(255,80,80,.18) !important;
+    box-shadow: 0 12px 30px rgba(255,80,80,.14), 0 10px 24px rgba(0,0,0,.45);
+  }
+  .admAct .ok:hover{
+    border-color:rgba(64,210,120,.55) !important;
+    background:rgba(64,210,120,.18) !important;
+    box-shadow: 0 12px 30px rgba(64,210,120,.14), 0 10px 24px rgba(0,0,0,.45);
+  }
+
+  /* Status pill também reage levemente quando o usuário passa o mouse na linha */
+  .admStatus{
+    transition: transform .22s ease, filter .22s ease, border-color .22s ease, background .22s ease;
+    will-change: transform;
+  }
+  .admTable tbody tr:hover .admStatus{
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+  }
+  /* Pequena animação de entrada para o conteúdo do ADM (leve) */
+  @keyframes admFadeUp{
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+    body.adm-open .admDash,
+  body.adm-open .admGrid{
+    animation: admFadeUp .35s ease both;
+  }
+
+  /* Respeitar acessibilidade */
+  @media (prefers-reduced-motion: reduce){
+    .admPanel, .admCard, .admKpi, .admTable tbody tr, .admAct button{
+      transition:none !important;
+      animation:none !important;
+    }
+    .admPanel:hover, .admCard:hover, .admKpi:hover, .admTable tbody tr:hover, .admAct button:hover{
+      transform:none !important;
+      box-shadow:none !important;
+      filter:none !important;
+    }
+  }
+
 </style>
 
 </head>
@@ -5583,6 +5741,9 @@ function startPickEditor(){
         <div class="item" id="admNav_orders" onclick="admNav('orders')">
           <div class="ic">🧾</div><div>Orders</div>
         </div>
+        <div class="item" id="admNav_analytics" onclick="admNav('analytics')">
+          <div class="ic">📈</div><div>Analytics</div>
+        </div>
         <div class="item" id="admNav_editors" onclick="admNav('editors')">
           <div class="ic">🎬</div><div>Editors</div>
         </div>
@@ -5605,6 +5766,7 @@ function startPickEditor(){
           <span class="admBadge">⭐ Admin</span>
           <button class="admBtn" onclick="admSeedDemo()">Gerar demo</button>
           <button class="admBtn primary" onclick="admExportJson()">Exportar</button>
+          <button class="admBtn danger" onclick="closeAdminDashboard()">Sair</button>
         </div>
       </div>
 
@@ -5713,7 +5875,48 @@ function startPickEditor(){
         </table>
       </div>
 
-      <div id="admTab_editors" style="display:none;margin-top:12px" class="admPanel">
+      
+      <div id="admTab_analytics" style="display:none;margin-top:12px" class="admPanel">
+        <h3>Analytics</h3>
+        <div class="admNote">Gráficos essenciais (demo/local). Depois conectamos ao Supabase (backend).</div>
+
+        <div class="admChartGrid">
+          <div class="admChartCard">
+            <div class="admChartHead">
+              <b>Receita (7 dias)</b>
+              <span class="admChartMeta" id="admChartRevenueMeta"></span>
+            </div>
+            <canvas id="admChartRevenue" width="700" height="190"></canvas>
+          </div>
+
+          <div class="admChartCard">
+            <div class="admChartHead">
+              <b>Pedidos (7 dias)</b>
+              <span class="admChartMeta" id="admChartOrdersMeta"></span>
+            </div>
+            <canvas id="admChartOrders" width="700" height="190"></canvas>
+          </div>
+
+          <div class="admChartCard">
+            <div class="admChartHead">
+              <b>Status dos pedidos</b>
+              <span class="admChartMeta" id="admChartStatusMeta"></span>
+            </div>
+            <canvas id="admChartStatus" width="420" height="220"></canvas>
+          </div>
+
+          <div class="admChartCard">
+            <div class="admChartHead">
+              <b>Novos usuários (7 dias)</b>
+              <span class="admChartMeta" id="admChartUsersMeta"></span>
+            </div>
+            <canvas id="admChartUsers" width="700" height="190"></canvas>
+          </div>
+        </div>
+      </div>
+
+
+<div id="admTab_editors" style="display:none;margin-top:12px" class="admPanel">
         <h3>Editors</h3>
         <div class="admNote">Marque verificado para destacar editores confiáveis (demo/local).</div>
         <table class="admTable">
@@ -5800,7 +6003,7 @@ function startPickEditor(){
 
   // NAV
   window.admNav = function(tab){
-    ["overview","users","orders","editors","settings"].forEach(t=>{
+    ["overview","users","orders","analytics","editors","settings"].forEach(t=>{
       const nav=document.getElementById("admNav_"+t);
       if(nav) nav.classList.toggle("active", t===tab);
     });
@@ -5808,7 +6011,7 @@ function startPickEditor(){
     document.getElementById("admPanelLeft").style.display = (tab==="overview") ? "" : "none";
     document.getElementById("admPanelRight").style.display = (tab==="overview") ? "" : "none";
 
-    const tabs = ["users","orders","editors","settings"];
+    const tabs = ["users","orders","analytics","editors","settings"];
     tabs.forEach(t=>{
       const el=document.getElementById("admTab_"+t);
       if(el) el.style.display = (tab===t) ? "" : "none";
@@ -5816,6 +6019,7 @@ function startPickEditor(){
 
     const title = document.getElementById("admTitleTop");
     if(title) title.textContent = tab.charAt(0).toUpperCase()+tab.slice(1);
+    if(tab==="analytics") setTimeout(()=>admRenderAnalytics(), 40);
   };
 
   // Seed demo
@@ -5984,6 +6188,277 @@ function startPickEditor(){
     admRenderOrders();
     admRenderUsers();
     admRenderEditors();
+    admRenderAnalytics();
+  
+  // Analytics (charts)
+  window.admRenderAnalytics = function(){
+    try{
+      const d = getData();
+      const now = new Date();
+      const dayMs = 24*60*60*1000;
+      const days = 7;
+
+      // build day buckets (local time, midnight)
+      const end = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const start = new Date(end.getTime() - (days-1)*dayMs);
+
+      const labels = [];
+      const revenue = Array(days).fill(0);
+      const orders = Array(days).fill(0);
+      const newUsers = Array(days).fill(0);
+
+      function idxFor(ts){
+        if(!ts) return -1;
+        const t = new Date(ts);
+        const dd = new Date(t.getFullYear(), t.getMonth(), t.getDate());
+        const i = Math.round((dd.getTime() - start.getTime())/dayMs);
+        return (i>=0 && i<days) ? i : -1;
+      }
+
+      for(let i=0;i<days;i++){
+        const dt = new Date(start.getTime() + i*dayMs);
+        labels.push(dt.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"}));
+      }
+
+      // Orders aggregation
+      let paidCount=0, pendingCount=0, otherCount=0;
+      let paidTotal=0;
+      (d.orders||[]).forEach(o=>{
+        const i = idxFor(o.createdAt||o.created_at||o.ts);
+        if(i>-1) orders[i] += 1;
+
+        const st = (o.status||"").toLowerCase();
+        const raw = (o.total!=null ? o.total : (o.amount!=null ? o.amount : 0));
+        const val = (typeof raw==="number") ? raw : (parseFloat(String(raw).replace(/[^\d,.-]/g,"").replace(",", "."))||0);
+
+        if(st==="paid" || st==="pago"){
+          paidCount += 1;
+          paidTotal += val;
+          const j = idxFor(o.createdAt||o.created_at||o.ts);
+          if(j>-1) revenue[j] += val;
+        } else if(st==="pending" || st==="pendente"){
+          pendingCount += 1;
+        } else {
+          otherCount += 1;
+        }
+      });
+
+      // Users aggregation
+      (d.users||[]).forEach(u=>{
+        const i = idxFor(u.createdAt||u.created_at||u.ts);
+        if(i>-1) newUsers[i] += 1;
+      });
+
+      // Update metas
+      const setMeta = (id, text)=>{ const el=document.getElementById(id); if(el) el.textContent=text; };
+      setMeta("admChartRevenueMeta", `Total: ${moneyBR(paidTotal)} • pagos: ${paidCount}`);
+      setMeta("admChartOrdersMeta", `Total: ${(d.orders||[]).length} • 7d: ${orders.reduce((a,b)=>a+b,0)}`);
+      setMeta("admChartStatusMeta", `Pago: ${paidCount} • Pendente: ${pendingCount} • Outros: ${otherCount}`);
+      setMeta("admChartUsersMeta", `Total: ${(d.users||[]).length} • 7d: ${newUsers.reduce((a,b)=>a+b,0)}`);
+
+      // Draw
+      drawLineChart("admChartRevenue", labels, revenue, {money:true});
+      drawBarChart("admChartOrders", labels, orders);
+      drawDonutChart("admChartStatus", [
+        {label:"Pago", value:paidCount},
+        {label:"Pendente", value:pendingCount},
+        {label:"Outros", value:otherCount},
+      ]);
+      drawLineChart("admChartUsers", labels, newUsers, {money:false});
+    }catch(e){
+      console.log("admRenderAnalytics error", e);
+    }
+  };
+
+  function _prepCanvas(canvas){
+    if(!canvas) return null;
+    const ctx = canvas.getContext("2d");
+    if(!ctx) return null;
+    const dpr = Math.max(1, window.devicePixelRatio||1);
+    const w = canvas.getAttribute("width") ? parseInt(canvas.getAttribute("width"),10) : canvas.clientWidth;
+    const h = canvas.getAttribute("height") ? parseInt(canvas.getAttribute("height"),10) : canvas.clientHeight;
+    canvas.style.width = "100%";
+    canvas.style.height = "auto";
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    return {ctx,w,h};
+  }
+
+  function drawLineChart(id, labels, values, opts){
+    const canvas = document.getElementById(id);
+    const p = _prepCanvas(canvas); if(!p) return;
+    const {ctx,w,h} = p;
+
+    ctx.clearRect(0,0,w,h);
+
+    const padL=34, padR=10, padT=12, padB=26;
+    const cw = w - padL - padR;
+    const ch = h - padT - padB;
+
+    const maxV = Math.max(1, ...values);
+    const minV = Math.min(0, ...values);
+    const span = Math.max(1e-9, maxV-minV);
+
+    // grid
+    ctx.strokeStyle = "rgba(255,255,255,.06)";
+    ctx.lineWidth = 1;
+    for(let i=0;i<=3;i++){
+      const y = padT + (ch*i/3);
+      ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(padL+cw,y); ctx.stroke();
+    }
+
+    // line
+    ctx.strokeStyle = "rgba(246,196,0,.95)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    values.forEach((v,i)=>{
+      const x = padL + (cw*(values.length===1?0:i/(values.length-1)));
+      const y = padT + ch*(1-((v-minV)/span));
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+
+    // points
+    ctx.fillStyle = "rgba(246,196,0,.95)";
+    values.forEach((v,i)=>{
+      const x = padL + (cw*(values.length===1?0:i/(values.length-1)));
+      const y = padT + ch*(1-((v-minV)/span));
+      ctx.beginPath(); ctx.arc(x,y,2.6,0,Math.PI*2); ctx.fill();
+    });
+
+    // labels (start / mid / end)
+    ctx.fillStyle = "rgba(229,231,235,.62)";
+    ctx.font = "12px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+    const pts = [0, Math.floor((labels.length-1)/2), labels.length-1].filter((v,i,a)=>a.indexOf(v)===i);
+    pts.forEach(i=>{
+      const x = padL + (cw*(labels.length===1?0:i/(labels.length-1)));
+      const t = labels[i] || "";
+      const tw = ctx.measureText(t).width;
+      ctx.fillText(t, Math.min(padL+cw-tw, Math.max(padL, x - tw/2)), padT+ch+18);
+    });
+
+    // y top label
+    const top = (opts && opts.money) ? moneyBR(maxV) : String(maxV);
+    ctx.fillText(top, 10, padT+10);
+  }
+
+  function drawBarChart(id, labels, values){
+    const canvas = document.getElementById(id);
+    const p = _prepCanvas(canvas); if(!p) return;
+    const {ctx,w,h} = p;
+    ctx.clearRect(0,0,w,h);
+
+    const padL=34, padR=10, padT=12, padB=26;
+    const cw = w - padL - padR;
+    const ch = h - padT - padB;
+
+    const maxV = Math.max(1, ...values);
+
+    // grid
+    ctx.strokeStyle = "rgba(255,255,255,.06)";
+    ctx.lineWidth = 1;
+    for(let i=0;i<=3;i++){
+      const y = padT + (ch*i/3);
+      ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(padL+cw,y); ctx.stroke();
+    }
+
+    const n = values.length;
+    const gap = 6;
+    const bw = (cw - gap*(n-1)) / n;
+
+    values.forEach((v,i)=>{
+      const x = padL + i*(bw+gap);
+      const bh = (v/maxV)*ch;
+      const y = padT + (ch - bh);
+
+      // bar
+      ctx.fillStyle = "rgba(246,196,0,.30)";
+      ctx.fillRect(x,y,bw,bh);
+
+      // cap
+      ctx.fillStyle = "rgba(246,196,0,.85)";
+      ctx.fillRect(x,y, bw, Math.max(2, Math.min(6, bh)));
+    });
+
+    // labels
+    ctx.fillStyle = "rgba(229,231,235,.62)";
+    ctx.font = "12px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+    const pts = [0, Math.floor((labels.length-1)/2), labels.length-1].filter((v,i,a)=>a.indexOf(v)===i);
+    pts.forEach(i=>{
+      const x = padL + i*(bw+gap) + bw/2;
+      const t = labels[i] || "";
+      const tw = ctx.measureText(t).width;
+      ctx.fillText(t, Math.min(padL+cw-tw, Math.max(padL, x - tw/2)), padT+ch+18);
+    });
+
+    ctx.fillText(String(maxV), 10, padT+10);
+  }
+
+  function drawDonutChart(id, items){
+    const canvas = document.getElementById(id);
+    const p = _prepCanvas(canvas); if(!p) return;
+    const {ctx,w,h} = p;
+    ctx.clearRect(0,0,w,h);
+
+    const cx = w/2, cy = h/2;
+    const r = Math.min(w,h)*0.33;
+    const r2 = r*0.62;
+
+    const total = items.reduce((a,b)=>a+(b.value||0),0) || 1;
+
+    const palette = [
+      "rgba(246,196,0,.88)",
+      "rgba(255,255,255,.45)",
+      "rgba(255,255,255,.20)"
+    ];
+
+    let ang = -Math.PI/2;
+    items.forEach((it,idx)=>{
+      const frac = (it.value||0)/total;
+      const a2 = ang + frac*(Math.PI*2);
+
+      ctx.beginPath();
+      ctx.moveTo(cx,cy);
+      ctx.arc(cx,cy,r,ang,a2);
+      ctx.closePath();
+      ctx.fillStyle = palette[idx%palette.length];
+      ctx.fill();
+
+      ang = a2;
+    });
+
+    // hole
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.beginPath(); ctx.arc(cx,cy,r2,0,Math.PI*2); ctx.fill();
+    ctx.globalCompositeOperation = "source-over";
+
+    // legend
+    ctx.font = "12px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+    ctx.fillStyle = "rgba(229,231,235,.72)";
+    const x0 = 12, y0 = 14;
+    items.forEach((it,idx)=>{
+      const y = y0 + idx*18;
+      ctx.fillStyle = palette[idx%palette.length];
+      ctx.fillRect(x0, y-10, 10, 10);
+      ctx.fillStyle = "rgba(229,231,235,.72)";
+      ctx.fillText(`${it.label}: ${it.value||0}`, x0+16, y-1);
+    });
+
+    // center text
+    ctx.fillStyle = "rgba(229,231,235,.82)";
+    ctx.font = "bold 18px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+    const t = String(items.reduce((a,b)=>a+(b.value||0),0));
+    const tw = ctx.measureText(t).width;
+    ctx.fillText(t, cx - tw/2, cy + 6);
+    ctx.font = "12px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+    ctx.fillStyle = "rgba(229,231,235,.55)";
+    const t2 = "pedidos";
+    const tw2 = ctx.measureText(t2).width;
+    ctx.fillText(t2, cx - tw2/2, cy + 24);
+  }
+
+
   };
 
   window.admRenderOrders = function(){
