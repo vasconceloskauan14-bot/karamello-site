@@ -56,11 +56,36 @@
   }
 
   /* layout do topo no mobile */
-  #cornerControls{top:10px !important;left:10px !important;right:10px !important;}
-  #cornerControls .cornerCard{width:100% !important;}
+  /* Mantém no canto (como no PC) e evita virar uma faixa por cima da tela */
+  #cornerControls{top:10px !important;left:10px !important;right:auto !important;width:auto !important;max-width:calc(100vw - 20px) !important;}
+  #cornerControls .cornerCard{width:min(420px, calc(100vw - 20px)) !important;}
 }
 
 /* Desktop: mantém hover normal (sem botão) */
 @media (min-width: 821px){
   #cornerControls:hover .cornerMenu{max-height:420px;opacity:1;transform:translateY(0)}
 }
+
+/* =========================================================
+   FIX DEFINITIVO (MOBILE): CornerControls no canto igual PC
+   - Garante que NÃO vira faixa ocupando a tela
+   - Não altera nada no desktop
+========================================================= */
+@media (max-width: 820px){
+  /* força o container a ficar "encaixado" no canto, sem right:10px */
+  body #cornerControls{
+    position: fixed !important;
+    top: max(10px, calc(env(safe-area-inset-top) + 8px)) !important;
+    left: 10px !important;
+    right: auto !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  /* força a caixa a ter largura limitada como no PC */
+  body #cornerControls .cornerCard{
+    width: min(420px, calc(100vw - 20px)) !important;
+    max-width: min(420px, calc(100vw - 20px)) !important;
+  }
+}
+
