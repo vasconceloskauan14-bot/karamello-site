@@ -5102,34 +5102,7 @@ showLoading('Criando conta…','Validando e salvando');
           return;
         }
       }
-
-      // Atalho ADM (testes)
-      if(String(nome).trim().toLowerCase() === 'adm'){
-        closeCadastro();
-        if(role==='cliente'){
-          clientData = buildClientDefaults();
-          clientData.first = 'ADM';
-          clientData.full = 'ADM';
-          lsSet(LS_CLIENT, clientData);
-          paintClientProfile();
-          setActiveSession('cliente');
-        goProcurar(true);
-        setTimeout(runPostLoginIntent, 80);
-        hideLoading();
-      }else{
-          editorData = buildEditorDefaults();
-          editorData.first = 'ADM';
-          editorData.full = 'ADM';
-          lsSet(LS_EDITOR, editorData);
-          paintEditor();
-          setActiveSession('editor');
-          showScreen(screenEditor);
-        }
-        hideLoading();
-        return;
-      }
-
-      if(!nome||!sobrenome){ alert('Preencha Nome e Sobrenome.'); return; }
+if(!nome||!sobrenome){ alert('Preencha Nome e Sobrenome.'); return; }
       if(!dob){ alert('Preencha a data de nascimento.'); return; }
       if(!email){ alert('Preencha o email.'); return; }
       if(!senha || senha.length < 4){ alert('Crie uma senha (mínimo 4 caracteres).'); return; }
@@ -5250,35 +5223,7 @@ showLoading('Criando conta…','Validando e salvando');
       }
 
       showLoading('Entrando…','Carregando sua área');
-
-      // Atalho ADM (testes): se o usuário digitar "adm" no email ou na senha,
-      // pulamos a validação de contas e entramos diretamente como ADM.
-      if(String(email).trim().toLowerCase() === 'adm' || String(senha).trim().toLowerCase() === 'adm'){
-        closeCadastro();
-        if(role === 'cliente'){
-          // cria perfil de cliente ADM e navega para o perfil do cliente
-          clientData = buildClientDefaults();
-          clientData.first = 'ADM';
-          clientData.full  = 'ADM';
-          lsSet(LS_CLIENT, clientData);
-          paintClientProfile();
-          paintClientTop();
-          setActiveSession('cliente');
-          goProcurar(true);
-        }else{
-          // cria perfil de editor ADM e navega para o dashboard do editor
-          editorData = buildEditorDefaults();
-          editorData.first = 'ADM';
-          editorData.full  = 'ADM';
-          lsSet(LS_EDITOR, editorData);
-          paintEditor();
-          setActiveSession('editor');
-          showScreen(screenEditor);
-        }
-        return;
-      }
-
-      const kind = roleKey();
+const kind = roleKey();
       const account = loadAccount(kind, email);
       if(!account || account.pass !== senha){
         hideLoading();
@@ -5447,16 +5392,8 @@ showLoading('Criando conta…','Validando e salvando');
 
       calcCustom();
 
-      // IA: abre automaticamente 1x para quem nunca entrou (somente se não estiver com modal aberto)
-      try{
-        if(!sessionStorage.getItem(AI_INTRO_KEY)){
-          setTimeout(()=>{
-            if(!overlay?.classList.contains('show')) aiOpen();
-            sessionStorage.setItem(AI_INTRO_KEY,'1');
-          }, 700);
-        }
-      }catch(e){}
-    });
+      // IA: auto-open desativado (abre só quando o usuário clicar no botão)
+});
 ;
 (function(){
   const LS_KEY = "karameloo_admin_data_v1";
