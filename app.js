@@ -4680,80 +4680,7 @@ function startPickEditor(){
       return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
     }
 
-const DEMO_EDITORS = [
-      {
-        id:'d1', name:'Editor Neon', xp:'avancado',
-        tags:['Reels','TikTok','Áudio','Cor cine','Ritmo'],
-        packages:[4,6,9,11,13,14,15],
-        available:true, stars:START_STARS,
-        bio:'Edição com ritmo forte, cortes inteligentes e cor cinematográfica. Foco em retenção e impacto.',
-        soft:'Premiere • After Effects • CapCut',
-        portfolio:'https://www.behance.net',
-        works:{ photos:[demoThumb('Neon • Reels 01'), demoThumb('Neon • Reels 02'), demoThumb('Neon • Shorts'), demoThumb('Neon • Antes/Depois')], videos:[] }
-      },
-      {
-        id:'d2', name:'Editor Flux', xp:'intermediario',
-        tags:['Foto pro','Cor cine','Limpeza','Cortes'],
-        packages:[1,2,3,5,8,10,12,15],
-        available:true, stars:START_STARS,
-        bio:'Estilo clean e profissional. Melhoro cor, nitidez e deixo tudo com cara de “marca premium”.',
-        soft:'Lightroom • CapCut • Premiere',
-        portfolio:'https://www.instagram.com',
-        works:{ photos:[demoThumb('Flux • Foto 01'), demoThumb('Flux • Foto 02'), demoThumb('Flux • Reels 30s')], videos:[] }
-      },
-      {
-        id:'d3', name:'Editor Pulse', xp:'intermediario',
-        tags:['Motion','Legendas','Zoom','SFX'],
-        packages:[4,6,7,9,11,13,15],
-        available:true, stars:START_STARS,
-        bio:'Legendas animadas + motion simples + zoom e efeitos na medida. Perfeito pra cortes e shorts.',
-        soft:'CapCut • After Effects',
-        portfolio:'https://www.youtube.com',
-        works:{ photos:[demoThumb('Pulse • Legenda'), demoThumb('Pulse • Motion'), demoThumb('Pulse • Zoom')], videos:[] }
-      },
-      {
-        id:'d4', name:'Editor Vibe', xp:'iniciante',
-        tags:['Shorts','Cortes','Básico','Rápido'],
-        packages:[4,6,7,9],
-        available:true, stars:START_STARS,
-        bio:'Entrega rápida e edição objetiva. Ideal pra quem está começando e quer consistência.',
-        soft:'CapCut',
-        portfolio:'',
-        works:{ photos:[demoThumb('Vibe • Short 01'), demoThumb('Vibe • Short 02')], videos:[] }
-      },
-      {
-        id:'d5', name:'Editor Clean', xp:'avancado',
-        tags:['Áudio','Ruído','Voz','Master'],
-        packages:[9,11,13,14,15],
-        available:true, stars:START_STARS,
-        bio:'Especialista em áudio: ruído, equalização, volume, voz e finalização limpa.',
-        soft:'Audition • Premiere',
-        portfolio:'',
-        works:{ photos:[demoThumb('Clean • Áudio'), demoThumb('Clean • Voz'), demoThumb('Clean • Mix')], videos:[] }
-      },
-      {
-        id:'j1', name:'Requisito de idade Luna', xp:'iniciante',
-        tags:['Reels','TikTok','Cortes','Legendas','Rápido','Júnior 16+'],
-        packages:[1,2,3,4],
-        available:true, stars:START_STARS,
-        bio:'Requisito de idade com autorização do responsável. Cortes rápidos, legendas simples e ajustes básicos.',
-        soft:'CapCut • VN',
-        portfolio:'https://www.instagram.com',
-        junior:true,
-        works:{ photos:[demoThumb('Luna • Reels 01'), demoThumb('Luna • Reels 02'), demoThumb('Luna • Shorts')], videos:[] }
-      },
-      {
-        id:'j2', name:'Requisito de idade Kai', xp:'iniciante',
-        tags:['Shorts','TikTok','Cortes','Básico','Júnior 16+'],
-        packages:[1,2,3,5],
-        available:true, stars:START_STARS,
-        bio:'Júnior com foco em Shorts/TikTok. Entrego cortes limpos e ritmo bom para vídeos curtos.',
-        soft:'CapCut • Canva',
-        portfolio:'https://www.behance.net',
-        junior:true,
-        works:{ photos:[demoThumb('Kai • TikTok 01'), demoThumb('Kai • Shorts 02')], videos:[] }
-      },
-];
+const DEMO_EDITORS = [];
 
     function getAllEditors(){
       const list = [];
@@ -4779,8 +4706,6 @@ const DEMO_EDITORS = [
 
     function isCompatible(editor, order){
       if(!editor.available) return false;
-      // ✅ BOTS DEMO (testes): sempre compatíveis, para você sempre ver opções ao escolher um pacote
-      if(String(editor.id||'').startsWith('d')) return true;
 if(order?.kind === 'package') return (editor.packages || []).includes(order.packageId);
 
       const vids = Number(order?.videos||0);
